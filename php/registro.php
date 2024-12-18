@@ -1,5 +1,8 @@
 <?php
-include 'db.php'; // Mueve la conexión a un archivo separado para reusabilidad
+$servidor = "localhost";
+$usuarioBD = "u288355303_Keneth";
+$claveBD = "1420Genio.";
+$baseDeDatos = "u288355303_Usuarios";
 
 // Función para escapar y validar datos
 function escapar_entrada($entrada, $enlace) {
