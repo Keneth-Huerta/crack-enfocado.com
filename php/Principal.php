@@ -44,7 +44,7 @@
         <main class="container mt-4">
             <h2 class="mb-4">Más publicaciones</h2>
             
-            <div class="row mb-4">
+            <div class="row mb-4" class="publicaciones">
                 <div class="col-12">
                     <div class="content-item text-center">
                         <img src="../media/user_icon_001.jpg" class="img-fluid imagengrande mb-3" alt="Imagen de contenido">
