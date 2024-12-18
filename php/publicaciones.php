@@ -157,7 +157,7 @@
 
         <!-- Mostrar publicaciones -->
         <?php
-        $stmt = $pdo->query("SELECT * FROM publicaciones ORDER BY created_at DESC");
+        $stmt = $pdo->query("SELECT * FROM publicaciones ORDER BY usuario DESC");
         $publicaciones = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         foreach ($publicaciones as $publicacion) {
