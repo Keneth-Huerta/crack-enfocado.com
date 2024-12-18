@@ -117,6 +117,18 @@
     </div>
 
 <?php
+// Establecer la conexión con la base de datos
+$conn = new mysqli('localhost', 'root', '', 'ventas_db');
+
+// Verificar la conexión
+if ($conn->connect_error) {
+    die("Error de conexión: " . $conn->connect_error);
+}
+
+?>
+
+
+<?php
 if (isset($_POST['submit'])) {
     $producto = $_POST['producto'];
     $cantidad = $_POST['cantidad'];
