@@ -13,7 +13,7 @@ h1 {
     text-align: center;
     margin-bottom: 20px;
     font-size: 30px;
-    color: #004d00; /* Verde IPN */
+    color: #8e1c1c; /* Rojo IPN */
 }
 
 /* Estilo del contenedor de formularios */
@@ -48,8 +48,8 @@ input {
 }
 
 input:focus {
-    border-color: #004d00; /* Verde IPN */
-    background-color: #e8f5e8;
+    border-color: #8e1c1c; /* Rojo IPN */
+    background-color: #ffe6e6; /* Fondo suave */
     outline: none;
 }
 
@@ -57,7 +57,7 @@ input:focus {
 button {
     width: 100%;
     padding: 15px;
-    background-color: #004d00; /* Verde IPN */
+    background-color: #8e1c1c; /* Rojo IPN */
     color: white;
     border: none;
     border-radius: 10px;
@@ -67,7 +67,7 @@ button {
 }
 
 button:hover {
-    background-color: #003300;
+    background-color: #6d0f0f; /* Rojo más oscuro */
 }
 
 /* Enlace para redirección */
@@ -77,13 +77,13 @@ button:hover {
 }
 
 .login-link a {
-    color: #004d00;
+    color: #8e1c1c; /* Rojo IPN */
     text-decoration: underline;
     transition: color 0.3s ease;
 }
 
 .login-link a:hover {
-    color: #003300;
+    color: #6d0f0f; /* Rojo más oscuro */
 }
 
 /* Estilos para los campos con error */
