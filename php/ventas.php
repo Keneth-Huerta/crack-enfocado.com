@@ -12,12 +12,16 @@
             background-color: #f9f9f9;
         }
 
+        <!--
         .sales-section {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
             text-align: center;
         }
+        -->
+
+        <!-- yes -->
 
         .sales-title {
             font-size: 2.5rem;
