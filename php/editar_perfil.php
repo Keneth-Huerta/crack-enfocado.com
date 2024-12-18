@@ -76,42 +76,43 @@ mysqli_close($enlace);
 <!-- Formulario de edición de perfil -->
 <div class="form-container">
     <h1>Editar Perfil</h1>
-    <form action="editar_perfil.php" method="post" enctype="multipart/form-data">
+    <form method="POST" action="editar_perfil.php" enctype="multipart/form-data">
         <div class="form-group">
             <label for="nombre">Nombre:</label>
-            <input type="text" name="nombre" value="<?php echo htmlspecialchars($perfil['nombre']); ?>" required>
+            <input type="text" id="nombre" name="nombre" value="<?php echo htmlspecialchars($perfil['nombre'] ?? ''); ?>" required>
         </div>
 
         <div class="form-group">
             <label for="apellido">Apellido:</label>
-            <input type="text" name="apellido" value="<?php echo htmlspecialchars($perfil['apellido']); ?>" required>
+            <input type="text" id="apellido" name="apellido" value="<?php echo htmlspecialchars($perfil['apellido'] ?? ''); ?>" required>
         </div>
 
         <div class="form-group">
             <label for="carrera">Carrera:</label>
-            <input type="text" name="carrera" value="<?php echo htmlspecialchars($perfil['carrera']); ?>" required>
+            <input type="text" id="carrera" name="carrera" value="<?php echo htmlspecialchars($perfil['carrera'] ?? ''); ?>" required>
         </div>
 
         <div class="form-group">
             <label for="semestre">Semestre:</label>
-            <input type="number" name="semestre" value="<?php echo htmlspecialchars($perfil['semestre']); ?>" required>
+            <input type="number" id="semestre" name="semestre" value="<?php echo htmlspecialchars($perfil['semestre'] ?? ''); ?>" required>
         </div>
 
         <div class="form-group">
-            <label for="informacion_extra">Información adicional:</label>
-            <textarea name="informacion_extra"><?php echo htmlspecialchars($perfil['informacion_extra']); ?></textarea>
-        </div>
-
-        <div class="form-group upload-section">
             <label for="foto_perfil">Foto de perfil:</label>
-            <input type="file" name="foto_perfil">
+            <input type="file" id="foto_perfil" name="foto_perfil">
         </div>
 
-        <div class="form-group upload-section">
+        <div class="form-group">
             <label for="foto_portada">Foto de portada:</label>
-            <input type="file" name="foto_portada">
+            <input type="file" id="foto_portada" name="foto_portada">
         </div>
 
-        <button type="submit">Actualizar perfil</button>
+        <div class="form-group">
+            <label for="informacion_extra">Información extra:</label>
+            <textarea name="informacion_extra"><?php echo htmlspecialchars($perfil['informacion_extra'] ?? ''); ?></textarea>
+        </div>
+
+        <button type="submit" name="guardar">Guardar cambios</button>
     </form>
+
 </div>
