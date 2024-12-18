@@ -1,9 +1,9 @@
 <?php
 // Configuración de la base de datos
-$servor="localhost";
-$usuarip="u288355303_Keneth";
-$clave="1420Genio.";
-$baseDeDatos="u288355303_Usuarios";
+$servor = "localhost";
+$usuarip = "u288355303_Keneth";
+$clave = "1420Genio.";
+$baseDeDatos = "u288355303_Usuarios";
 
 // Conexión a la base de datos
 $enlace = mysqli_connect($servor, $usuarip, $clave, $baseDeDatos);
@@ -29,7 +29,7 @@ if (isset($_POST['correo'], $_POST['contra'])) {
 
     if ($fila = mysqli_fetch_assoc($resultado)) {
         // Verificar la contraseña (si está cifrada)
-        if ($contra=$fila['contra']) {
+        if ($contra = $fila['contra']) {
             // Guardar datos en sesión
             $_SESSION['usuario'] = $fila['correo'];
             header("Location: ../usuario.html");
@@ -37,13 +37,13 @@ if (isset($_POST['correo'], $_POST['contra'])) {
         } else {
             echo '<script>
                 alert("Usuario o contraseña inválidos");
-                location.href="../formulario2.html";
+                location.href="../index.html";
             </script>';
         }
     } else {
         echo '<script>
             alert("Usuario o contraseña inválidos");
-            location.href="../formulario2.html";
+            location.href="../index.html";
         </script>';
     }
 
@@ -51,11 +51,9 @@ if (isset($_POST['correo'], $_POST['contra'])) {
 } else {
     echo '<script>
         alert("Por favor completa todos los campos");
-        location.href="../formulario2.html";
+        location.href="../index.html";
     </script>';
 }
 
 // Cerrar conexión
 mysqli_close($enlace);
-?>
-
