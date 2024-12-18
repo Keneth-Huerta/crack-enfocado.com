@@ -1,18 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Plantilla de Sitio Web</title>
+    <link rel="stylesheet" href="css/estilosprin.css">
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><img src="media/logoweb.jpg" alt=""></li>
-            <li><a href="">VENTAS</a></li>
-            <li><a href="">AYUDA ESTUDIANTIL</a></li>
-            
-        </ul>
-    </nav>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#">Logo</a></li>
+                <li><a href="#">Ventas</a></li>
+                <li><a href="#">Ayuda Estudiantil</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="recent-content">
+            <h2>Lo más reciente...</h2>
+            <div class="content-item">
+                <img src="#" alt="Imagen de contenido">
+                <a href="#">Ver más</a>
+            </div>
+        </section>
+
+        <section class="more-posts">
+            <h2>Más publicaciones</h2>
+            <div class="post-item">
+                <img src="#" alt="Imagen de publicación">
+                <h3>Título de la publicación</h3>
+                <p>Resumen de la publicación</p>
+                <a href="#">Leer más</a>
+            </div>
+        </section>
+
+        <section class="school-info">
+            <div class="info-item">
+                <h3>Ubicación</h3>
+                <p>Dirección de la escuela</p>
+            </div>
+            <div class="info-item">
+                <h3>Oferta educativa</h3>
+                <p>Información sobre la oferta educativa</p>
+            </div>
+            <div class="info-item">
+                <h3>SAES</h3>
+                <p>Información sobre el SAES</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <!-- Contenido del pie de página -->
+    </footer>
 </body>
 </html>
