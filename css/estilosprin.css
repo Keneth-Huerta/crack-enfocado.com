@@ -5,14 +5,13 @@ body {
     padding: 0;
 }
 nav {
-    
-    top: 0; /* Asegura que esté anclada al borde superior */
-    left: 0; /* Alinea el inicio con el borde izquierdo */
-    width: 100%; /* Ocupa todo el ancho de la pantalla */
-    background-color: #952F57; /* Color principal */
+ 
+    left: 0;
+    width: 100%;
+    background-color: #952F57;
    
-    padding: 10px 0; /* Espacio interno arriba y abajo */
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+    padding: 5px 0; /* Reducir la altura de la barra de navegación */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .nav-links {
@@ -38,10 +37,10 @@ nav {
 }
 
 .logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-left: 20px; /* Espaciado desde el borde izquierdo */
+    height: calc(100% - 10px); /* Logo 10px más pequeño que la altura de la navegación */
+    width: auto; /* Mantener proporción de la imagen */
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 .logo img {
