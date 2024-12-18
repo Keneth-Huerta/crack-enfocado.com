@@ -55,7 +55,7 @@ mysqli_stmt_close($stmt);
             </div>
         </div>
 
-        <div class="acciones">
+        <div class="acciones"> 
             <a href="editar_perfil.php">Editar perfil</a>
             <a href="logout.php" class="btn-cerrar-sesion">Cerrar sesión</a>
         </div>
