@@ -145,7 +145,7 @@
                 echo "<p>Debes <a href='../html/formulario.html'>crear una cuenta</a> o <a href='../index.html'>iniciar sesión</a> para publicar.</p>";
             } else {
             ?>
-                <form action="submit_post.php" method="post" enctype="multipart/form-data">
+                <form action="registro.php" method="post" enctype="multipart/form-data">
                     <textarea name="content" placeholder="¿Qué estás pensando?"></textarea>
                     <input type="file" name="image" accept="image/*">
                     <button type="submit">Publicar</button>
