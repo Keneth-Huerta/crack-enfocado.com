@@ -83,18 +83,17 @@
 
 
 <?php
-// Conectar a la base de datos
-require_once 'conexion.php';
+session_start();
+// Configuración de la base de datos
+$servidor = "localhost";
+$usuarioBD = "u288355303_Keneth";
+$claveBD = "1420Genio.";
+$baseDeDatos = "u288355303_Usuarios";
 
-$conn = new mysqli($host, $dbname, $username, $password);
-
-if ($conn->connect_error) {
-    die("Error de conexión: " . $conn->connect_error);
-}
-
-// Consultar los productos de la base de datos
+// Conexión a la base de datos
+$enlace = mysqli_connect($servidor, $usuarioBD, $claveBD, $baseDeDatos);
 $sql = "SELECT * FROM productos";
-$result = $conn->query($sql);
+$result = $enlace->query($sql);
 
 echo '<div class="products-container">';
 if ($result->num_rows > 0) {
@@ -111,7 +110,7 @@ if ($result->num_rows > 0) {
 }
 echo '</div>';
 
-$conn->close();
+$enlace->close();
 ?>
 
 <style>
