@@ -1,5 +1,8 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 require_once 'conexion.php'; // Conexión a la base de datos
 
 // Asegúrate de que el usuario esté logueado
@@ -37,12 +40,13 @@ $informacion_extra = $perfil['informacion_extra'] ?? 'No disponible';
 </head>
 
 <body>
+    <?php include('header.php'); ?>
     <div class="perfil-container">
         <h1>Bienvenido, <?php echo htmlspecialchars($nombre); ?></h1>
 
         <div class="perfil-info">
             <div class="foto-perfil">
-                <img src="../media/uploads/<?php echo htmlspecialchars($foto_perfil); ?>" alt="Foto de perfil">
+                <img src="<?php echo htmlspecialchars($foto_perfil); ?>" alt="Foto de perfil">
             </div>
             <div class="informacion">
                 <p><strong>Nombre:</strong> <?php echo htmlspecialchars($nombre); ?></p>
