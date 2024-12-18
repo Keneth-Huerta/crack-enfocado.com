@@ -70,12 +70,15 @@ button {
     color: #000;
     text-decoration: underline;
 }
-a{
+
+a {
     text-decoration: none;
     outline: none;
     color: inherit;
 }
-a:focus,a:hover{
+
+a:focus,
+a:hover {
     text-decoration: none;
-    color:inherit
+    color: inherit
 }
