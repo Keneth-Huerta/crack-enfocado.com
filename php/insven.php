@@ -7,8 +7,11 @@
 <body>
     <h1>Formulario para agregar un nuevo producto</h1>
     <form action="insertar_producto.php" method="post">
-        <label for="nombre">Nombre del producto:</label>
-        <input type="text" id="nombre" name="nombre" required><br><br>
+        <label for="producto">Nombre del producto:</label>
+        <input type="text" id="producto" name="producto" required><br><br>
+
+        <label for="id">ID del producto:</label>
+        <input type="text" id="id" name="id" required><br><br>
 
         <label for="precio">Precio:</label>
         <input type="number" id="precio" name="precio" required><br><br>
@@ -16,13 +19,14 @@
         <label for="descripcion">Descripción:</label>
         <textarea id="descripcion" name="descripcion" required></textarea><br><br>
 
-        <label for="categoria">Categoría:</label>
-        <input type="text" id="categoria" name="categoria" required><br><br>
+        <label for="imagen">URL de la imagen:</label>
+        <input type="text" id="imagen" name="imagen" required><br><br>
 
         <input type="submit" value="Agregar Producto">
     </form>
 </body>
 </html>
+
 
 <?php
 // Conectar a la base de datos
