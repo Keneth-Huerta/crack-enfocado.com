@@ -31,10 +31,6 @@
         </div>
 
 
-
-        <h2>Lo más reciente...</h2>
-        <h2 style="margin-left: 50px;">Publicaciones</h2>
-
 <div class="content-item">
     <div>
         <img src="../media/user_icon_001.jpg" class="imagengrande" alt="Imagen de contenido">
