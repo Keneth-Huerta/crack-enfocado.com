@@ -18,7 +18,10 @@
         <div class="post-form">
             <?php
             include 'basePublicacion.php';
-            session_start();
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+            }
+            
 
             if (!isset($_SESSION['usuario'])) {
                 echo "<p>Debes <a href='../crearCuenta.html'>crear una cuenta</a> o <a href='../index.html'>iniciar sesión</a> para poder publicar.</p>";

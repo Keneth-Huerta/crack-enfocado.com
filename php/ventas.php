@@ -169,6 +169,10 @@ if (!$enlace) {
 
         <div class="sales-cards">
             <?php
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+            }
+
             // Consultar los productos de la base de datos
             $sql = "SELECT * FROM productos";
             $result = mysqli_query($enlace, $sql);
