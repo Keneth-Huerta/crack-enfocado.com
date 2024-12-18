@@ -34,40 +34,47 @@
         </div>
 
         <!-- Mostrar publicaciones -->
-       
         <div class="publicaciones">
             <?php
-            // Consulta para obtener las publicaciones
-            $stmt = $pdo->query("SELECT * FROM publicaciones ORDER BY usuario DESC");
+            // Consulta para obtener las publicaciones con los datos del usuario
+            $stmt = $pdo->query("SELECT publicaciones.*, perfiles.foto_perfil FROM publicaciones 
+                                 JOIN perfiles ON publicaciones.usuario_id = perfiles.usuario_id
+                                 ORDER BY publicaciones.fecha DESC");
 
             // Bucle while para mostrar publicaciones
-                while ($publicacion = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            while ($publicacion = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 echo '<div class="post-item">';
         
-            // Contenido del encabezado (usuario y avatar)
-            echo '<div class="post-header">';
-            echo '<div class="post-avatar"></div>';
-            echo '<div class="post-username">' . htmlspecialchars($publicacion['usuario'] ?? 'Usuario Anónimo') . '</div>';
-            echo '</div>';
+                // Contenido del encabezado (usuario y avatar)
+                echo '<div class="post-header">';
+                
+                // Mostrar la imagen de perfil del usuario
+                $foto_perfil = $publicacion['foto_perfil'] ? htmlspecialchars($publicacion['foto_perfil']) : 'default-profile.jpg';
+                echo '<div class="post-avatar">';
+                echo '<img src="../media/uploads/' . $foto_perfil . '" alt="Foto de perfil" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">';
+                echo '</div>';
+
+                echo '<div class="post-username">' . htmlspecialchars($publicacion['usuario'] ?? 'Usuario Anónimo') . '</div>';
+                echo '</div>';
         
-            // Contenido de la publicación
-            echo '<div class="post-content">' . htmlspecialchars($publicacion['contenido'] ?? 'Sin contenido') . '</div>';
+                // Contenido de la publicación
+                echo '<div class="post-content">' . htmlspecialchars($publicacion['contenido'] ?? 'Sin contenido') . '</div>';
         
-            // Imagen de la publicación (si existe)
-            if (!empty($publicacion['imagen'])) {
-                echo '<img src="' . htmlspecialchars($publicacion['imagen']) . '" alt="Imagen de publicación">';
+                // Imagen de la publicación (si existe)
+                if (!empty($publicacion['imagen'])) {
+                    echo '<img src="../media/uploads/' . htmlspecialchars($publicacion['imagen']) . '" alt="Imagen de publicación">';
+                }
+        
+                // Acciones (botones)
+                echo '<div class="post-actions">';
+                echo '<button>Me gusta</button>';
+                echo '<button>Comentar</button>';
+                echo '<button>Compartir</button>';
+                echo '</div>';
+        
+                echo '</div>';
             }
-        
-            // Acciones (botones)
-            echo '<div class="post-actions">';
-            echo '<button>Me gusta</button>';
-            echo '<button>Comentar</button>';
-            echo '<button>Compartir</button>';
-            echo '</div>';
-        
-            echo '</div>';
-        }
-        ?>
+            ?>
         </div>
 
     </div>
