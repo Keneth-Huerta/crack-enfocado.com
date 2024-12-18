@@ -138,7 +138,7 @@
         <!-- Formulario para crear una publicación -->
         <div class="post-form">
             <?php
-            include 'basePublicaion.php';
+            include 'basePublicacion.php';
             session_start();
 
             if (!isset($_SESSION['username'])) {
