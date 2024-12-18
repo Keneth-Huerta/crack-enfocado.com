@@ -1,6 +1,6 @@
 <?php
 // Establecer la conexión con la base de datos
-$conn = new mysqli('localhost', 'root', '', 'ventas_db');
+$conn = new mysqli('localhost', 'root', '', 'u288355303_Usuarios');
 
 // Verificar la conexión
 if ($conn->connect_error) {
