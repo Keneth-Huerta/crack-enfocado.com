@@ -103,7 +103,7 @@
 
     <section class="sales-section">
         <h1 class="sales-title">Materiales</h1>
-        <p class="sales-description">Explora la variedad de materiales cragados por los alumnos</p>
+        <p class="sales-description">Explora la variedad de materiales cargados por los alumnos</p>
 
         <div class="sales-cards">
             <?php
