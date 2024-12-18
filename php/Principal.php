@@ -5,15 +5,13 @@
     <link rel="stylesheet" href="../css/estilosprin.css">
 </head>
 <body>
-    <header>
         <nav>
             <ul>
-                <li><a href="#">Logos</a></li>
-                <li><a href="#">Ventas</a></li>
-                <li><a href="#">Ayuda Estudiantil</a></li>
+                <li><a href=".cabeza">Logos</a></li>
+                <li><a href=".cabeza">Ventas</a></li>
+                <li><a href="">Ayuda Estudiantil</a></li>
             </ul>
         </nav>
-    </header>
 
     <main>
         <section class="recent-content">
