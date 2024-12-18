@@ -1,64 +1,85 @@
 <?php
 // Configuración de la base de datos
-$servidor = "localhost"; // Cambiar por tu host
-$usuarioBD = "u288355303_Keneth"; // Cambiar por tu usuario de la DB
-$claveBD = ""; // Cambiar por tu contraseña de la DB
-$baseDeDatos = "u288355303_Usuarios"; // Cambiar por tu nombre de la base de datos
+$servidor = "localhost";
+$usuarioBD = "u288355303_Keneth";
+$claveBD = "1420Genio.";
+$baseDeDatos = "u288355303_Usuarios";
 
 // Conexión a la base de datos
-$conexion = mysqli_connect($servidor, $usuarioBD, $claveBD, $baseDeDatos);
+$enlace = mysqli_connect($servidor, $usuarioBD, $claveBD, $baseDeDatos);
 
 // Verificar la conexión
-if (!$conexion) {
+if (!$enlace) {
     die("Conexión fallida: " . mysqli_connect_error());
 }
 
-// Escapar y sanitizar datos recibidos
-function escapar_entrada($dato, $conexion) {
-    return mysqli_real_escape_string($conexion, trim($dato));
+// Función para escapar entradas
+function escapar_entrada($entrada, $enlace) {
+    return mysqli_real_escape_string($enlace, trim($entrada));
 }
 
-// Procesar datos del formulario
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $nombre = escapar_entrada($_POST['nombre'], $conexion);
-    $apellido = escapar_entrada($_POST['apellido'], $conexion);
-    $boleta = escapar_entrada($_POST['boleta'], $conexion);
-    $correo = escapar_entrada($_POST['correo'], $conexion);
+// Validación y sanitización de los datos del formulario
+if (isset($_POST['registrar'])) {
+    $usuario = escapar_entrada($_POST['nombre'], $enlace);
+    $apellido = escapar_entrada($_POST['apellido'], $enlace);
+    $boleta = escapar_entrada($_POST['boleta'], $enlace);
+    $correo = escapar_entrada($_POST['correo'], $enlace);
     $contrasena = $_POST['contrasena'];
 
-    // Validaciones adicionales
+    // Validación del correo
     if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
-        echo "Correo inválido.";
-        exit;
+        echo '<script>alert("Por favor, ingresa un correo válido."); location.href="../crearCuenta.html";</script>';
+        exit();
     }
 
+    // Validación de la contraseña (mínimo 6 caracteres)
     if (strlen($contrasena) < 6) {
-        echo "La contraseña debe tener al menos 6 caracteres.";
-        exit;
+        echo '<script>alert("La contraseña debe tener al menos 6 caracteres."); location.href="../crearCuenta.html";</script>';
+        exit();
     }
 
     // Cifrar la contraseña
-    $contrasena_cifrada = password_hash($contrasena, PASSWORD_DEFAULT);
+    $contraseñaCifrada = password_hash($contrasena, PASSWORD_DEFAULT);
 
-    // Insertar los datos en la base de datos
-    $query = "INSERT INTO registro (nombre, apellido, boleta, correo, contrasena) VALUES (?, ?, ?, ?, ?)";
-    $stmt = mysqli_prepare($conexion, $query);
+    // Verificar si el correo ya está registrado
+    $queryVerificarCorreo = "SELECT * FROM registro WHERE correo = ?";
+    if ($stmtVerificar = mysqli_prepare($enlace, $queryVerificarCorreo)) {
+        mysqli_stmt_bind_param($stmtVerificar, "s", $correo);
+        mysqli_stmt_execute($stmtVerificar);
+        $resultadoVerificar = mysqli_stmt_get_result($stmtVerificar);
+        if (mysqli_num_rows($resultadoVerificar) > 0) {
+            // Si el correo ya existe, mostrar mensaje y redirigir
+            echo '<script>alert("El correo ya está registrado."); location.href="../crearCuenta.html";</script>';
+            exit();
+        }
+        mysqli_stmt_close($stmtVerificar);
+    }
 
-    if ($stmt) {
-        mysqli_stmt_bind_param($stmt, "sssss", $nombre, $apellido, $boleta, $correo, $contrasena_cifrada);
+    // Preparar la consulta SQL con parámetros
+    $insertarDatos = "INSERT INTO registro (nombre, apellido, boleta, correo, contraseña) VALUES (?, ?, ?, ?, ?)";
+    if ($stmt = mysqli_prepare($enlace, $insertarDatos)) {
+        mysqli_stmt_bind_param($stmt, "ssiss", $usuario, $apellido, $boleta, $correo, $contraseñaCifrada);
+
+        // Ejecutar la consulta
         if (mysqli_stmt_execute($stmt)) {
-            echo "Registro exitoso.";
-            header("Location: ../index.html"); // Redirigir al usuario
+            // Redirigir al índice después del registro exitoso
+            echo '<script>location.href="../index.html";</script>';
             exit();
         } else {
-            echo "Error al guardar los datos: " . mysqli_error($conexion);
+            // Registrar el error para fines de depuración y mostrar mensaje genérico
+            error_log("Error al registrar: " . mysqli_error($enlace));
+            echo '<script>alert("Hubo un error en el registro. Por favor, intenta de nuevo."); location.href="../crearCuenta.html";</script>';
         }
+
+        // Cerrar la declaración
         mysqli_stmt_close($stmt);
     } else {
-        echo "Error en la consulta: " . mysqli_error($conexion);
+        // Error al preparar la consulta
+        error_log("Error al preparar la consulta: " . mysqli_error($enlace));
+        echo '<script>alert("Hubo un error en el registro. Por favor, intenta de nuevo."); location.href="../crearCuenta.html";</script>';
     }
-}
 
-// Cerrar conexión
-mysqli_close($conexion);
+    // Cerrar la conexión
+    mysqli_close($enlace);
+}
 ?>
