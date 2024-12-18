@@ -17,7 +17,7 @@
             session_start();
 
             if (!isset($_SESSION['username'])) {
-                echo "<p>Debes <a href='../crearCuenta.php'>crear una cuenta</a> o <a href='../index.html'>iniciar sesión</a> para poder publicar.</p>";
+                echo "<p>Debes <a href='../crearCuenta.html'>crear una cuenta</a> o <a href='../index.html'>iniciar sesión</a> para poder publicar.</p>";
             } else {
             ?>
                 <form action="submit_post.php" method="post" enctype="multipart/form-data">
