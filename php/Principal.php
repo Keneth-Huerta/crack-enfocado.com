@@ -32,7 +32,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link; " href="perfil.php">
-                                <img  class="btn btn-primary rounded" src="../media/user.png" alt="Perfil" style="max-height: 25px;">
+                                <img  class="rounded" src="../media/user.png" alt="Perfil" style="max-height: 25px;">
                             </a>
                         </li>
                     </ul>
