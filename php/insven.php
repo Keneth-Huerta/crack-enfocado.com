@@ -145,8 +145,8 @@ mysqli_close($enlace);
             <label for="descripcion">Descripción:</label>
             <textarea id="descripcion" name="descripcion" required></textarea><br><br>
 
-            <label for="imagen">URL de la imagen:</label>
-            <input type="text" id="imagen" name="imagen" required><br><br>
+            <label for="imagen">Selecciona la imagen del producto:</label>
+            <input type="file" id="imagen" name="imagen" accept="image/*" required><br><br>
 
             <input type="submit" value="Agregar Producto">
         </form>
