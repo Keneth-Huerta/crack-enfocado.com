@@ -34,7 +34,7 @@
         <div class="publicaciones">
             <?php
             // Consulta para obtener las publicaciones
-            $stmt = $pdo->query("SELECT * FROM publicaciones ORDER BY id DESC");
+            $stmt = $pdo->query("SELECT * FROM publicaciones ORDER BY usuario DESC");
 
             // Bucle while para mostrar publicaciones
             while ($publicacion = $stmt->fetch(PDO::FETCH_ASSOC)) {
