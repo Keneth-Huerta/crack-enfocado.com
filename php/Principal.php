@@ -60,7 +60,7 @@
                 <?php for ($i = 0; $i < 6; $i++): ?>
                 <div class="col">
                     <div class="card h-100">
-                        <img src="../media/logoweb.jpg" class="card-img-top" alt="Imagen de publicación">
+                        <img src="../media/logoweb.svg" class="card-img-top" alt="Imagen de publicación">
                         <div class="card-body">
                             <h5 class="card-title">Título de la publicación</h5>
                             <p class="card-text">Resumen de la publicación</p>
