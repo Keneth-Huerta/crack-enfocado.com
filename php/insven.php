@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (mysqli_num_rows($resultado_verificar) > 0) {
             // El producto ya existe
             echo "<p>El producto ya existe en la base de datos.</p>";
-        } else {
+        } 
             // Insertar el nuevo producto en la base de datos
             $sql_insertar = "INSERT INTO productos (producto, id, precio, descripcion, imagen) 
                              VALUES ('$producto', '$id', '$precio', '$descripcion', '$imagen')";
@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "<p>Error al agregar el producto: " . mysqli_error($enlace) . "</p>";
             }
-        }
+        
     }
 }
 
