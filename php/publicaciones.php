@@ -196,7 +196,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    // Insertar la publicación en la base de datos
+    // Insertar la publicación en la base de 
     $stmt = $pdo->prepare("INSERT INTO publicaciones (username, content, image_path) VALUES (:username, :content, :image_path)");
     $stmt->execute([
         ':username' => $username,
