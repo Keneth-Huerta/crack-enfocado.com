@@ -122,23 +122,68 @@
 
         <div class="sales-cards">
             <?php
-                $productos = [
-                    ["title" => "Producto 1", "description" => "Descripción", "price" => "$49.99"],
-                    ["title" => "Producto 2", "description" => "Descripción", "price" => "$79.99"],
-                    ["title" => "Producto 3", "description" => "Descripción", "price" => "$99.99"],
-                ];
+               // Consultar los productos de la base de datos
+$sql = "SELECT * FROM productos";
+$result = mysqli_query($enlace, $sql);
 
-                foreach ($productos as $producto) {
-                    echo "<div class='sales-card'>";
-                    echo "<h2 class='product-title'>{$producto['title']}</h2>";
-                    echo "<p class='product-description'>{$producto['description']}</p>";
-                    echo "<p class='product-price'>{$producto['price']}</p>";
-                    echo "<a href='#' class='buy-button'>Comprar ahora</a>";
-                    echo "<p><a href='https://crack-enfocado.com/php/descprod.php' class='des-button'>Descripcion</a></p>";
-                    echo "</div>";
-                }
+echo '<div class="products-container">';
+if (mysqli_num_rows($result) > 0) {
+    // Mostrar los productos
+    while ($row = mysqli_fetch_assoc($result)) {
+        echo '<div class="product-card">';
+        echo "<h3>" . htmlspecialchars($row['producto']) . "</h3>";
+        echo "<img src='" . htmlspecialchars($row['imagen']) . "' alt='" . htmlspecialchars($row['producto']) . "' class='product-image'><br>";
+        echo "<p><strong>Precio:</strong> $" . htmlspecialchars($row['precio']) . "</p>";
+        echo "<p><strong>Descripción:</strong> " . htmlspecialchars($row['descripcion']) . "</p>";
+        echo '</div>';
+    }
+} else {
+    echo "No se encontraron productos.";
+}
+echo '</div>';
+
+mysqli_close($enlace);
             ?>
         </div>
+
     </section>
+    <style>
+    /* Estilos para mostrar los productos */
+        .products-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            justify-items: center;
+        }
+        .product-card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        .product-image {
+            max-width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+        .product-card h3 {
+            font-size: 18px;
+            color: #333;
+        }
+        .product-card p {
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
 </body>
 </html>
