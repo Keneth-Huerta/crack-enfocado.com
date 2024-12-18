@@ -30,7 +30,7 @@
             </div>
             <!-- Precio -->
             <p>
-                <font size="4"><b>PRECIO</b></font>
+            <p><font size="4px"><b>$300</b></font><sup>00</sup></small></p>
             </p>
             <!-- Descripción -->
             <p>:D</p>
