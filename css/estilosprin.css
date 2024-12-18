@@ -4,6 +4,13 @@ body {
     margin: 0;
     padding: 0;
 }
+.contenedor{
+    max-width: 1000px;
+    
+    width: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+}
 .logo{
     display: flex;
     gap: 20px;
@@ -56,6 +63,9 @@ ul{
     
     
     
+}
+.espaciado{
+
 }
 .uno{
     padding: 10px 20px;
