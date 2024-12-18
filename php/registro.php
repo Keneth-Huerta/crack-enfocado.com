@@ -1,9 +1,9 @@
 
 <?php
 $servor="localhost";
-$usuarip="root";
-$clave="";
-$baseDeDatos="Usuarios";
+$usuarip="u288355303_Keneth";
+$clave="1420Genio.";
+$baseDeDatos="u288355303_Usuarios";
 $enlace= mysqli_connect($servor,$usuarip,$clave,$baseDeDatos);
 
 if(isset($_POST['registrar'])){
