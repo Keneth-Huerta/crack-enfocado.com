@@ -3,7 +3,7 @@ include 'basePublicacion.php'; // Archivo de conexión a la base de datos
 session_start();
 
 // Verificar si el usuario ha iniciado sesión
-if (!isset($_SESSION['username'])) {
+if (!isset($_SESSION['usuario'])) {
     header("Location: ../index.html"); // Redirige al login si no está autenticado
     exit;
 }
