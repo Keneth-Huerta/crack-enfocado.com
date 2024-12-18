@@ -85,8 +85,8 @@
 <?php
 // Conectar a la base de datos
 $host = 'localhost';
-$usuario = 'root';
-$contraseña = '';
+$usuario = 'u288355303_Keneth';
+$contraseña = '1420Genio.';
 $base_datos = 'u288355303_Usuarios'; // Cambia esto por el nombre de tu base de datos
 
 $conn = new mysqli($host, $usuario, $contraseña, $base_datos);
