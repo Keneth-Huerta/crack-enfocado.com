@@ -9,16 +9,17 @@ body {
     gap: 20px;
     justify-content:space-between;
     border-radius: 50%;
-    background-color: 	#952F57;
     
     
+}
+nav{
+    background-color: #952F57;
 }
 .nav-links {
     display: flex;
     justify-content: flex-end;
     margin: auto;
     gap: 20px;
-    background-color: 	#952F57;
 }
 
 .nav-links a {
