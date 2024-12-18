@@ -49,7 +49,7 @@ if (isset($_POST['registrar'])) {
         $resultadoVerificar = mysqli_stmt_get_result($stmtVerificar);
         if (mysqli_num_rows($resultadoVerificar) > 0) {
             // Si el correo ya existe, mostrar mensaje y redirigir
-            echo '<script>alert("El correo ya está registrado."); location.href="../registro.html";</script>';
+            echo '<script>alert("El correo ya está registrado."); location.href="../crearCuenta.html";</script>';
             exit();
         }
         mysqli_stmt_close($stmtVerificar);
@@ -58,7 +58,7 @@ if (isset($_POST['registrar'])) {
     // Preparar la consulta SQL con parámetros
     $insertarDatos = "INSERT INTO registro (nombre, apellido, boleta, correo, contraseña) VALUES (?, ?, ?, ?, ?)";
     if ($stmt = mysqli_prepare($enlace, $insertarDatos)) {
-        mysqli_stmt_bind_param($stmt, "sssss", $usuario, $apellido, $boleta, $correo, $contraseñaCifrada);
+        mysqli_stmt_bind_param($stmt, "ssiss", $usuario, $apellido, $boleta, $correo, $contraseñaCifrada);
 
         // Ejecutar la consulta
         if (mysqli_stmt_execute($stmt)) {

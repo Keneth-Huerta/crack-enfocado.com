@@ -7,20 +7,20 @@
     <!-- Enlace al archivo de estilos local -->
     <link rel="stylesheet" href="estilocinco.css">
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" 
-          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" 
-          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css"
+        integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" 
+        crossorigin="anonymous">
 </head>
 
 <body>
-    <!-- Cabecera -->
+    
     <div id="head" class="head row"></div>
 
-    <!-- Contenido principal -->
     <div class="row" style="margin: 20px;">
+
         <!-- Imagen del producto -->
         <div class="col-md-3 col-md-offset-1">
-            <img src="./promos/simi.jpg" alt="Mini Simi" width="300" height="300" class="img-responsive">
+            <img src="https://wheeled.ru/wp-content/uploads/2015/08/11-578x429.jpg" alt="Mini Simi" width="300" height="300" class="img-responsive">
         </div>
 
         <!-- Detalles del producto -->
