@@ -134,7 +134,7 @@
                     echo "<p class='product-description'>{$producto['description']}</p>";
                     echo "<p class='product-price'>{$producto['price']}</p>";
                     echo "<a href='#' class='buy-button'>Comprar ahora</a>";
-                    echo "<a href='#' class='des-button'>Descripcion</a>";
+                    echo "<a href='https://crack-enfocado.com/php/descprod.php' class='des-button'>Descripcion</a>";
                     echo "</div>";
                 }
             ?>
