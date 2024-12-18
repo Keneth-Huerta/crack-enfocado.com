@@ -22,7 +22,7 @@
             ?>
                 <form action="subir_public.php" method="post" enctype="multipart/form-data">
                     <textarea name="contenido" placeholder="¿Qué estás pensando?"></textarea>
-                    <input type="file" name="imagen" accept="image/*">
+                    <input type="file" name="image" accept="image/*">
                     <button type="submit">Publicar</button>
                 </form>
             <?php
