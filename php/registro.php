@@ -1,13 +1,13 @@
 <?php
-$servidor = "localhost";
-$usuarioBD = "u288355303_Keneth";
-$claveBD = "1420Genio.";
-$baseDeDatos = "u288355303_Usuarios";
+$host = 'localhost';
+$dbname = 'u288355303_Usuarios';
+$username = 'u288355303_Keneth';
+$password = '1420Genio.';
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 // Conexión a la base de datos
-$enlace = mysqli_connect($servidor, $usuarioBD, $claveBD, $baseDeDatos);
+$enlace = mysqli_connect($host, $dbname, $username, $password);
 if (mysqli_connect_errno()) {
     die("Conexión fallida: " . mysqli_connect_error());
 } else {
