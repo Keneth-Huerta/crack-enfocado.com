@@ -13,7 +13,7 @@
         }
 
         .navbar {
-            background-color: #4267B2;
+            background-color: # #7d1b1b;
             color: white;
             padding: 15px;
             text-align: center;
@@ -53,7 +53,7 @@
         }
 
         .post-form button {
-            background-color: #4267B2;
+            background-color: # #7d1b1b;
             color: white;
             border: none;
             padding: 10px 20px;
@@ -65,7 +65,7 @@
         }
 
         .post-form button:hover {
-            background-color: #365899;
+            background-color: # #7d1b1b;
         }
 
         .post {
