@@ -142,7 +142,7 @@
             session_start();
 
             if (!isset($_SESSION['username'])) {
-                echo "<p>Debes <a href='../php/registro.php'>crear una cuenta</a> o <a href='../index.html'>iniciar sesión</a> para publicar.</p>";
+                echo "<p>Debes <a href='../crearCuenta.html'>crear una cuenta</a> o <a href='../index.html'>iniciar sesión</a> para publicar.</p>";
             } else {
             ?>
                 <form action="registro.php" method="post" enctype="multipart/form-data">
