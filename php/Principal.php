@@ -46,19 +46,24 @@
             
             <div class="row mb-4 publicaciones" style="background-color: darkgrey; padding-top: 4rem; padding-bottom: 4rem;">
     <div class="col-12">
-        <div class="content-item d-flex justify-content-between align-items-center" style="margin-top: 5px;">
-            <!-- Contenedor para la imagen y el botón -->
-            <div class="d-flex align-items-center">
-                <!-- Imagen con borde redondeado y padding ajustado solo en el contenedor -->
-                <img src="../media/user_icon_001.jpg" class="img-fluid imagengrande me-2 rounded border border-dark" alt="Imagen de contenido">
-
-                <!-- Botón "Ver más" con margen de 10px a la izquierda -->
-                <a href="publicaciones.php" class="btn btn-primary" style="margin-left: 10px;">Ver más</a>
+        <div class="content-item">
+            <div class="d-flex" style="gap: 10px;">
+                <!-- Imagen con 5px menos de largo -->
+                <div style="flex: 0 0 60%; height: calc(100% - 5px);">
+                    <img src="../media/user_icon_001.jpg" 
+                         class="img-fluid imagengrande rounded border border-dark" 
+                         alt="Imagen de contenido"
+                         style="height: 50%; width: 40%; object-fit: cover;">
+                </div>
+                
+                <!-- Botón alineado arriba con 10px de separación -->
+                <div style="padding-top: 5px;">
+                    <a href="publicaciones.php" class="btn btn-primary">Ver más</a>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
             
             <h2 class="mb-4 fs-3">Lo más reciente...</h2>
 
