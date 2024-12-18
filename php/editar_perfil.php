@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                      WHERE usuario_id = ?";
     $stmt = mysqli_prepare($enlace, $update_query);
     mysqli_stmt_bind_param($stmt, "sssssssi", $nombre, $apellido, $carrera, $semestre, $foto_perfil, $foto_portada, $informacion_extra, $perfil['id']);
-    
+
     if (mysqli_stmt_execute($stmt)) {
         echo "Perfil actualizado con éxito.";
     } else {
@@ -70,6 +70,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 mysqli_stmt_close($stmt);
 mysqli_close($enlace);
 ?>
+
+<link rel="stylesheet" href="../css/editar_perfil.css">
 
 <!-- Formulario de edición de perfil -->
 <div class="form-container">
