@@ -154,22 +154,44 @@ margin-left: 10px;
 }
 */
 /* Estilos del footer */
-.footer-container {
-    background-color: #952F57; 
-    color: white; 
+footer {
+    background-color: #952F57; /* Mismo color que la barra de navegación */
+    color: white; /* Texto en blanco para buena legibilidad */
     padding: 20px;
     text-align: center;
-    font-size: 14px; 
-    border-top: 5px solid #4CAF50; 
-    box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1); 
+    font-size: 14px; /* Tamaño de fuente más pequeño */
+    border-top: 5px solid #4CAF50; /* Borde verde en la parte superior */
+    box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1); /* Sombra sutil para dar profundidad */
+}
+
+footer .footer-container {
+    max-width: 1200px; /* Ancho máximo para que no se expanda demasiado */
+    margin: 0 auto; /* Centrar el contenido */
+    padding: 10px;
+}
+
+footer p {
+    margin: 10px 0;
 }
 
 footer a {
-    color: white; 
-    text-decoration: none; 
-    margin: 0 10px; 
+    color: white; /* Asegurarse de que los enlaces sean visibles */
+    text-decoration: none; /* Eliminar subrayado de los enlaces */
+    margin: 0 10px; /* Espaciado entre los enlaces */
 }
 
 footer a:hover {
-    color: #4CAF50; 
+    color: #4CAF50; /* Cambiar a verde cuando se pasa el cursor */
+}
+
+footer .social-links {
+    margin: 10px 0;
+}
+
+footer .social-links a {
+    font-size: 16px; /* Tamaño de fuente para los enlaces sociales */
+}
+
+footer .social-links a:hover {
+    color: #2563eb; /* Cambiar el color cuando se pasa el cursor */
 }
