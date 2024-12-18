@@ -8,28 +8,20 @@ body {
     display: flex;
     gap: 20px;
     justify-content:space-between;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    top: auto;
     
-    
-}
-nav{
-    top: auto;
-    background-color: #952F57;
-    background-color: #952F57;
 }
 .nav-links {
     display: flex;
     justify-content: flex-end;
-    margin: auto;
     gap: 20px;
 }
 
 .nav-links a {
     text-decoration: none;
-    color: black;
-    font-weight: 100;
-    background-color: #952F57;
+    color: #000000;
     
 }
 
@@ -41,9 +33,8 @@ nav{
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    object-fit: cover;
+
     margin-right: 20px;
-    background-color: #952F57;
 }
 
 ul{
@@ -74,64 +65,34 @@ ul{
     cursor: pointer
  
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
 nav{
-    display: flex;
-    justify-content: flex-end;
-}
-.principal{
-    justify-content:sp;
+    color: #952F57;
     
 }
 
-.izquierdo{
-    display: flex;
-    text-decoration: none;
-    list-style-type: none;
-    margin: 10px;
-    
-    
-}
-.cabeza{
-    display: flex;
-    margin: 10px;
-    
-    background-color: aqua;
 
 
-}*/
+
 
 img{
     width: 50px;
     height: 40px;
 }
-.alineacion{
-}
+
 
 .imagengrande{
-    width: 300px;
-    height: 400px;
+    width: 280px;
+    height: 300px;
+    margin-left: 100px;
 }
 
 /* Estilos del header */
 .publicaciones{
     display: flex;
+    margin-left: 50px;
+    margin-right: 50px;
+    border-radius: 20px; 
+
 }
 
 /* Estilos de las secciones */
@@ -149,6 +110,43 @@ img{
     margin-bottom: 10px;
 
 }
+
+.content-item{ 
+    
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    
+    flex-direction: row;
+    position: relative;
+    margin-left: 50px;
+    margin-right: 50px;
+    border-radius: 20px; 
+
+}
+
+.ver{
+    display: flex;
+    height: 50px;
+    margin-left: 1%; 
+
+    background-color: darkgray;
+    position: relative;  
+    text-decoration: none;
+    width: 280px;
+    height: 300px;
+    border-radius: 5%; 
+    border: 1px solid;
+
+}
+.ver a{
+    text-align: left;
+margin-top: 10PX;
+margin-left: 10px;
+
+}
+
+
 
 .info-item {
     margin-bottom: 10px;
