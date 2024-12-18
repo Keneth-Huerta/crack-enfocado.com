@@ -40,12 +40,17 @@ body {
 
 /* Estilo para la imagen de la publicación */
 .post-item img {
-    width: 100%;
-    max-height: 400px;
-    object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 15px;
+    width: 100%;  /* Hace que la imagen ocupe el 100% del contenedor */
+    max-width: 500px;  /* Limita el tamaño máximo de la imagen a 500px */
+    max-height: 300px; /* Limita la altura máxima de la imagen */
+    object-fit: cover;  /* Asegura que la imagen se recorte y se ajuste sin deformarse */
+    border-radius: 10px; /* Bordes redondeados */
+    margin-bottom: 15px;  /* Separación inferior */
+    display: block;  /* Elimina los márgenes extra alrededor de la imagen */
+    margin-left: auto;  /* Centra la imagen en su contenedor */
+    margin-right: auto; /* Centra la imagen en su contenedor */
 }
+
 
 /* Estilo para el encabezado de la publicación */
 .post-header {
