@@ -56,15 +56,11 @@
             }
         
             // Acciones (botones)
-            <button type="submit">Me gusta</button>
-            <button type="submit">comentar</button>
-            <button type="submit">Compartir</button>
-           /* echo '<div class="post-actions">';
+            echo '<div class="post-actions">';
             echo '<button>Me gusta</button>';
-
             echo '<button>Comentar</button>';
             echo '<button>Compartir</button>';
-            echo '</div>';*/
+            echo '</div>';
         
             echo '</div>';
         }

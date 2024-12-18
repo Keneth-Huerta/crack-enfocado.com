@@ -1,3 +1,55 @@
+<?php
+// Conexión a la base de datos
+session_start();
+$servidor = "localhost";
+$usuarioBD = "u288355303_Keneth"; // Usuario de la base de datos
+$claveBD = "1420Genio."; // Contraseña de la base de datos
+$baseDeDatos = "u288355303_Usuarios"; // Nombre de la base de datos
+
+// Conexión a la base de datos
+$enlace = mysqli_connect($servidor, $usuarioBD, $claveBD, $baseDeDatos);
+if (!$enlace) {
+    die("Conexión fallida: " . mysqli_connect_error());
+}
+
+// Procesar el formulario para agregar un nuevo producto
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $producto = mysqli_real_escape_string($enlace, $_POST['producto']);
+    $id = mysqli_real_escape_string($enlace, $_POST['id']);
+    $precio = mysqli_real_escape_string($enlace, $_POST['precio']);
+    $descripcion = mysqli_real_escape_string($enlace, $_POST['descripcion']);
+    $imagen = mysqli_real_escape_string($enlace, $_POST['imagen']);
+
+    // Validaciones
+    if (empty($producto) || empty($id) || empty($precio) || empty($descripcion) || empty($imagen)) {
+        echo "<p>Por favor, complete todos los campos.</p>";
+    } elseif (!is_numeric($precio) || $precio <= 0) {
+        echo "<p>El precio debe ser un número positivo.</p>";
+    } elseif (!filter_var($imagen, FILTER_VALIDATE_URL)) {
+        echo "<p>La URL de la imagen no es válida.</p>";
+    } else {
+        // Verificar si el producto ya existe en la base de datos (basado en el id o el nombre)
+        $sql_verificar = "SELECT * FROM productos WHERE id = '$id' OR producto = '$producto'";
+        $resultado_verificar = mysqli_query($enlace, $sql_verificar);
+
+        if (mysqli_num_rows($resultado_verificar) > 0) {
+            // El producto ya existe
+            echo "<p>El producto ya existe en la base de datos.</p>";
+        } else {
+            // Insertar el nuevo producto en la base de datos
+            $sql_insertar = "INSERT INTO productos (producto, id, precio, descripcion, imagen) 
+                             VALUES ('$producto', '$id', '$precio', '$descripcion', '$imagen')";
+            if (mysqli_query($enlace, $sql_insertar)) {
+                echo "<p>Producto agregado correctamente.</p>";
+            } else {
+                echo "<p>Error al agregar el producto: " . mysqli_error($enlace) . "</p>";
+            }
+        }
+    }
+}
+
+mysqli_close($enlace);
+?>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -109,66 +161,11 @@
             <label for="descripcion">Descripción:</label>
             <textarea id="descripcion" name="descripcion" required></textarea><br><br>
 
-            <label for="imagen">Selecciona la imagen del producto:</label>
-            <input type="file" id="imagen" name="imagen" accept="image/*" required><br><br>
+            <label for="imagen">URL de la imagen:</label>
+            <input type="text" id="imagen" name="imagen" required><br><br>
 
             <input type="submit" value="Agregar Producto">
         </form>
     </div>
 </body>
 </html>
-<?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Conexión a la base de datos
-    $enlace = mysqli_connect("localhost", "u288355303_Keneth", "1420Genio.", "u288355303_Usuarios");
-    if (!$enlace) {
-        die("Conexión fallida: " . mysqli_connect_error());
-    }
-
-    // Recibir los datos del formulario
-    $producto = mysqli_real_escape_string($enlace, $_POST['producto']);
-    $precio = mysqli_real_escape_string($enlace, $_POST['precio']);
-    $descripcion = mysqli_real_escape_string($enlace, $_POST['descripcion']);
-    $imagen = $_FILES['imagen']['name']; // Nombre del archivo de imagen
-
-    // Verificar si el producto ya existe en la base de datos
-    $sqlCheck = "SELECT * FROM productos WHERE producto = '$producto'";
-    $resultCheck = mysqli_query($enlace, $sqlCheck);
-
-    if (mysqli_num_rows($resultCheck) > 0) {
-        // Si ya existe el producto, no se agrega y mostramos un mensaje
-        echo "El producto ya existe en la base de datos.";
-    } else {
-        // Si no existe el producto, se procede a subir la imagen
-        if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
-            // Definir el directorio de destino para guardar las imágenes
-            $directorioDestino = "uploads/";
-
-            // Obtener el nombre del archivo y la ruta
-            $nombreArchivo = $_FILES['imagen']['name'];
-            $rutaArchivo = $directorioDestino . basename($nombreArchivo);
-
-            // Mover el archivo al directorio de destino
-            if (move_uploaded_file($_FILES['imagen']['tmp_name'], $rutaArchivo)) {
-                // Insertar los datos en la base de datos
-                $sqlInsert = "INSERT INTO productos (producto, precio, descripcion, imagen) 
-                              VALUES ('$producto', '$precio', '$descripcion', '$rutaArchivo')";
-                if (mysqli_query($enlace, $sqlInsert)) {
-                    echo "Producto agregado exitosamente.";
-                } else {
-                    echo "Error al agregar el producto: " . mysqli_error($enlace);
-                }
-            } else {
-                echo "Error al subir la imagen.";
-            }
-        } else {
-            echo "Por favor, selecciona una imagen.";
-        }
-    }
-
-    // Cerrar la conexión
-    mysqli_close($enlace);
-}
-?>
-
-
