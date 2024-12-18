@@ -24,21 +24,80 @@
     </nav>
 
     <main>
-
-        <h2>Lo más reciente...</h2>
+    <h2>Lo más reciente...</h2>
         <div class="content-item">
-            <img src="#" alt="Imagen de contenido">
-            <a href="#">Ver más</a>
+            <img src="../media/user_icon_001.jpg" class="imagengrande"  alt="Imagen de contenido">
+            <a href="" style="top: 0;">Ver más</a>
         </div>
 
 
 
         <h2>Más publicaciones</h2>
-        <div class="post-item">
-            <img src="#" alt="Imagen de publicación">
-            <h3>Título de la publicación</h3>
-            <p>Resumen de la publicación</p>
-            <a href="#">Leer más</a>
+
+        <div class="publicaciones">
+
+            <div class="post-item">
+                <img src="../media/logoweb.jpg" alt="Imagen de publicación">
+                <h3>Título de la publicación</h3>
+                <p>Resumen de la publicación</p>
+                <a href="#">Leer más</a>
+            </div>
+            <div class="post-item">
+                <img src="../media/logoweb.jpg" alt="Imagen de publicación">
+                <h3>Título de la publicación</h3>
+                <p>Resumen de la publicación</p>
+                <a href="#">Leer más</a>
+            </div>
+            <div class="post-item">
+                <img src="../media/logoweb.jpg" alt="Imagen de publicación">
+                <h3>Título de la publicación</h3>
+                <p>Resumen de la publicación</p>
+                <a href="#">Leer más</a>
+            </div>
+            <div class="post-item">
+                <img src="../media/logoweb.jpg" alt="Imagen de publicación">
+                <h3>Título de la publicación</h3>
+                <p>Resumen de la publicación</p>
+                <a href="#">Leer más</a>
+            </div>
+            <div class="post-item">
+                <img src="../media/logoweb.jpg" alt="Imagen de publicación">
+                <h3>Título de la publicación</h3>
+                <p>Resumen de la publicación</p>
+                <a href="#">Leer más</a>
+            </div>
+            <div class="post-item">
+                <img src="../media/logoweb.jpg" alt="Imagen de publicación">
+                <h3>Título de la publicación</h3>
+                <p>Resumen de la publicación</p>
+                <a href="#">Leer más</a>
+            </div>
+            <div class="post-item">
+                <img src="../media/logoweb.jpg" alt="Imagen de publicación">
+                <h3>Título de la publicación</h3>
+                <p>Resumen de la publicación</p>
+                <a href="#">Leer más</a>
+            </div>
+            <div class="post-item">
+                <img src="../media/logoweb.jpg" alt="Imagen de publicación">
+                <h3>Título de la publicación</h3>
+                <p>Resumen de la publicación</p>
+                <a href="#">Leer más</a>
+            </div>
+            <div class="post-item">
+                <img src="../media/logoweb.jpg" alt="Imagen de publicación">
+                <h3>Título de la publicación</h3>
+                <p>Resumen de la publicación</p>
+                <a href="#">Leer más</a>
+            </div>
+            <div class="post-item">
+                <img src="../media/logoweb.jpg" alt="Imagen de publicación">
+                <h3>Título de la publicación</h3>
+                <p>Resumen de la publicación</p>
+                <a href="#">Leer más</a>
+            </div>
+        
+
         </div>
 
 

@@ -113,14 +113,22 @@ img{
 .alineacion{
 }
 
-/* Estilos del header */
+.imagengrande{
+    width: 300px;
+    height: 400px;
+}
 
+/* Estilos del header */
+.publicaciones{
+    display: flex;
+}
 
 /* Estilos de las secciones */
 .recent-content,
 .more-posts,
 .school-info {
     padding: 20px;
+    
 }
 
 .content-item,
@@ -128,6 +136,7 @@ img{
     background-color: #f5f5f5;
     padding: 10px;
     margin-bottom: 10px;
+
 }
 
 .info-item {
