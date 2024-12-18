@@ -30,10 +30,10 @@
             </div>
             <!-- Precio -->
             <p>
-                <font size="4"><b>$300</b></font><sup>00</sup>
+                <font size="4"><b>PRECIO</b></font>
             </p>
             <!-- Descripción -->
-            <p>Mini Simi para que te desestreses: puedes aventarlo y pegarle :D</p>
+            <p>:D</p>
             <!-- Botón -->
             <p>
                 <a href="https://crack-enfocado.com/php/ventas.php" class="btn btn-primary" role="button">REGRESAR</a>
