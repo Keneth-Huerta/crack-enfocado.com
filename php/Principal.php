@@ -9,7 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     
     <!-- Custom CSS -->
-
+    <link rel="stylesheet" href="../CSS/estilosprin.css">
 </head>
 <body>
     <div class="container-fluid">
@@ -17,7 +17,7 @@
         <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #952F57;">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">
-                    <img src="../media/logoweb.jpg" alt="Logo" class="img-fluid" style="max-height: 50px;">
+                    <img src="../media/logoweb.svg" alt="Logo" class="img-fluid" style="max-height: 50px;">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
@@ -42,7 +42,7 @@
 
         <!-- Main Content -->
         <main class="container mt-4">
-            <h2 class="mb-4 fs-1">Más publicaciones</h2>
+            <h2 class="mb-4 fs-1"  >Más publicaciones</h2>
             
             <div class="row mb-4" class="publicaciones" style="background-color: antiquewhite;">
                 <div class="col-12">
@@ -60,7 +60,7 @@
                 <?php for ($i = 0; $i < 6; $i++): ?>
                 <div class="col">
                     <div class="card h-100">
-                        <img src="../media/logoweb.jpg" class="card-img-top" alt="Imagen de publicación">
+                        <img src="../media/logoweb.svg" class="card-img-top" alt="Imagen de publicación">
                         <div class="card-body">
                             <h5 class="card-title">Título de la publicación</h5>
                             <p class="card-text">Resumen de la publicación</p>

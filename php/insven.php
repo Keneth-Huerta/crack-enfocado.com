@@ -84,17 +84,7 @@
 
 <?php
 // Conectar a la base de datos
-$host = 'localhost';
-$dbname = 'u288355303_Usuarios';
-$username = 'u288355303_Keneth';
-$password = '1420Genio.';
-
-$conn = new mysqli($host, $dbname, $username, $password);
-
-if ($conn->connect_error) {
-    die("Error de conexión: " . $conn->connect_error);
-}
-
+require_once 'conexion.php';
 // Consultar los productos de la base de datos
 $sql = "SELECT * FROM productos";
 $result = $conn->query($sql);
