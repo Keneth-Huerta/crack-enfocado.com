@@ -13,7 +13,7 @@
         }
 
         .navbar {
-            background-color: # #7d1b1b;
+            background-color: #4267B2;
             color: white;
             padding: 15px;
             text-align: center;
@@ -53,8 +53,8 @@
         }
 
         .post-form button {
-            background-color: # #7d1b1b;
-            color:  #7d1b1b;
+            background-color: #4267B2;
+            color: white;
             border: none;
             padding: 10px 20px;
             border-radius: 6px;
@@ -65,7 +65,7 @@
         }
 
         .post-form button:hover {
-            background-color:  #7d1b1b;
+            background-color: #365899;
         }
 
         .post {
@@ -120,7 +120,7 @@
         .post-actions button {
             background: none;
             border: none;
-            color:  #7d1b1b;
+            color: #4267B2;
             cursor: pointer;
             font-size: 0.95rem;
             font-weight: bold;
