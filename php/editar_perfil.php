@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt = mysqli_prepare($enlace, $insert_query);
 
         // Asegúrate de que la cantidad de marcadores coincida con el número de parámetros
-        mysqli_stmt_bind_param($stmt, "isssissss", $usuario_id, $nombre, $apellido, $carrera, $semestre, $foto_perfil, $foto_portada, $informacion_extra);
+        mysqli_stmt_bind_param($stmt, "isssisss", $usuario_id, $nombre, $apellido, $carrera, $semestre, $foto_perfil, $foto_portada, $informacion_extra);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
     }
