@@ -65,7 +65,7 @@
         }
 
         .post-form button:hover {
-            background-color: # #7d1b1b;
+            background-color:  #7d1b1b;
         }
 
         .post {
