@@ -8,6 +8,11 @@ error_reporting(E_ALL);
 
 // Conexión a la base de datos
 $enlace = mysqli_connect($servidor, $usuarioBD, $claveBD, $baseDeDatos);
+if (mysqli_connect_errno()) {
+    die("Conexión fallida: " . mysqli_connect_error());
+} else {
+    echo "Conexión exitosa";
+}
 
 if (!$enlace) {
     die("Conexión fallida: " . mysqli_connect_error());
