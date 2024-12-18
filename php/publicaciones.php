@@ -13,7 +13,7 @@
         }
 
         .navbar {
-            background-color: #4267B2;
+            background-color: #7d1b1b;
             color: white;
             padding: 15px;
             text-align: center;
@@ -53,7 +53,7 @@
         }
 
         .post-form button {
-            background-color: #4267B2;
+            background-color: #7d1b1b;
             color: white;
             border: none;
             padding: 10px 20px;
@@ -65,7 +65,7 @@
         }
 
         .post-form button:hover {
-            background-color: #365899;
+            background-color: #7d1b1b;
         }
 
         .post {
@@ -120,7 +120,7 @@
         .post-actions button {
             background: none;
             border: none;
-            color: #4267B2;
+            color: #7d1b1b;
             cursor: pointer;
             font-size: 0.95rem;
             font-weight: bold;
@@ -132,7 +132,7 @@
     </style>
 </head>
 <body>
-    <div class="navbar">Mi Red Social Creativa</div>
+    <div class="navbar">Publicaciones</div>
 
     <div class="container">
         <!-- Formulario para crear una publicación -->
