@@ -19,57 +19,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id = mysqli_real_escape_string($enlace, $_POST['id']);
     $precio = mysqli_real_escape_string($enlace, $_POST['precio']);
     $descripcion = mysqli_real_escape_string($enlace, $_POST['descripcion']);
-    
-    // Verificación de datos
-    if (empty($producto) || empty($id) || empty($precio) || empty($descripcion)) {
+    $imagen = mysqli_real_escape_string($enlace, $_POST['imagen']);
+
+    // Validaciones
+    if (empty($producto) || empty($id) || empty($precio) || empty($descripcion) || empty($imagen)) {
         echo "<p>Por favor, complete todos los campos.</p>";
     } elseif (!is_numeric($precio) || $precio <= 0) {
         echo "<p>El precio debe ser un número positivo.</p>";
+    } elseif (!filter_var($imagen, FILTER_VALIDATE_URL)) {
+        echo "<p>La URL de la imagen no es válida.</p>";
     } else {
-        // Manejo de imagen
-        if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === 0) {
-            $imagen_temp = $_FILES['imagen']['tmp_name'];
-            $imagen_nombre = $_FILES['imagen']['name'];
-            $imagen_tamano = $_FILES['imagen']['size'];
-            $imagen_tipo = $_FILES['imagen']['type'];
+        // Verificar si el producto ya existe en la base de datos (basado en el id o el nombre)
+        $sql_verificar = "SELECT * FROM productos WHERE id = '$id' OR producto = '$producto'";
+        $resultado_verificar = mysqli_query($enlace, $sql_verificar);
 
-            // Validaciones para la imagen
-            $extensiones_permitidas = ['image/jpeg', 'image/png', 'image/gif'];
-            if (!in_array($imagen_tipo, $extensiones_permitidas)) {
-                echo "<p>Solo se permiten imágenes JPEG, PNG y GIF.</p>";
-            } elseif ($imagen_tamano > 5000000) { // Limitar a 5MB
-                echo "<p>La imagen es demasiado grande. El tamaño máximo es 5MB.</p>";
-            } else {
-                // Subir la imagen
-                $directorio_imagen = 'uploads/';
-                // Generar un nombre único para la imagen para evitar sobrescribir archivos
-                $imagen_ruta = $directorio_imagen . uniqid() . '-' . basename($imagen_nombre);
-                
-                if (move_uploaded_file($imagen_temp, $imagen_ruta)) {
-                    // Insertar el nuevo producto en la base de datos
-                    $sql_insertar = "INSERT INTO productos (producto, id, precio, descripcion, imagen) VALUES (?, ?, ?, ?, ?)";
-                    $stmt_insertar = mysqli_prepare($enlace, $sql_insertar);
-                    mysqli_stmt_bind_param($stmt_insertar, 'ssdss', $producto, $id, $precio, $descripcion, $imagen_ruta);
-
-                    if (mysqli_stmt_execute($stmt_insertar)) {
-                        echo "<p>Producto agregado correctamente.</p>";
-                    } else {
-                        echo "<p>Error al agregar el producto: " . mysqli_error($enlace) . "</p>";
-                    }
-                    
-                    // Cerrar la sentencia
-                    mysqli_stmt_close($stmt_insertar);
-                } else {
-                    echo "<p>Hubo un error al subir la imagen.</p>";
-                }
-            }
+        if (mysqli_num_rows($resultado_verificar) > 0) {
+            // El producto ya existe
+            echo "<p>El producto ya existe en la base de datos.</p>";
         } else {
-            echo "<p>Por favor, sube una imagen válida.</p>";
+            // Insertar el nuevo producto en la base de datos
+            $sql_insertar = "INSERT INTO productos (producto, id, precio, descripcion, imagen) 
+                             VALUES ('$producto', '$id', '$precio', '$descripcion', '$imagen')";
+            if (mysqli_query($enlace, $sql_insertar)) {
+                echo "<p>Producto agregado correctamente.</p>";
+            } else {
+                echo "<p>Error al agregar el producto: " . mysqli_error($enlace) . "</p>";
+            }
         }
     }
 }
 
-// Cerrar la conexión a la base de datos
 mysqli_close($enlace);
 ?>
 
@@ -82,65 +61,95 @@ mysqli_close($enlace);
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
+            background-color: #f4f4f9;
             margin: 0;
             padding: 0;
         }
         .container {
-            max-width: 600px;
+            width: 50%;
             margin: 50px auto;
+            padding: 20px;
             background-color: #fff;
-            padding: 30px;
-            border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
         }
         h1 {
             text-align: center;
             color: #333;
         }
-        form {
-            display: flex;
-            flex-direction: column;
-        }
         label {
-            font-size: 1rem;
-            margin-bottom: 5px;
+            font-size: 16px;
+            margin-bottom: 8px;
+            display: block;
+            color: #333;
         }
-        input[type="text"], input[type="number"], textarea {
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        input[type="file"] {
-            margin-bottom: 15px;
-        }
+        input[type="text"],
+        input[type="number"],
         textarea {
-            resize: vertical;
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
         }
         input[type="submit"] {
-            padding: 10px 20px;
             background-color: #4CAF50;
             color: white;
+            padding: 14px 20px;
             border: none;
-            border-radius: 5px;
+            border-radius: 4px;
             cursor: pointer;
+            font-size: 16px;
+            width: 100%;
         }
         input[type="submit"]:hover {
             background-color: #45a049;
         }
-        p {
-            color: red;
-            font-size: 0.9rem;
+
+        /* Estilos para mostrar los productos */
+        .products-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            justify-items: center;
+        }
+        .product-card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
             text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        .product-image {
+            max-width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+        .product-card h3 {
+            font-size: 18px;
+            color: #333;
+        }
+        .product-card p {
+            font-size: 14px;
+            color: #666;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Formulario para agregar un nuevo producto</h1>
-        <form method="post" action="ventas.php" enctype="multipart/form-data">
+        <form method="post" action="ventas.php">
             <label for="producto">Nombre del producto:</label>
             <input type="text" id="producto" name="producto" required><br><br>
 
@@ -153,8 +162,8 @@ mysqli_close($enlace);
             <label for="descripcion">Descripción:</label>
             <textarea id="descripcion" name="descripcion" required></textarea><br><br>
 
-            <label for="imagen">Seleccionar imagen:</label>
-            <input type="file" id="imagen" name="imagen" accept="image/*" required><br><br>
+            <label for="imagen">URL de la imagen:</label>
+            <input type="text" id="imagen" name="imagen" required><br><br>
 
             <input type="submit" value="Agregar Producto">
         </form>
