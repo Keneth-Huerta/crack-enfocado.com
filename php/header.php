@@ -24,6 +24,11 @@ if (isset($_SESSION['usuario_id'])) {
 }
 ?>
 
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Custom CSS -->
+<link rel="stylesheet" href="../CSS/estilosprin.css">
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #952F57;">
     <div class="container-fluid">
@@ -50,4 +55,3 @@ if (isset($_SESSION['usuario_id'])) {
         </div>
     </div>
 </nav>
-
