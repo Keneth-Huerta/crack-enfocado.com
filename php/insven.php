@@ -85,13 +85,6 @@
 <?php
 // Conectar a la base de datos
 require_once 'conexion.php';
-
-$conn = new mysqli($host, $dbname, $username, $password);
-
-if ($conn->connect_error) {
-    die("Error de conexión: " . $conn->connect_error);
-}
-
 // Consultar los productos de la base de datos
 $sql = "SELECT * FROM productos";
 $result = $conn->query($sql);
