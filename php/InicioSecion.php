@@ -1,12 +1,12 @@
 <?php
 // Configuración de la base de datos
-$servidor = "fdb1029.awardspace.net";
-$usuario = "4565088_usuarios";
-$clave = "alexander1234";
-$baseDeDatos = "4565088_usuarios";
+$servor="localhost";
+$usuarip="u288355303_Keneth";
+$clave="1420Genio.";
+$baseDeDatos="u288355303_Usuarios";
 
 // Conexión a la base de datos
-$enlace = mysqli_connect($servidor, $usuario, $clave, $baseDeDatos);
+$enlace = mysqli_connect($servor, $usuarip, $clave, $baseDeDatos);
 
 if (!$enlace) {
     die("Conexión fallida: " . mysqli_connect_error());
