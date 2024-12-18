@@ -8,9 +8,6 @@
 
 <p style="text-align: right;">ys</p>
 
-<a href="index.php" style = "text-align: right"> INICIO</a>
-<a href="productos.php"> PRODUCTOS </a>
-<a href="contacto.php"> CONTACTO </a>
 <div class="row">
 <div class="col-md-3 col-md-offset-1"><img src=".\promos\simi.jpg" width="300px" height="300px" ></div>
 <div class="col-md-8">
