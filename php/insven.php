@@ -30,24 +30,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-// Consultar los productos de la base de datos
-$sql = "SELECT * FROM productos";
-$result = mysqli_query($enlace, $sql);
-
-echo '<div class="products-container">';
-if (mysqli_num_rows($result) > 0) {
-    // Mostrar los productos
-    while ($row = mysqli_fetch_assoc($result)) {
-        echo '<div class="product-card">';
-        echo "<h3>" . htmlspecialchars($row['producto']) . "</h3>";
-        echo "<img src='" . htmlspecialchars($row['imagen']) . "' alt='" . htmlspecialchars($row['producto']) . "' class='product-image'><br>";
-        echo "<p><strong>Precio:</strong> $" . htmlspecialchars($row['precio']) . "</p>";
-        echo "<p><strong>Descripción:</strong> " . htmlspecialchars($row['descripcion']) . "</p>";
-        echo '</div>';
-    }
-} else {
-    echo "No se encontraron productos.";
-}
 echo '</div>';
 
 mysqli_close($enlace);
