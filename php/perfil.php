@@ -17,7 +17,6 @@ mysqli_stmt_execute($stmt);
 $resultado = mysqli_stmt_get_result($stmt);
 $perfil = mysqli_fetch_assoc($resultado);
 mysqli_stmt_close($stmt);
-
 ?>
 
 <!DOCTYPE html>
@@ -36,7 +35,7 @@ mysqli_stmt_close($stmt);
 
         <div class="perfil-info">
             <div class="foto-perfil">
-                <img src="<?php echo htmlspecialchars($perfil['foto_perfil'] ?? 'default-profile.jpg'); ?>" alt="Foto de perfil">
+                <img src="<?php echo htmlspecialchars($perfil['foto_perfil'] ?? '../media/default-profile.jpg'); ?>" alt="Foto de perfil">
             </div>
             <div class="informacion">
                 <p><strong>Nombre:</strong> <?php echo htmlspecialchars($perfil['nombre']); ?></p>
@@ -48,7 +47,7 @@ mysqli_stmt_close($stmt);
         </div>
 
         <div class="acciones">
-            <a href="editar_perfil.php">Editar perfil</a>
+            <a href="editar_perfil.php" class="boton-editar">Editar perfil</a>
         </div>
     </div>
 </body>
