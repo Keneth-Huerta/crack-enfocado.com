@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "INSERT INTO productos (producto, id, precio, descripcion, imagen) 
             VALUES ('$producto', '$id', '$precio', '$descripcion', '$imagen')";
     if (mysqli_query($enlace, $sql)) {
-        echo "<p>Producto agregado exitosamente.</p>";
+        
     } else {
         echo "<p>Error al agregar el producto: " . mysqli_error($enlace) . "</p>";
     }
@@ -132,7 +132,7 @@ mysqli_close($enlace);
 <body>
     <div class="container">
         <h1>Formulario para agregar un nuevo producto</h1>
-        <form method="post">
+        <form method="post" action="ventas.php">
             <label for="producto">Nombre del producto:</label>
             <input type="text" id="producto" name="producto" required><br><br>
 
