@@ -45,14 +45,14 @@ ul{
 }
 .boton{
     display: flex;
-    min-height: 100%;
+  
     position: relative;
     margin-right: 10px;
     margin-left: 10px;
     justify-content: center;
     justify-content: space-between;
     padding: 200px;
-    margin-top: -10;
+    margin-top: -100;
     
     
     
