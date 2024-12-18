@@ -16,11 +16,11 @@
             include 'basePublicacion.php';
             session_start();
 
-            if (!isset($_SESSION['username'])) {
+            if (!isset($_SESSION['usuario'])) {
                 echo "<p>Debes <a href='../crearCuenta.html'>crear una cuenta</a> o <a href='../index.html'>iniciar sesión</a> para poder publicar.</p>";
             } else {
             ?>
-                <form action="submit_post.php" method="post" enctype="multipart/form-data">
+                <form action="subir_public.php" method="post" enctype="multipart/form-data">
                     <textarea name="contenido" placeholder="¿Qué estás pensando?"></textarea>
                     <input type="file" name="imagen" accept="image/*">
                     <button type="submit">Publicar</button>

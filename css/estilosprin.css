@@ -5,7 +5,7 @@ body {
     padding: 0;
 }
 nav {
-    position: fixed; /* Fija la barra en la parte superior de la pantalla */
+    
     top: 0; /* Asegura que esté anclada al borde superior */
     left: 0; /* Alinea el inicio con el borde izquierdo */
     width: 100%; /* Ocupa todo el ancho de la pantalla */
