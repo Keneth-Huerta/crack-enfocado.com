@@ -9,6 +9,7 @@ body {
     gap: 20px;
     justify-content:space-between;
     border-radius: 50%;
+    top: auto;
     
     
 }
