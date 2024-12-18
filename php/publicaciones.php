@@ -146,11 +146,10 @@
 
         <!-- Mostrar publicaciones -->
         <?php
-        $publicaciones = [
-            ["username" => "Juan Pérez", "content" => "¡Hoy es un gran día! 😊", "image" => "https://via.placeholder.com/600"],
-            ["username" => "Ana López", "content" => "Me encanta este lugar. 🌄", "image" => "https://via.placeholder.com/600"],
-            ["username" => "Carlos Gómez", "content" => "¿Alguien tiene recomendaciones de películas? 🎥", "image" => ""]
-        ];
+        include 'db.php';
+
+        $stmt = $pdo->query("SELECT * FROM publicaciones ORDER BY created_at DESC");
+        $publicaciones = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         foreach ($publicaciones as $publicacion) {
             echo "<div class='post'>";
@@ -159,8 +158,8 @@
             echo "<div class='post-username'>{$publicacion['username']}</div>";
             echo "</div>";
             echo "<div class='post-content'>{$publicacion['content']}</div>";
-            if (!empty($publicacion['image'])) {
-                echo "<img src='{$publicacion['image']}' alt='Imagen de publicación' class='post-image'>";
+            if (!empty($publicacion['image_path'])) {
+                echo "<img src='{$publicacion['image_path']}' alt='Imagen de publicación' class='post-image'>";
             }
             echo "<div class='post-actions'>";
             echo "<button>Me gusta</button>";
@@ -172,3 +171,40 @@
     </div>
 </body>
 </html>
+
+
+<!-- submit_post.php -->
+<?php
+include 'basePublicacion.php';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $content = $_POST['content'];
+    $username = "Usuario Anónimo"; // Cambiar según autenticación
+    $imagePath = null;
+
+    // Procesar la imagen subida
+    if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+        $uploadDir = 'uploads/';
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
+        $imageName = time() . '_' . basename($_FILES['image']['name']);
+        $targetPath = $uploadDir . $imageName;
+
+        if (move_uploaded_file($_FILES['image']['tmp_name'], $targetPath)) {
+            $imagePath = $targetPath;
+        }
+    }
+
+    // Insertar la publicación en la base de datos
+    $stmt = $pdo->prepare("INSERT INTO publicaciones (username, content, image_path) VALUES (:username, :content, :image_path)");
+    $stmt->execute([
+        ':username' => $username,
+        ':content' => $content,
+        ':image_path' => $imagePath
+    ]);
+
+    header("Location: index.php");
+    exit;
+}
+?>
