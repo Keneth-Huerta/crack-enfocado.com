@@ -17,26 +17,28 @@ mysqli_stmt_execute($stmt);
 $resultado = mysqli_stmt_get_result($stmt);
 $perfil = mysqli_fetch_assoc($resultado);
 mysqli_stmt_close($stmt);
-
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi Perfil</title>
     <link rel="stylesheet" href="../css/misestilos.css">
 </head>
-
 <body>
     <div class="perfil-container">
-        <h1>Bienvenido, <?php echo htmlspecialchars($perfil['nombre']); ?></h1>
+        <!-- Foto de portada -->
+        <div class="foto-portada">
+            <img src="<?php echo htmlspecialchars($perfil['foto_portada'] ?? '../media/default-cover.jpg'); ?>" alt="Foto de portada">
+        </div>
+
+        <h1 class="titulo-perfil">Bienvenido, <?php echo htmlspecialchars($perfil['nombre']); ?></h1>
 
         <div class="perfil-info">
             <div class="foto-perfil">
-                <img src="<?php echo htmlspecialchars($perfil['foto_perfil'] ?? 'default-profile.jpg'); ?>" alt="Foto de perfil">
+                <img src="<?php echo htmlspecialchars($perfil['foto_perfil'] ?? '../media/user.png'); ?>" alt="Foto de perfil">
             </div>
             <div class="informacion">
                 <p><strong>Nombre:</strong> <?php echo htmlspecialchars($perfil['nombre']); ?></p>
@@ -49,8 +51,8 @@ mysqli_stmt_close($stmt);
 
         <div class="acciones">
             <a href="editar_perfil.php">Editar perfil</a>
+            <a href="logout.php" class="btn-cerrar-sesion">Cerrar sesión</a>
         </div>
     </div>
 </body>
-
 </html>
