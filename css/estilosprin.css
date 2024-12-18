@@ -8,11 +8,10 @@ body {
 .cabeza{
     padding: 10px;
     display: flex;
-    list-style-type: none;
+    justify-content: center;
     text-decoration: none;
-    justify-content: space-between;
     margin: 0;
-    padding: 10px;
+
 
 }
 
