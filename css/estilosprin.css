@@ -4,37 +4,51 @@ body {
     margin: 0;
     padding: 0;
 }
-.logo{
-    display: flex;
-    gap: 20px;
-    justify-content:space-between;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    
+nav {
+    position: fixed; /* Fija la barra en la parte superior de la pantalla */
+    top: 0; /* Asegura que esté anclada al borde superior */
+    left: 0; /* Alinea el inicio con el borde izquierdo */
+    width: 100%; /* Ocupa todo el ancho de la pantalla */
+    background-color: #952F57; /* Color principal */
+    z-index: 1000; /* Asegura que esté por encima de otros elementos */
+    padding: 10px 0; /* Espacio interno arriba y abajo */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
 }
+
 .nav-links {
     display: flex;
-    justify-content: flex-end;
-    gap: 20px;
+    justify-content: flex-end; /* Los enlaces se alinean a la derecha */
+    align-items: center; /* Centra verticalmente los elementos */
+    margin-right: 20px; /* Espaciado desde el borde derecho */
+    gap: 20px; /* Espaciado entre los enlaces */
 }
 
 .nav-links a {
-    text-decoration: none;
-    color: #000000;
-    
+    text-decoration: none; /* Eliminar subrayado de los enlaces */
+    color: white; /* Enlaces blancos */
+    font-weight: bold; /* Resaltar el texto */
+    padding: 5px 10px; /* Espacio interno dentro de cada enlace */
+    border-radius: 5px; /* Bordes redondeados */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Animación suave al pasar el cursor */
 }
 
 .nav-links a:hover {
-    color: #2563eb;
+    color: #2563eb; /* Cambiar el color del texto al pasar el cursor */
+    background-color: white; /* Fondo blanco en hover */
 }
 
-.nav-links img {
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: 20px; /* Espaciado desde el borde izquierdo */
+}
+
+.logo img {
     width: 40px;
     height: 40px;
-    border-radius: 50%;
-
-    margin-right: 20px;
+    border-radius: 50%; /* Hacer las imágenes redondas */
+    object-fit: cover; /* Ajustar el contenido de la imagen */
 }
 
 ul{
