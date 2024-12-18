@@ -95,29 +95,62 @@
     </style>
 </head>
 <body>
-    <section class="sales-section">
-        <h1 class="sales-title">Nuestros Productos</h1>
-        <p class="sales-description">Explora nuestra variedad de productos y encuentra lo que necesitas al mejor precio.</p>
+    <h1>Interfaz de Ventas</h1>
+    <div class="form-container">
+        <form method="POST">
+            <div class="form-group">
+                <label for="producto">Nombre del Producto</label>
+                <input type="text" id="producto" name="producto" required>
+            </div>
+            <div class="form-group">
+                <label for="cantidad">Cantidad</label>
+                <input type="number" id="cantidad" name="cantidad" required>
+            </div>
+            <div class="form-group">
+                <label for="precio">Precio</label>
+                <input type="number" id="precio" name="precio" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <button type="submit" name="submit">Registrar Venta</button>
+            </div>
+        </form>
+    </div>
+/* */
+<?php
+if (isset($_POST['submit'])) {
+    $producto = $_POST['producto'];
+    $cantidad = $_POST['cantidad'];
+    $precio = $_POST['precio'];
 
-        <div class="sales-cards">
-            <?php
-                $productos = [
-                    ["title" => "Producto 1", "description" => "Descripción breve del producto 1. Perfecto para tus necesidades.", "price" => "$49.99"],
-                    ["title" => "Producto 2", "description" => "Descripción breve del producto 2. Calidad garantizada.", "price" => "$79.99"],
-                    ["title" => "Producto 3", "description" => "Descripción breve del producto 3. Lo que necesitas, cuando lo necesitas.", "price" => "$99.99"],
-                ];
+    $sql = "INSERT INTO ventas (producto, cantidad, precio) VALUES ('$producto', '$cantidad', '$precio')";
 
-                foreach ($productos as $producto) {
-                    echo "<div class='sales-card'>";
-                    echo "<h2 class='product-title'>{$producto['title']}</h2>";
-                    echo "<p class='product-description'>{$producto['description']}</p>";
-                    echo "<p class='product-price'>{$producto['price']}</p>";
-                    echo "<a href='#' class='buy-button'>Comprar ahora</a>";
-                    echo "</div>";
-                }
-            ?>
-        </div>
-    </section>
+    if ($conn->query($sql) === TRUE) {
+        echo "<p style='color:green;'>Venta registrada exitosamente.</p>";
+    } else {
+        echo "<p style='color:red;'>Error: " . $sql . "<br>" . $conn->error . "</p>";
+    }
+}
+
+$sql = "SELECT * FROM ventas";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    echo "<table>";
+    echo "<tr><th>ID</th><th>Producto</th><th>Cantidad</th><th>Precio</th><th>Total</th></tr>";
+
+    while ($row = $result->fetch_assoc()) {
+        $total = $row['cantidad'] * $row['precio'];
+        echo "<tr><td>" . $row['id'] . "</td><td>" . $row['producto'] . "</td><td>" . $row['cantidad'] . "</td><td>" . $row['precio'] . "</td><td>" . $total . "</td></tr>";
+    }
+    echo "</table>";
+} else {
+    echo "<p>No hay ventas registradas.</p>";
+}
+
+$conn->close();
+?>
+*/
+
 </body>
 </html>
 
