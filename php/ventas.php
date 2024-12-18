@@ -87,6 +87,21 @@
             background-color: #7d1b1b;
         }
 
+        .des-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #7d1b1b;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .des-button:hover {
+            background-color: #7d1b1b;
+        }
+
+
         @media (max-width: 768px) {
             .sales-cards {
                 flex-direction: column;
@@ -119,6 +134,7 @@
                     echo "<p class='product-description'>{$producto['description']}</p>";
                     echo "<p class='product-price'>{$producto['price']}</p>";
                     echo "<a href='#' class='buy-button'>Comprar ahora</a>";
+                    echo "<a href='#' class='des-button'>Descripcion</a>";
                     echo "</div>";
                 }
             ?>
