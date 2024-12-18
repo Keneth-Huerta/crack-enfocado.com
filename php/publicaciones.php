@@ -13,7 +13,7 @@
         }
 
         .navbar {
-            background-color: #7d1b1b;
+            background-color: #4267B2;
             color: white;
             padding: 15px;
             text-align: center;
@@ -53,7 +53,7 @@
         }
 
         .post-form button {
-            background-color: #7d1b1b;
+            background-color: #4267B2;
             color: white;
             border: none;
             padding: 10px 20px;
@@ -65,7 +65,7 @@
         }
 
         .post-form button:hover {
-            background-color: #7d1b1b;
+            background-color: #365899;
         }
 
         .post {
@@ -120,7 +120,7 @@
         .post-actions button {
             background: none;
             border: none;
-            color: #7d1b1b;
+            color: #4267B2;
             cursor: pointer;
             font-size: 0.95rem;
             font-weight: bold;
@@ -132,22 +132,31 @@
     </style>
 </head>
 <body>
-    <div class="navbar">Publicaciones nuevas</div>
+    <div class="navbar">Mi Red Social Creativa</div>
 
     <div class="container">
         <!-- Formulario para crear una publicación -->
         <div class="post-form">
-            <form action="" method="post" enctype="multipart/form-data">
-                <textarea name="content" placeholder="¿Qué estás pensando?"></textarea>
-                <input type="file" name="image" accept="image/*">
-                <button type="submit">Publicar</button>
-            </form>
+            <?php
+            include 'basePublicaion.php';
+            session_start();
+
+            if (!isset($_SESSION['username'])) {
+                echo "<p>Debes <a href='register.php'>crear una cuenta</a> o <a href='login.php'>iniciar sesión</a> para publicar.</p>";
+            } else {
+            ?>
+                <form action="submit_post.php" method="post" enctype="multipart/form-data">
+                    <textarea name="content" placeholder="¿Qué estás pensando?"></textarea>
+                    <input type="file" name="image" accept="image/*">
+                    <button type="submit">Publicar</button>
+                </form>
+            <?php
+            }
+            ?>
         </div>
 
         <!-- Mostrar publicaciones -->
         <?php
-        include 'db.php';
-
         $stmt = $pdo->query("SELECT * FROM publicaciones ORDER BY created_at DESC");
         $publicaciones = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -173,16 +182,24 @@
 </html>
 
 
+
+
 <!-- submit_post.php -->
 <?php
 include 'basePublicacion.php';
+session_start();
+
+if (!isset($_SESSION['username'])) {
+    header("Location: register.php");
+    exit;
+}
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $content = $_POST['content'];
-    $username = "Usuario Anónimo"; 
+    $username = $_SESSION['username'];
     $imagePath = null;
 
-    // Procesar
+    // Procesar la imagen subida
     if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
         $uploadDir = 'uploads/';
         if (!is_dir($uploadDir)) {
@@ -196,15 +213,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    // Insertar la publicación en la base  
-    $stmt = $pdo->prepare("INSERT INTO publicaciones (username, content, image_path) VALUES (:username, :content, :image_path)");
+    // Insertar la publicación en la base de datos
+    $stmt = $pdo->prepare("INSERT INTO publicaciones (usuario, contenido, imagen) VALUES (:username, :content, :image_path)");
     $stmt->execute([
-        ':username' => $username,
-        ':content' => $content,
-        ':image_path' => $imagePath
+        ':usuario' => $username,
+        ':contenido' => $content,
+        ':imagen' => $imagePath
     ]);
 
-    header("Location: index.php");
+    header("Location: index.html");
     exit;
 }
 ?>
