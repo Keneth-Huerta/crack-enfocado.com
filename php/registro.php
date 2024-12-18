@@ -32,7 +32,7 @@ if (isset($_POST['registrar'])) {
     error_reporting(E_ALL);
 
     // Preparar la consulta SQL con parámetros
-    $insertarDatos = "INSERT INTO registro (nombre, apellido, boleta, correo, contraseña) VALUES (?, ?, ?, ?, ?)";
+    $insertarDatos = "INSERT INTO registro (nombre, apellido, boleta, correo, contra) VALUES (?, ?, ?, ?, ?)";
     $stmt = mysqli_prepare($enlace, $insertarDatos);
     if (!$stmt) {
         die("Error en la preparación de la consulta: " . mysqli_error($enlace));
