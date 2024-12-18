@@ -28,13 +28,13 @@ if (isset($_POST['registrar'])) {
 
     // Validación del correo
     if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
-        echo '<script>alert("Por favor, ingresa un correo válido."); location.href="../registro.html";</script>';
+        echo '<script>alert("Por favor, ingresa un correo válido."); location.href="../crearCuenta.html";</script>';
         exit();
     }
 
     // Validación de la contraseña (mínimo 6 caracteres)
     if (strlen($contrasena) < 6) {
-        echo '<script>alert("La contraseña debe tener al menos 6 caracteres."); location.href="../registro.html";</script>';
+        echo '<script>alert("La contraseña debe tener al menos 6 caracteres."); location.href="../crearCuenta.html";</script>';
         exit();
     }
 
@@ -68,7 +68,7 @@ if (isset($_POST['registrar'])) {
         } else {
             // Registrar el error para fines de depuración y mostrar mensaje genérico
             error_log("Error al registrar: " . mysqli_error($enlace));
-            echo '<script>alert("Hubo un error en el registro. Por favor, intenta de nuevo."); location.href="../registro.html";</script>';
+            echo '<script>alert("Hubo un error en el registro. Por favor, intenta de nuevo."); location.href="../crearCuenta.html";</script>';
         }
 
         // Cerrar la declaración
@@ -76,7 +76,7 @@ if (isset($_POST['registrar'])) {
     } else {
         // Error al preparar la consulta
         error_log("Error al preparar la consulta: " . mysqli_error($enlace));
-        echo '<script>alert("Hubo un error en el registro. Por favor, intenta de nuevo."); location.href="../registro.html";</script>';
+        echo '<script>alert("Hubo un error en el registro. Por favor, intenta de nuevo."); location.href="../crearCuenta.html";</script>';
     }
 
     // Cerrar la conexión
