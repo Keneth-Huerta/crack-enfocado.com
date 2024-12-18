@@ -18,6 +18,21 @@ $resultado = mysqli_stmt_get_result($stmt);
 $perfil = mysqli_fetch_assoc($resultado);
 mysqli_stmt_close($stmt);
 
+// Verificar si el perfil existe
+if ($perfil === null) {
+    // Si no existe el perfil, el usuario debe llenar sus datos
+    // El formulario se presentará vacío
+    $perfil = [
+        'nombre' => '',
+        'apellido' => '',
+        'carrera' => '',
+        'semestre' => '',
+        'foto_perfil' => '',
+        'foto_portada' => '',
+        'informacion_extra' => ''
+    ];
+}
+
 // Procesar los cambios del formulario
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nombre = $_POST['nombre'];
@@ -30,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $foto_perfil = $_FILES['foto_perfil']['name'] ? '../media/uploads/' . basename($_FILES['foto_perfil']['name']) : $perfil['foto_perfil'];
     $foto_portada = $_FILES['foto_portada']['name'] ? '../media/uploads/' . basename($_FILES['foto_portada']['name']) : $perfil['foto_portada'];
 
-    // Guardar las nuevas imágenes
+    // Guardar las nuevas imágenes si se han cargado
     if ($_FILES['foto_perfil']['name']) {
         move_uploaded_file($_FILES['foto_perfil']['tmp_name'], $foto_perfil);
     }
@@ -38,41 +53,47 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         move_uploaded_file($_FILES['foto_portada']['tmp_name'], $foto_portada);
     }
 
-    // Actualizar la base de datos
-    $update_query = "UPDATE perfiles SET nombre = ?, apellido = ?, carrera = ?, semestre = ?, foto_perfil = ?, foto_portada = ?, informacion_extra = ? WHERE usuario_id = ?";
-    $stmt = mysqli_prepare($enlace, $update_query);
-    mysqli_stmt_bind_param($stmt, "sssssssi", $nombre, $apellido, $carrera, $semestre, $foto_perfil, $foto_portada, $informacion_extra, $usuario_id);
-    mysqli_stmt_execute($stmt);
-    mysqli_stmt_close($stmt);
+    // Si el perfil ya existe, actualizamos, si no, insertamos uno nuevo
+    if ($perfil['nombre'] != '') {
+        $update_query = "UPDATE perfiles SET nombre = ?, apellido = ?, carrera = ?, semestre = ?, foto_perfil = ?, foto_portada = ?, informacion_extra = ? WHERE usuario_id = ?";
+        $stmt = mysqli_prepare($enlace, $update_query);
+        mysqli_stmt_bind_param($stmt, "sssisiss", $nombre, $apellido, $carrera, $semestre, $foto_perfil, $foto_portada, $informacion_extra, $usuario_id);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
+    } else {
+        $insert_query = "INSERT INTO perfiles (usuario_id, nombre, apellido, carrera, semestre, foto_perfil, foto_portada, informacion_extra) 
+                         VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $stmt = mysqli_prepare($enlace, $insert_query);
+        mysqli_stmt_bind_param($stmt, "isssisiss", $usuario_id, $nombre, $apellido, $carrera, $semestre, $foto_perfil, $foto_portada, $informacion_extra);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
+    }
 
     header("Location: perfil.php"); // Redirigir al perfil después de guardar cambios
     exit();
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar perfil</title>
-    <link rel="stylesheet" href="../css/misestilos.css">
+    <link rel="stylesheet" href="../css/editar_perfil.css">
 </head>
-
 <body>
     <div class="form-container">
         <h1>Editar perfil</h1>
         <form method="POST" action="editar_perfil.php" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="nombre">Nombre:</label>
-                <input type="text" id="nombre" name="nombre" value="<?php echo htmlspecialchars($perfil['nombre']); ?>" required>
+                <input type="text" id="nombre" name="nombre" value="<?php echo htmlspecialchars($perfil['nombre'] ?? ''); ?>" required>
             </div>
 
             <div class="form-group">
                 <label for="apellido">Apellido:</label>
-                <input type="text" id="apellido" name="apellido" value="<?php echo htmlspecialchars($perfil['apellido']); ?>" required>
+                <input type="text" id="apellido" name="apellido" value="<?php echo htmlspecialchars($perfil['apellido'] ?? ''); ?>" required>
             </div>
 
             <div class="form-group">
@@ -88,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <div class="form-group">
                 <label for="semestre">Semestre:</label>
-                <input type="number" id="semestre" name="semestre" value="<?php echo htmlspecialchars($perfil['semestre']); ?>" required>
+                <input type="number" id="semestre" name="semestre" value="<?php echo htmlspecialchars($perfil['semestre'] ?? ''); ?>" required>
             </div>
 
             <div class="form-group">
@@ -103,12 +124,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <div class="form-group">
                 <label for="informacion_extra">Información extra:</label>
-                <textarea id="informacion_extra" name="informacion_extra"><?php echo htmlspecialchars($perfil['informacion_extra']); ?></textarea>
+                <textarea id="informacion_extra" name="informacion_extra"><?php echo htmlspecialchars($perfil['informacion_extra'] ?? ''); ?></textarea>
             </div>
 
             <button type="submit">Guardar cambios</button>
         </form>
     </div>
 </body>
-
 </html>
