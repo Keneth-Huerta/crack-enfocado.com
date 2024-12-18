@@ -136,7 +136,24 @@
 
     <div class="container">
         <!-- Formulario para crear una publicación -->
-        
+        <div class="post-form">
+            <?php
+            include 'basePublicaion.php';
+            session_start();
+
+            if (!isset($_SESSION['username'])) {
+                echo "<p>Debes <a href='../html/formulario.html'>crear una cuenta</a> o <a href='../index.html'>iniciar sesión</a> para publicar.</p>";
+            } else {
+            ?>
+                <form action="submit_post.php" method="post" enctype="multipart/form-data">
+                    <textarea name="content" placeholder="¿Qué estás pensando?"></textarea>
+                    <input type="file" name="image" accept="image/*">
+                    <button type="submit">Publicar</button>
+                </form>
+            <?php
+            }
+            ?>
+        </div>
 
         <!-- Mostrar publicaciones -->
         <?php
