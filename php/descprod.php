@@ -39,7 +39,7 @@
             <p>
                 <a href="https://crack-enfocado.com/php/ventas.php" class="btn btn-primary" role="button">REGRESAR</a>
             </p>
-                <a href='#' class='btn btn-primary' background-color: #7d1b1b ; margin-top: 10px;">Comprar ahora</a>
+                <a href='#' class='btn btn-primary'role ="button">Comprar ahora</a>
         </div>
     </div>
 </body>
