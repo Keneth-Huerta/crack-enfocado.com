@@ -44,11 +44,12 @@
         <main class="container mt-4">
             <h2 class="mb-4 fs-1"  >Más publicaciones</h2>
             
-            <div class="row mb-4" class="publicaciones" style="background-color: antiquewhite;">
+            <div class="row mb-4 publicaciones" style="background-color: darkgrey; padding-top: 4rem; padding-bottom: 4rem;">
                 <div class="col-12">
                     <div class="content-item d-flex justify-content-between align-items-center">
                         <div class="d-flex align-items-center">
-                            <img src="../media/user_icon_001.jpg" class="img-fluid imagengrande me-2" alt="Imagen de contenido" style="max-width: 60%;">
+                            <img src="../media/user_icon_001.jpg" class="img-fluid imagengrande me-2 rounded border border-dark" alt="Imagen de contenido" style=" padding-top: 4rem; padding-bottom: 4rem;">
+
                             <a href="publicaciones.php" class="btn btn-primary ms-3">Ver más</a>
                         </div>
                     </div>
