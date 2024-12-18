@@ -2,13 +2,7 @@
 // Conexión a la base de datos
 session_start();
 include('header.php');
-$servidor = "localhost";
-$usuarioBD = "u288355303_Keneth"; // Usuario de la base de datos
-$claveBD = "1420Genio."; // Contraseña de la base de datos
-$baseDeDatos = "u288355303_Usuarios"; // Nombre de la base de datos
-
-// Conexión a la base de datos
-$enlace = mysqli_connect($servidor, $usuarioBD, $claveBD, $baseDeDatos);
+include('conexion.php');
 if (!$enlace) {
     die("Conexión fallida: " . mysqli_connect_error());
 }
