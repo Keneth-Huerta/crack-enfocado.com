@@ -14,7 +14,7 @@
 <body>
     <div class="container-fluid">
         <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #952F57;">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">
                     <img src="../media/logoweb.jpg" alt="Logo" class="img-fluid" style="max-height: 50px;">
@@ -42,26 +42,25 @@
 
         <!-- Main Content -->
         <main class="container mt-4">
-            <h2 class="mb-4">Más publicaciones</h2>
+            <h2 class="mb-4 fs-1">Más publicaciones</h2>
             
-            <div class="row mb-4" class="publicaciones">
+            <div class="row mb-4" class="publicaciones" style="background-color: antiquewhite;">
                 <div class="col-12">
-                    <div class="content-item text-center">
-                        <img src="../media/user_icon_001.jpg" class="img-fluid imagengrande mb-3" alt="Imagen de contenido">
-                        <div>
-                            <a href="publicaciones.php" class="btn btn-primary">Ver más</a>
+                    <div class="content-item d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <img src="../media/user_icon_001.jpg" class="img-fluid imagengrande me-2" alt="Imagen de contenido" style="max-width: 60%;">
+                            <a href="publicaciones.php" class="btn btn-primary ms-3">Ver más</a>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <h2 class="mb-4">Lo más reciente...</h2>
+            <h2 class="mb-4 fs-3">Lo más reciente...</h2>
 
             <div class="row row-cols-1 row-cols-md-3 g-4 publicaciones">
                 <?php for ($i = 0; $i < 6; $i++): ?>
                 <div class="col">
                     <div class="card h-100">
-                        <img src="../media/logoweb.jpg" class="card-img-top" alt="Imagen de publicación">
+                        <img src="../media/logoweb.svg" class="card-img-top" alt="Imagen de publicación">
                         <div class="card-body">
                             <h5 class="card-title">Título de la publicación</h5>
                             <p class="card-text">Resumen de la publicación</p>

@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ]);
 
         // Redirigir al usuario a la página principal tras publicar
-        header("Location: ../index.php");
+        header("Location: publicaciones.php");
         exit;
     } catch (PDOException $e) {
         echo "Error al guardar la publicación: " . $e->getMessage();
