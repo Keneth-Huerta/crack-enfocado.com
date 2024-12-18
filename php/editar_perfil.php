@@ -96,7 +96,7 @@ if (isset($_POST['guardar_perfil'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Perfil</title>
-    <link rel="stylesheet" href="css/misestilos.css">
+    <link rel="stylesheet" href="../css/misestilos.css">
 </head>
 
 <body>
