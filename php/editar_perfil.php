@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Si el perfil ya existe, actualizamos, si no, insertamos uno nuevo
-    if ($perfil['nombre'] != '') {
+    if ($perfil['usuario_id'] != '') {
         // Actualizar datos del perfil existente
         $update_query = "UPDATE perfiles SET nombre = ?, apellido = ?, carrera = ?, semestre = ?, foto_perfil = ?, foto_portada = ?, informacion_extra = ? WHERE usuario_id = ?";
         $stmt = mysqli_prepare($enlace, $update_query);
@@ -82,6 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     exit();
 }
 ?>
+
 
 
 <!DOCTYPE html>
