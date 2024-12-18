@@ -1,0 +1,53 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilos del header */
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+}
+
+header nav ul {
+    list-style-type: none;
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+    padding: 0;
+}
+
+header nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px;
+}
+
+/* Estilos de las secciones */
+.recent-content,
+.more-posts,
+.school-info {
+    padding: 20px;
+}
+
+.content-item,
+.post-item {
+    background-color: #f5f5f5;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.info-item {
+    margin-bottom: 10px;
+}
+
+/* Estilos del footer */
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+}
