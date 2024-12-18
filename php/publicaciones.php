@@ -136,7 +136,7 @@
 
     <div class="container">
         <!-- Formulario para crear una publicación -->
-        <div class="post-form">
+        <!--<div class="post-form">
             <?php
             include 'basePublicaion.php';
             session_start();
@@ -153,7 +153,7 @@
             <?php
             }
             ?>
-        </div>
+        </div>-->
 
         <!-- Mostrar publicaciones -->
         <?php
