@@ -40,7 +40,7 @@ if (isset($_POST['iniciar_sesion'])) {
                 // Si la contraseña es correcta, iniciar sesión
                 $_SESSION['usuario_id'] = $usuario['id'];  // Guardar el ID de usuario en la sesión
                 $_SESSION['usuario'] = $usuario['username'];  // Guardar el nombre de usuario en la sesión
-                header("Location: usuario.php");  // Redirigir a la página de perfil o inicio
+                header("Location: Principal.php");  // Redirigir a la página de perfil o inicio
                 exit();
             } else {
                 echo '<script>alert("Contraseña incorrecta.");</script>';
