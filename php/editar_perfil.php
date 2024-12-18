@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt = mysqli_prepare($enlace, $update_query);
 
         // Asegúrate de que la cantidad de marcadores coincida con el número de parámetros
-        mysqli_stmt_bind_param($stmt, "sssisiss", $nombre, $apellido, $carrera, $semestre, $foto_perfil, $foto_portada, $informacion_extra, $usuario_id);
+        mysqli_stmt_bind_param($stmt, "sssisssi", $nombre, $apellido, $carrera, $semestre, $foto_perfil, $foto_portada, $informacion_extra, $usuario_id);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
     } else {
@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt = mysqli_prepare($enlace, $insert_query);
 
         // Asegúrate de que la cantidad de marcadores coincida con el número de parámetros
-        mysqli_stmt_bind_param($stmt, "isssisiss", $usuario_id, $nombre, $apellido, $carrera, $semestre, $foto_perfil, $foto_portada, $informacion_extra);
+        mysqli_stmt_bind_param($stmt, "isssissss", $usuario_id, $nombre, $apellido, $carrera, $semestre, $foto_perfil, $foto_portada, $informacion_extra);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
     }
