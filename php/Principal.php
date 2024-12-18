@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Plantilla de Sitio Web</title>
-    <link rel="stylesheet" href="css/estilosprin.css">
+    <link rel="stylesheet" href="../css/estilosprin.css">
 </head>
 <body>
     <header>
