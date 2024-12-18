@@ -10,7 +10,7 @@
     <nav>
         <ul>
             <li>
-                <div class="logo"><img src="../media/logoweb.jpg" alt=""></div>
+                <div class="logo"><img src="../media/logoweb.svg" alt=""></div>
             </li>
             <li>
                 <div class="nav-links">
