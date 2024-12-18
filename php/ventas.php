@@ -69,7 +69,7 @@
         .product-price {
             font-size: 1.2rem;
             font-weight: bold;
-            color: #ff5722;
+            color: #7d1b1b;
             margin-bottom: 20px;
         }
 
