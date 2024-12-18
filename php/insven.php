@@ -58,7 +58,7 @@
 <body>
     <div class="container">
         <h1>Formulario para agregar un nuevo producto</h1>
-        <form action="insertar_producto.php" method="post">
+        <form  method="post">
             <label for="producto">Nombre del producto:</label>
             <input type="text" id="producto" name="producto" required><br><br>
 
