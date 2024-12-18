@@ -9,7 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="../CSS/estilosprin.css">
+<link rel="stylesheet" href="../CSS/estilosprin.css">
 </head>
 <body>
     <div class="container-fluid">
@@ -42,26 +42,30 @@
 
         <!-- Main Content -->
         <main class="container mt-4">
-            <h2 class="mb-4 fs-1"  >Más publicaciones</h2>
+            <h2 class="mb-4 fs-1">Más publicaciones</h2>
             
             <div class="row mb-4 publicaciones" style="background-color: darkgrey; padding-top: 4rem; padding-bottom: 4rem;">
                 <div class="col-12">
                     <div class="content-item d-flex justify-content-between align-items-center">
+                        <!-- Contenedor para la imagen y el botón -->
                         <div class="d-flex align-items-center">
-                            <img src="../media/user_icon_001.jpg" class="img-fluid imagengrande me-2 rounded border border-dark" alt="Imagen de contenido" style=" padding-top: 4rem; padding-bottom: 4rem;">
-
+                            <!-- Imagen con borde redondeado y padding ajustado solo en el contenedor -->
+                            <img src="../media/user_icon_001.jpg" class="img-fluid imagengrande me-2 rounded border border-dark" alt="Imagen de contenido">
+            
+                            <!-- Botón "Ver más" -->
                             <a href="publicaciones.php" class="btn btn-primary ms-3">Ver más</a>
                         </div>
                     </div>
                 </div>
             </div>
+            
             <h2 class="mb-4 fs-3">Lo más reciente...</h2>
 
             <div class="row row-cols-1 row-cols-md-3 g-4 publicaciones">
                 <?php for ($i = 0; $i < 6; $i++): ?>
                 <div class="col">
                     <div class="card h-100">
-                        <img src="../media/logoweb.svg" class="card-img-top" alt="Imagen de publicación">
+                        <img src="../media/logoweb.jpg" class="card-img-top" alt="Imagen de publicación">
                         <div class="card-body">
                             <h5 class="card-title">Título de la publicación</h5>
                             <p class="card-text">Resumen de la publicación</p>
