@@ -1,4 +1,5 @@
 <?php
+include('header.php')
 // Conexión a la base de datos
 session_start();
 $servidor = "localhost";
@@ -76,7 +77,7 @@ mysqli_close($enlace);
             font-size: 14px;
         }
         input[type="submit"] {
-            background-color: #4CAF50;
+            background-color: # #7d1b1b;
             color: white;
             padding: 14px 20px;
             border: none;
@@ -86,7 +87,7 @@ mysqli_close($enlace);
             width: 100%;
         }
         input[type="submit"]:hover {
-            background-color: #45a049;
+            background-color: # #7d1b1b;
         }
 
         /* Estilos para mostrar los productos */
@@ -130,8 +131,8 @@ mysqli_close($enlace);
 <body>
     <div class="container">
         <h1>Formulario para agregar un nuevo producto</h1>
-        <form method="post">
-            <label for="producto">Nombre del producto:</label>
+        <form method="post" >
+            <label for="producto" action="ventas.php">Nombre del producto:</label>
             <input type="text" id="producto" name="producto" required><br><br>
 
             <label for="id">ID del producto:</label>
