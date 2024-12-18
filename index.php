@@ -1,3 +1,13 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+if (isset($_SESSION['usuario_id'])) {
+    // Si está logueado, redirigir al inicio o página principal
+    header("Location: php/Principal.php"); // O la URL donde se encuentra el contenido principal
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -31,7 +41,6 @@
     <!-- Scripts necesarios -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.validate/1.19.3/jquery.validate.min.js"></script>
-    <script src="js/funciones_Campos.js"></script>
 </body>
 
 </html>
