@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-mysqli_close($enlace);
+
 ?>
 
 <!DOCTYPE html>
@@ -164,3 +164,4 @@ mysqli_close($enlace);
     </div>
 </body>
 </html>
+<?php mysqli_close($enlace); ?>
