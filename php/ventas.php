@@ -1,3 +1,18 @@
+<?php
+// Conexión a la base de datos
+session_start();
+$servidor = "localhost";
+$usuarioBD = "u288355303_Keneth"; // Usuario de la base de datos
+$claveBD = "1420Genio."; // Contraseña de la base de datos
+$baseDeDatos = "u288355303_Usuarios"; // Nombre de la base de datos
+
+// Conexión a la base de datos
+$enlace = mysqli_connect($servidor, $usuarioBD, $claveBD, $baseDeDatos);
+if (!$enlace) {
+    die("Conexión fallida: " . mysqli_connect_error());
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -18,7 +33,6 @@
             padding: 20px;
             text-align: center;
         }
-
 
         .sales-title {
             font-size: 2.5rem;
@@ -101,54 +115,7 @@
             background-color: #7d1b1b;
         }
 
-
-        @media (max-width: 768px) {
-            .sales-cards {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-    </style>
-</head>
-<body>
-
-
-
-
-
-    <section class="sales-section">
-        <h1 class="sales-title">Materiales</h1>
-        <p class="sales-description">Explora la variedad de materiales cargados por los alumnos</p>
-
-        <div class="sales-cards">
-            <?php
-               // Consultar los productos de la base de datos
-$sql = "SELECT * FROM productos";
-$result = mysqli_query($enlace, $sql);
-
-echo '<div class="products-container">';
-if (mysqli_num_rows($result) > 0) {
-    // Mostrar los productos
-    while ($row = mysqli_fetch_assoc($result)) {
-        echo '<div class="product-card">';
-        echo "<h3>" . htmlspecialchars($row['producto']) . "</h3>";
-        echo "<img src='" . htmlspecialchars($row['imagen']) . "' alt='" . htmlspecialchars($row['producto']) . "' class='product-image'><br>";
-        echo "<p><strong>Precio:</strong> $" . htmlspecialchars($row['precio']) . "</p>";
-        echo "<p><strong>Descripción:</strong> " . htmlspecialchars($row['descripcion']) . "</p>";
-        echo '</div>';
-    }
-} else {
-    echo "No se encontraron productos.";
-}
-echo '</div>';
-
-mysqli_close($enlace);
-            ?>
-        </div>
-
-    </section>
-    <style>
-    /* Estilos para mostrar los productos */
+        /* Estilos para mostrar los productos */
         .products-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -185,5 +152,39 @@ mysqli_close($enlace);
             color: #666;
         }
     </style>
+</head>
+<body>
+
+<section class="sales-section">
+    <h1 class="sales-title">Materiales</h1>
+    <p class="sales-description">Explora la variedad de materiales cargados por los alumnos</p>
+
+    <div class="sales-cards">
+        <?php
+        // Consultar los productos de la base de datos
+        $sql = "SELECT * FROM productos";
+        $result = mysqli_query($enlace, $sql);
+
+        if (mysqli_num_rows($result) > 0) {
+            // Mostrar los productos
+            while ($row = mysqli_fetch_assoc($result)) {
+                echo '<div class="product-card">';
+                echo "<h3>" . htmlspecialchars($row['producto']) . "</h3>";
+                echo "<img src='" . htmlspecialchars($row['imagen']) . "' alt='" . htmlspecialchars($row['producto']) . "' class='product-image'><br>";
+                echo "<p><strong>Precio:</strong> $" . htmlspecialchars($row['precio']) . "</p>";
+                echo "<p><strong>Descripción:</strong> " . htmlspecialchars($row['descripcion']) . "</p>";
+                echo '<a href="#" class="buy-button">Comprar</a>'; // Botón de compra (puedes redirigir a una página de compra)
+                echo '</div>';
+            }
+        } else {
+            echo "<p>No se encontraron productos.</p>";
+        }
+
+        // Cerrar la conexión
+        mysqli_close($enlace);
+        ?>
+    </div>
+</section>
+
 </body>
 </html>
