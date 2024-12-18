@@ -1,33 +1,34 @@
 <?php
-session_start();
-
-// Incluir archivo de conexión
-include 'conexion.php';  // Asegúrate de que este archivo contenga la conexión a la base de datos
-
-if (isset($_POST['like']) && isset($_SESSION['usuario_id'])) {
-    $usuario_id = $_SESSION['usuario_id'];
-    $publicacion_id = $_POST['publicacion_id'];
-
-    // Verificar si el usuario ya ha dado like a esta publicación
-    $stmt = $pdo->prepare("SELECT * FROM likes WHERE usuario_id = ? AND publicacion_id = ?");
-    $stmt->execute([$usuario_id, $publicacion_id]);
-    $like = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if (!$like) {
-        // Si no ha dado like, insertamos el like
-        $stmt = $pdo->prepare("INSERT INTO likes (usuario_id, publicacion_id) VALUES (?, ?)");
-        $stmt->execute([$usuario_id, $publicacion_id]);
-
-        // Incrementamos la cantidad de me gusta en la publicación
-        $stmt = $pdo->prepare("UPDATE publicaciones SET cantidad_megusta = cantidad_megusta + 1 WHERE id_publicacion = ?");
-        $stmt->execute([$publicacion_id]);
-    }
-
-    // Redirigir de vuelta a la página de publicaciones
-    header("Location: publicaciones.php");
-    exit();
-} else {
-    // Si el usuario no está logueado, redirigimos al login
-    header("Location: index.html");
-    exit();
+// Iniciar sesión si no está iniciada
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
 }
+
+require_once 'conexion.php'; // Asegúrate de incluir el archivo de conexión
+
+// Verificar que el usuario esté logueado
+if (isset($_SESSION['usuario_id'])) {
+    // Obtener el ID de la publicación y el ID del usuario
+    $usuario_id = $_SESSION['usuario_id']; 
+    $id_publicacion = $_POST['id_publicacion'];  // Suponiendo que el ID de la publicación se recibe por POST
+    
+    // Comprobar si el usuario ya ha dado like (puedes crear una tabla de "likes" para manejar esto de forma más avanzada)
+    // Suponiendo que no tienes una tabla de "likes", incrementaremos directamente la cantidad en la tabla de publicaciones
+    $query = "UPDATE publicaciones SET cantidad_megusta = cantidad_megusta + 1 WHERE id_publicacion = ?";
+    
+    if ($stmt = mysqli_prepare($enlace, $query)) {
+        mysqli_stmt_bind_param($stmt, "i", $id_publicacion);  // Vinculamos el parámetro de la consulta
+        if (mysqli_stmt_execute($stmt)) {
+            echo "Like registrado exitosamente!";
+        } else {
+            echo "Error al registrar el like.";
+        }
+        mysqli_stmt_close($stmt);
+    } else {
+        echo "Error en la preparación de la consulta.";
+    }
+} else {
+    echo "Debe iniciar sesión para dar un like.";
+}
+
+?>

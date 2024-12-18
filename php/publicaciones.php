@@ -74,9 +74,10 @@
 
                 // Botón para dar "me gusta"
                 if (isset($_SESSION['usuario_id'])) {
-                    echo '<form action="dar_like.php" method="POST">';
-                    echo '<input type="hidden" name="publicacion_id" value="' . $publicacion['id_publicacion'] . '">';
-                    echo '<button type="submit" name="like">Me gusta</button>';
+                    // Dentro del bucle que muestra las publicaciones
+                    echo '<form action="dar_like.php" method="post">';
+                    echo '<input type="hidden" name="id_publicacion" value="' . $publicacion['id_publicacion'] . '">';
+                    echo '<button type="submit">Me gusta (' . $publicacion['cantidad_megusta'] . ')</button>';
                     echo '</form>';
                 }
 
