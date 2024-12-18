@@ -1,5 +1,10 @@
 <?php
 session_start();
+// Configuración de la base de datos
+$servidor = "localhost";
+$usuarioBD = "u288355303_Keneth";
+$claveBD = "1420Genio.";
+$baseDeDatos = "u288355303_Usuarios";
 
 // Conexión a la base de datos
 $enlace = mysqli_connect($servidor, $usuarioBD, $claveBD, $baseDeDatos);
