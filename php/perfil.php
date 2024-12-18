@@ -27,6 +27,8 @@ $apellido = $perfil['apellido'] ?? 'Apellido no disponible';
 $carrera = $perfil['carrera'] ?? 'Carrera no disponible';
 $semestre = $perfil['semestre'] ?? 'Semestre no disponible';
 $informacion_extra = $perfil['informacion_extra'] ?? 'No disponible';
+$foto_perfil = $perfil['foto_perfil'] ?? 'default-profile.jpg'; // Foto de perfil
+$foto_portada = $perfil['foto_portada'] ?? 'default-cover.jpg'; // Foto de portada
 ?>
 
 <!DOCTYPE html>
@@ -40,13 +42,19 @@ $informacion_extra = $perfil['informacion_extra'] ?? 'No disponible';
 </head>
 
 <body>
-    <?php include('header.php'); ?>
+<?php include('header.php'); ?>
     <div class="perfil-container">
+        <!-- Foto de portada -->
+        <div class="foto-portada">
+            <img src="<?php echo htmlspecialchars($foto_portada); ?>" alt="Foto de portada" style="width: 100%; height: auto; object-fit: cover;">
+        </div>
+
         <h1>Bienvenido, <?php echo htmlspecialchars($nombre); ?></h1>
 
         <div class="perfil-info">
+            <!-- Foto de perfil -->
             <div class="foto-perfil">
-                <img src="<?php echo htmlspecialchars($foto_perfil); ?>" alt="Foto de perfil">
+                <img src="<?php echo htmlspecialchars($foto_perfil); ?>" alt="Foto de perfil" style="width: 100px; height: 100px; border-radius: 50%;">
             </div>
             <div class="informacion">
                 <p><strong>Nombre:</strong> <?php echo htmlspecialchars($nombre); ?></p>
