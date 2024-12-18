@@ -179,7 +179,7 @@ include 'basePublicacion.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $content = $_POST['content'];
-    $username = "Usuario Anónimo"; // Cambiar según autenticación
+    $username = "Usuario Anónimo"; 
     $imagePath = null;
 
     // Procesar la imagen subida
