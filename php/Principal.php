@@ -25,10 +25,14 @@
 
     <main>
     <h2>Más publicaciones</h2>
-        <div class="content-item">
-            <img src="../media/user_icon_001.jpg" class="imagengrande"  alt="Imagen de contenido">
-            <a href="publicaciones.php" style="top: 0;">Ver más</a>
-        </div>
+<div class="content-item">
+    <div>
+        <img src="../media/user_icon_001.jpg" class="imagengrande" alt="Imagen de contenido">
+    </div>
+    <div class="ver">
+        <a href="">Ver más</a>
+    </div>
+</div>
 
 
 
