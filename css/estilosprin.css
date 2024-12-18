@@ -10,7 +10,7 @@ nav {
     left: 0; /* Alinea el inicio con el borde izquierdo */
     width: 100%; /* Ocupa todo el ancho de la pantalla */
     background-color: #952F57; /* Color principal */
-    z-index: 1000; /* Asegura que esté por encima de otros elementos */
+   
     padding: 10px 0; /* Espacio interno arriba y abajo */
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
 }
