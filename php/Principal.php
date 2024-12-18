@@ -5,11 +5,11 @@
     <link rel="stylesheet" href="../css/estilosprin.css">
 </head>
 <body>
-        <nav class= "cabeza">
+        <nav>
             <ul>
-                <li><a href="#">Logos</a></li>
-                <li><a href="#">Ventas</a></li>
-                <li><a href="#">Ayuda Estudiantil</a></li>
+                <li class= "cabeza"><a href="#">Logos</a></li>
+                <li class= "cabeza"><a href="#">Ventas</a></li>
+                <li class= "cabeza"><a href="#">Ayuda Estudiantil</a></li>
             </ul>
         </nav>
 

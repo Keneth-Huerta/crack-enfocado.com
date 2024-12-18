@@ -10,26 +10,14 @@ body {
     display: flex;
     list-style-type: none;
     text-decoration: none;
+    justify-content: space-between;
+    margin: 0;
+    padding: 10px;
 
 }
 
 /* Estilos del header */
-header {
-    background-color: #333;
-    color: #fff;
-    
-}
 
-header nav ul {
-    justify-content: space-between;
-    margin: 0;
-    padding: 0;
-}
-
-header nav ul li a {
-    color: #fff;
-    padding: 10px;
-}
 
 /* Estilos de las secciones */
 .recent-content,
