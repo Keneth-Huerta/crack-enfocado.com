@@ -24,7 +24,7 @@ if (isset($_POST['registrar'])) {
     $apellido = escapar_entrada($_POST['apellido'], $enlace);
     $boleta = escapar_entrada($_POST['boleta'], $enlace);
     $correo = escapar_entrada($_POST['correo'], $enlace);
-    $contraseña = $_POST['contraseña'];
+    $contrasena = $_POST['contrasena'];
 
     // Validación del correo
     if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
@@ -33,13 +33,13 @@ if (isset($_POST['registrar'])) {
     }
 
     // Validación de la contraseña (mínimo 6 caracteres)
-    if (strlen($contraseña) < 6) {
+    if (strlen($contrasena) < 6) {
         echo '<script>alert("La contraseña debe tener al menos 6 caracteres."); location.href="../registro.html";</script>';
         exit();
     }
 
     // Cifrar la contraseña
-    $contraseñaCifrada = password_hash($contraseña, PASSWORD_DEFAULT);
+    $contraseñaCifrada = password_hash($contrasena, PASSWORD_DEFAULT);
 
     // Verificar si el correo ya está registrado
     $queryVerificarCorreo = "SELECT * FROM registro WHERE correo = ?";
