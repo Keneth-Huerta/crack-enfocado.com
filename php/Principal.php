@@ -53,7 +53,7 @@
                     <img src="../media/user_icon_001.jpg" 
                          class="img-fluid imagengrande rounded border border-dark" 
                          alt="Imagen de contenido"
-                         style="height: 20%; width: 20%; object-fit: cover;">
+                         style="height: 40%; width: 40%; object-fit: cover;">
                 </div>
                 
                 <!-- Botón alineado arriba con 10px de separación -->
