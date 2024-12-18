@@ -67,9 +67,21 @@
                     echo '<img src="' . htmlspecialchars($publicacion['imagen']) . '" alt="Imagen de publicación">';
                 }
 
+                // Mostrar la cantidad de "me gusta"
+                echo '<div class="post-likes">';
+                echo '<span>' . htmlspecialchars($publicacion['cantidad_megusta']) . ' Me gusta</span>';
+                echo '</div>';
+
+                // Botón para dar "me gusta"
+                if (isset($_SESSION['usuario_id'])) {
+                    echo '<form action="dar_like.php" method="POST">';
+                    echo '<input type="hidden" name="publicacion_id" value="' . $publicacion['id_publicacion'] . '">';
+                    echo '<button type="submit" name="like">Me gusta</button>';
+                    echo '</form>';
+                }
+
                 // Acciones (botones)
                 echo '<div class="post-actions">';
-                echo '<button>Me gusta</button>';
                 echo '<button>Comentar</button>';
                 echo '<button>Compartir</button>';
                 echo '</div>';
