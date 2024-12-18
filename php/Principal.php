@@ -1,21 +1,17 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>Plantilla de Sitio Web</title>
     <link rel="stylesheet" href="../css/estilosprin.css">
 </head>
-
 <body>
-    <header>
         <nav>
             <ul>
-                <li><a href="#">Logos</a></li>
-                <li><a href="#">Ventas</a></li>
-                <li><a href="#">Ayuda Estudiantil</a></li>
+                <li class= "cabeza"><a href="#">Logos</a></li>
+                <li class= "cabeza"><a href="#">Ventas</a></li>
+                <li class= "cabeza"><a href="#">Ayuda Estudiantil</a></li>
             </ul>
         </nav>
-    </header>
 
     <main>
         <section class="recent-content">
@@ -56,5 +52,4 @@
         <!-- Contenido del pie de página -->
     </footer>
 </body>
-
-</html>
+</html>     

@@ -5,26 +5,18 @@ body {
     padding: 0;
 }
 
-/* Estilos del header */
-header {
-    background-color: #333;
-    color: #fff;
+.cabeza{
     padding: 10px;
-}
-
-header nav ul {
-    list-style-type: none;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    text-decoration: none;
     margin: 0;
-    padding: 0;
+
+
 }
 
-header nav ul li a {
-    color: #fff;
-    text-decoration: none;
-    padding: 10px;
-}
+/* Estilos del header */
+
 
 /* Estilos de las secciones */
 .recent-content,
