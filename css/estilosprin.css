@@ -1,5 +1,8 @@
 /* Estilos generales */
 
+.img-fluid imagengrande me-2{
+    border-radius: 1%;
+}
 
 /*
 .publicaciones{
