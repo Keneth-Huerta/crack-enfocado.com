@@ -142,7 +142,7 @@
             session_start();
 
             if (!isset($_SESSION['username'])) {
-                echo "<p>Debes <a href='register.php'>crear una cuenta</a> o <a href='login.php'>iniciar sesión</a> para publicar.</p>";
+                echo "<p>Debes <a href='../index.html'>crear una cuenta</a> o <a href='/../html/formulario.html'>iniciar sesión</a> para publicar.</p>";
             } else {
             ?>
                 <form action="submit_post.php" method="post" enctype="multipart/form-data">
@@ -189,26 +189,26 @@
 include 'basePublicacion.php';
 session_start();
 
-if (!isset($_SESSION['username'])) {
-    header("Location: register.php");
+if (!isset($_SESSION['usuario'])) {
+    header("Location: registro.php");
     exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $content = $_POST['content'];
-    $username = $_SESSION['username'];
+    $content = $_POST['contenido'];
+    $username = $_SESSION['usuario'];
     $imagePath = null;
 
     // Procesar la imagen subida
-    if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+    if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
         $uploadDir = 'uploads/';
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0755, true);
         }
-        $imageName = time() . '_' . basename($_FILES['image']['name']);
+        $imageName = time() . '_' . basename($_FILES['imagen']['name']);
         $targetPath = $uploadDir . $imageName;
 
-        if (move_uploaded_file($_FILES['image']['tmp_name'], $targetPath)) {
+        if (move_uploaded_file($_FILES['imagen']['tmp_name'], $targetPath)) {
             $imagePath = $targetPath;
         }
     }
