@@ -30,7 +30,7 @@
         <img src="../media/user_icon_001.jpg" class="imagengrande" alt="Imagen de contenido">
     </div>
     <div class="ver">
-        <a href="">Ver más</a>
+        <a href="publicaciones.php">Ver más</a>
     </div>
 </div>
 
