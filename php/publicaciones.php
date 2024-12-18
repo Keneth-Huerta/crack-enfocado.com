@@ -132,7 +132,7 @@
     </style>
 </head>
 <body>
-    <div class="navbar">Mi Red Social Creativa</div>
+    <div class="navbar">Publicaciones</div>
 
     <div class="container">
         <!-- Formulario para crear una publicación -->
