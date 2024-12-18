@@ -27,7 +27,7 @@
     <h2>Lo más reciente...</h2>
         <div class="content-item">
             <img src="../media/user_icon_001.jpg" class="imagengrande"  alt="Imagen de contenido">
-            <a href="" style="top: 0;">Ver más</a>
+            <a href="publicaciones.php" style="top: 0;">Ver más</a>
         </div>
 
 
