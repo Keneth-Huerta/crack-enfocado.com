@@ -1,6 +1,8 @@
 <?php
 session_start();
-include 'conexion.php';  // Conexión a la base de datos
+
+// Incluir archivo de conexión
+include 'conexion.php';  // Asegúrate de que este archivo contenga la conexión a la base de datos
 
 if (isset($_POST['like']) && isset($_SESSION['usuario_id'])) {
     $usuario_id = $_SESSION['usuario_id'];
