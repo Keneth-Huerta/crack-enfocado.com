@@ -23,7 +23,7 @@ if (mysqli_connect_errno()) {
 $correo = $_SESSION['usuario'];
 
 // Consultar los datos del usuario en la base de datos
-$query = "SELECT * FROM registro WHERE correo = ?";
+$query = "SELECT * FROM usuarios WHERE correo = ?";
 $stmt = mysqli_prepare($enlace, $query);
 mysqli_stmt_bind_param($stmt, "s", $correo);
 mysqli_stmt_execute($stmt);
@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Subir la imagen (si se selecciona una nueva)
     $imagenPerfil = $usuario['imagen']; // Usar la imagen actual por defecto
     if (isset($_FILES['imagen']['name']) && $_FILES['imagen']['name'] != '') {
-        $target_dir = "uploads/"; // Directorio donde guardar las imágenes
+        $target_dir = "media/uploads/"; // Directorio donde guardar las imágenes
         $target_file = $target_dir . basename($_FILES["imagen"]["name"]);
         $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Conectar a la base de datos y actualizar los datos
     $enlace = mysqli_connect($servidor, $usuarioBD, $claveBD, $baseDeDatos);
-    $updateQuery = "UPDATE registro SET nombre = ?, apellido = ?, boleta = ?, correo = ?, imagen = ? WHERE correo = ?";
+    $updateQuery = "UPDATE usuarios SET nombre = ?, apellido = ?, boleta = ?, correo = ?, imagen = ? WHERE correo = ?";
     $stmt = mysqli_prepare($enlace, $updateQuery);
     mysqli_stmt_bind_param($stmt, "ssssss", $nombre, $apellido, $boleta, $correo, $imagenPerfil, $_SESSION['usuario']);
 
