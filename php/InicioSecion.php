@@ -7,10 +7,10 @@ $baseDeDatos = "u288355303_Usuarios";
 
 // Conexión a la base de datos
 $enlace = mysqli_connect($servidor, $usuarioBD, $claveBD, $baseDeDatos);
-if (!$enlace) {
-    error_log("Error en la conexión a la base de datos: " . mysqli_connect_error());
-    echo "No se puede conectar a la base de datos en este momento. Inténtalo más tarde.";
-    exit;
+if (mysqli_connect_errno()) {
+    die("Conexión fallida: " . mysqli_connect_error());
+} else {
+    echo "Conexión exitosa";
 }
 
 // Iniciar sesión
