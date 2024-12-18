@@ -4,15 +4,113 @@ body {
     margin: 0;
     padding: 0;
 }
-
-.cabeza{
-    padding: 10px;
+.logo{
     display: flex;
-    justify-content: center;
+    gap: 20px;
+    justify-content:space-between;
+    
+    
+}
+.nav-links {
+    display: flex;
+    justify-content: flex-end;
+    margin: auto;
+    gap: 20px;
+}
+
+.nav-links a {
     text-decoration: none;
-    margin: 0;
+    color: #4b5563;
+    
+}
+
+.nav-links a:hover {
+    color: #2563eb;
+}
+
+.nav-links img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 20px;
+}
+
+ul{
+    display: flex;
+    justify-content: space-between;
+    list-style-type: none;
+}
+.boton{
+    display: flex;
+    min-height: 100%;
+    position: relative;
+    margin-right: 10px;
+    margin-left: 10px;
+    justify-content: center;
+    justify-content: space-between;
+    padding: 200px;
+    
+    
+    
+}
+.uno{
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer
+ 
+}
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+nav{
+    display: flex;
+    justify-content: flex-end;
+}
+.principal{
+    justify-content:sp;
+    
+}
+
+.izquierdo{
+    display: flex;
+    text-decoration: none;
+    list-style-type: none;
+    margin: 10px;
+    
+    
+}
+.cabeza{
+    display: flex;
+    margin: 10px;
+    
+    background-color: aqua;
+
+
+}*/
+
+img{
+    width: 50px;
+    height: 40px;
+}
+.alineacion{
 }
 
 /* Estilos del header */
@@ -35,7 +133,7 @@ body {
 .info-item {
     margin-bottom: 10px;
 }
-
+*/
 /* Estilos del footer */
 footer {
     background-color: #333;
