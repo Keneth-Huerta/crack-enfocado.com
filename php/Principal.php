@@ -8,7 +8,7 @@
     <header>
         <nav>
             <ul>
-                <li><a href="#">Logo</a></li>
+                <li><a href="#">Logos</a></li>
                 <li><a href="#">Ventas</a></li>
                 <li><a href="#">Ayuda Estudiantil</a></li>
             </ul>
