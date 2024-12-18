@@ -45,8 +45,8 @@ nav {
 }
 
 .logo img {
-    width: 40px;
-    height: 40px;
+    width: 70px;
+    height: 70px;
     border-radius: 50%; /* Hacer las imágenes redondas */
     object-fit: cover; /* Ajustar el contenido de la imagen */
 }
