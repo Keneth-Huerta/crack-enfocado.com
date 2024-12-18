@@ -37,7 +37,7 @@ if (isset($_POST['correo'], $_POST['contra'])) {
         if ($fila = mysqli_fetch_assoc($resultado)) {
             // Verificar la contraseña (usando password_verify para contraseñas cifradas)
             if (password_verify($contra, $fila['contra'])) {
-             
+
                 // Guardar datos en sesión
                 $_SESSION['usuario'] = $fila['correo'];
                 header("Location: ../usuario.html");

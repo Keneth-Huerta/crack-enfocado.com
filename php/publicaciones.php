@@ -13,7 +13,7 @@
         }
 
         .navbar {
-            background-color: #4267B2;
+            background-color: #7d1b1b;
             color: white;
             padding: 15px;
             text-align: center;
@@ -53,7 +53,7 @@
         }
 
         .post-form button {
-            background-color: #4267B2;
+            background-color: #7d1b1b;
             color: white;
             border: none;
             padding: 10px 20px;
@@ -65,7 +65,7 @@
         }
 
         .post-form button:hover {
-            background-color: #365899;
+            background-color: #7d1b1b;
         }
 
         .post {
@@ -120,7 +120,7 @@
         .post-actions button {
             background: none;
             border: none;
-            color: #4267B2;
+            color: #7d1b1b;
             cursor: pointer;
             font-size: 0.95rem;
             font-weight: bold;
@@ -132,20 +132,20 @@
     </style>
 </head>
 <body>
-    <div class="navbar">Mi Red Social Creativa</div>
+    <div class="navbar">Publicaciones</div>
 
     <div class="container">
         <!-- Formulario para crear una publicación -->
-        <!--<div class="post-form">
+        <div class="post-form">
             <?php
-            include 'basePublicaion.php';
+            include 'basePublicacion.php';
             session_start();
 
             if (!isset($_SESSION['username'])) {
-                echo "<p>Debes <a href='../html/formulario.html'>crear una cuenta</a> o <a href='../index.html'>iniciar sesión</a> para publicar.</p>";
+                echo "<p>Debes <a href='../crearCuenta.html'>crear una cuenta</a> o <a href='../index.html'>iniciar sesión</a> para publicar.</p>";
             } else {
             ?>
-                <form action="submit_post.php" method="post" enctype="multipart/form-data">
+                <form action="registro.php" method="post" enctype="multipart/form-data">
                     <textarea name="content" placeholder="¿Qué estás pensando?"></textarea>
                     <input type="file" name="image" accept="image/*">
                     <button type="submit">Publicar</button>
@@ -153,7 +153,7 @@
             <?php
             }
             ?>
-        </div>-->
+        </div>
 
         <!-- Mostrar publicaciones -->
         <?php

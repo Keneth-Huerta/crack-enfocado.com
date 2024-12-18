@@ -5,7 +5,8 @@ $claveBD = "1420Genio.";
 $baseDeDatos = "u288355303_Usuarios";
 
 // Función para escapar y validar datos
-function escapar_entrada($entrada, $enlace) {
+function escapar_entrada($entrada, $enlace)
+{
     return mysqli_real_escape_string($enlace, trim($entrada));
 }
 
@@ -61,5 +62,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['registrar'])) {
 
     mysqli_close($enlace);
 }
-?>
-
