@@ -14,7 +14,7 @@
             </li>
             <li>
                 <div class="nav-links">
-                    <a href="/ventas">Ventas</a>
+                    <a href="ventas.php">Ventas</a>
                     <a href="/ayuda-estudiantil">Ayuda Estudiantil</a>
                     <img src="../media/user_icon_001.jpg" alt="Perfil">
                 </div>
