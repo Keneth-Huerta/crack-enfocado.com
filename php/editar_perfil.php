@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Subir la imagen (si se selecciona una nueva)
     $imagenPerfil = $usuario['imagen']; // Usar la imagen actual por defecto
     if (isset($_FILES['imagen']['name']) && $_FILES['imagen']['name'] != '') {
-        $target_dir = "uploads/"; // Directorio donde guardar las imágenes
+        $target_dir = "media/uploads/"; // Directorio donde guardar las imágenes
         $target_file = $target_dir . basename($_FILES["imagen"]["name"]);
         $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
