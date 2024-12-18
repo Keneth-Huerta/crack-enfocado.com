@@ -60,7 +60,7 @@ mysqli_close($enlace);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil - <?php echo $usuario; ?></title>
-    <link rel="stylesheet" href="css/misestilos.css">
+    <link rel="stylesheet" href="../css/misestilos.css">
 </head>
 
 <body>
