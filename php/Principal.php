@@ -16,7 +16,7 @@
                 <div class="nav-links">
                     <a href="ventas.php">Ventas</a>
                     <a href="/ayuda-estudiantil">Ayuda Estudiantil</a>
-                    <a href=""><img src="../media/user_icon_001.jpg" alt="Perfil"></a>
+                    <a href=""><img src="../media/user.png" alt="Perfil"></a>
                 </div>
             </li>
 
