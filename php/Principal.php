@@ -46,7 +46,7 @@
             
             <div class="row mb-4 publicaciones" style="background-color: darkgrey; padding-top: 4rem; padding-bottom: 4rem;">
     <div class="col-12">
-        <div class="content-item d-flex justify-content-between align-items-center">
+        <div class="content-item d-flex justify-content-between align-items-center" style="margin-top: 5px;">
             <!-- Contenedor para la imagen y el botón -->
             <div class="d-flex align-items-center">
                 <!-- Imagen con borde redondeado y padding ajustado solo en el contenedor -->
