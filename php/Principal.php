@@ -31,16 +31,6 @@
         </div>
 
 
-<div class="content-item">
-    <div>
-        <img src="../media/user_icon_001.jpg" class="imagengrande" alt="Imagen de contenido">
-    </div>
-    <div class="ver">
-        <a href="">Ver más</a>
-    </div>
-</div>
-
-
 
 <h2 style="margin-left: 50px;">Lo más reciente...</h2>
 
