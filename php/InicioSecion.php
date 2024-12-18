@@ -40,7 +40,7 @@ if (isset($_POST['correo'], $_POST['contra'])) {
 
                 // Guardar datos en sesión
                 $_SESSION['usuario'] = $fila['correo'];
-                header("Location: ../usuario.html");
+                header("Location: Principal.html");
                 exit();
             } else {
                 // Contraseña incorrecta
