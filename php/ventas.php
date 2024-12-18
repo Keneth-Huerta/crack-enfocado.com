@@ -107,7 +107,7 @@
             <?php
                 $productos = [
                     ["title" => "Producto 1", "description" => "Descripción", "price" => "$49.99"],
-                    ["title" => "Producto 2", "description" => "Descripción breve del producto 2. Calidad garantizada.", "price" => "$79.99"],
+                    ["title" => "Producto 2", "description" => "Descripción", "price" => "$79.99"],
                     ["title" => "Producto 3", "description" => "Descripción breve del producto 3. Lo que necesitas, cuando lo necesitas.", "price" => "$99.99"],
                 ];
 
