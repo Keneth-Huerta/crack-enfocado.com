@@ -52,40 +52,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Perfil</title>
     <link rel="stylesheet" href="../css/misestilos.css">
 </head>
+
 <body>
     <div class="form-container">
         <h1>Editar Perfil</h1>
         <form method="POST" action="editar_perfil.php" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="nombre">Nombre:</label>
-                <input type="text" id="nombre" name="nombre" value="<?php echo htmlspecialchars($perfil['nombre']); ?>" required>
+                <input type="text" id="nombre" name="nombre" value="<?php echo htmlspecialchars($perfil['nombre'] ?? ''); ?>" required>
             </div>
 
             <div class="form-group">
                 <label for="apellido">Apellido:</label>
-                <input type="text" id="apellido" name="apellido" value="<?php echo htmlspecialchars($perfil['apellido']); ?>" required>
+                <input type="text" id="apellido" name="apellido" value="<?php echo htmlspecialchars($perfil['apellido'] ?? ''); ?>" required>
             </div>
 
             <div class="form-group">
                 <label for="carrera">Carrera:</label>
-                <select id="carrera" name="carrera" required>
-                    <option value="Técnico en Aeronáutica" <?php echo ($perfil['carrera'] == 'Técnico en Aeronáutica') ? 'selected' : ''; ?>>Técnico en Aeronáutica</option>
-                    <option value="Técnico en Computación" <?php echo ($perfil['carrera'] == 'Técnico en Computación') ? 'selected' : ''; ?>>Técnico en Computación</option>
-                    <option value="Técnico en Manufactura Asistida por Computadora" <?php echo ($perfil['carrera'] == 'Técnico en Manufactura Asistida por Computadora') ? 'selected' : ''; ?>>Técnico en Manufactura Asistida por Computadora</option>
-                    <option value="Técnico en Sistemas Automotrices" <?php echo ($perfil['carrera'] == 'Técnico en Sistemas Automotrices') ? 'selected' : ''; ?>>Técnico en Sistemas Automotrices</option>
-                    <option value="Técnico en Sistemas Digitales" <?php echo ($perfil['carrera'] == 'Técnico en Sistemas Digitales') ? 'selected' : ''; ?>>Técnico en Sistemas Digitales</option>
-                </select>
+                <input type="text" id="carrera" name="carrera" value="<?php echo htmlspecialchars($perfil['carrera'] ?? ''); ?>" required>
             </div>
 
             <div class="form-group">
                 <label for="semestre">Semestre:</label>
-                <input type="number" id="semestre" name="semestre" value="<?php echo htmlspecialchars($perfil['semestre']); ?>" required>
+                <input type="number" id="semestre" name="semestre" value="<?php echo htmlspecialchars($perfil['semestre'] ?? ''); ?>" required>
             </div>
 
             <div class="form-group">
@@ -100,11 +96,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <div class="form-group">
                 <label for="informacion_extra">Información extra:</label>
-                <textarea id="informacion_extra" name="informacion_extra"><?php echo htmlspecialchars($perfil['informacion_extra']); ?></textarea>
+                <textarea name="informacion_extra"><?php echo htmlspecialchars($perfil['informacion_extra'] ?? ''); ?></textarea>
             </div>
 
-            <button type="submit">Guardar cambios</button>
+            <button type="submit" name="guardar">Guardar cambios</button>
         </form>
+
     </div>
 </body>
+
 </html>
