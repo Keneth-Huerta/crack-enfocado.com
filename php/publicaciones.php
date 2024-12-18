@@ -39,7 +39,7 @@
             // Consulta para obtener las publicaciones con los datos del usuario
             $stmt = $pdo->query("SELECT publicaciones.*, perfiles.foto_perfil FROM publicaciones 
                                  JOIN perfiles ON publicaciones.usuario_id = perfiles.usuario_id
-                                 ORDER BY publicaciones.fecha DESC");
+                                 ORDER BY publicaciones.fecha_publicada DESC");
 
             // Bucle while para mostrar publicaciones
             while ($publicacion = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -51,7 +51,7 @@
                 // Mostrar la imagen de perfil del usuario
                 $foto_perfil = $publicacion['foto_perfil'] ? htmlspecialchars($publicacion['foto_perfil']) : 'default-profile.jpg';
                 echo '<div class="post-avatar">';
-                echo '<img src="../media/uploads/' . $foto_perfil . '" alt="Foto de perfil" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">';
+                echo '<img src="' . $foto_perfil . '" alt="Foto de perfil" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">';
                 echo '</div>';
 
                 echo '<div class="post-username">' . htmlspecialchars($publicacion['usuario'] ?? 'Usuario Anónimo') . '</div>';
@@ -62,7 +62,7 @@
         
                 // Imagen de la publicación (si existe)
                 if (!empty($publicacion['imagen'])) {
-                    echo '<img src="../media/uploads/' . htmlspecialchars($publicacion['imagen']) . '" alt="Imagen de publicación">';
+                    echo '<img src="' . htmlspecialchars($publicacion['imagen']) . '" alt="Imagen de publicación">';
                 }
         
                 // Acciones (botones)
