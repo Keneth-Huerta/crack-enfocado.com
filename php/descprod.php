@@ -3,14 +3,14 @@
 
 <div id="head" class="head row">
 
-<!-- <div class="row">
+ <div class="row">
     <div class="col-md-4 col-md-offset-4">
     <center>
     <img src=".\promos\simi.jpg" height="120px" width="120px">
     <p>MINI SIMIS</p>
     </center>
 
-</div>-->
+</div>
 </div>
 </div>
 
