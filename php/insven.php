@@ -11,6 +11,26 @@ $enlace = mysqli_connect($servidor, $usuarioBD, $claveBD, $baseDeDatos);
 if (!$enlace) {
     die("Conexión fallida: " . mysqli_connect_error());
 }
+
+// Procesar el formulario para agregar un nuevo producto
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $producto = mysqli_real_escape_string($enlace, $_POST['producto']);
+    $id = mysqli_real_escape_string($enlace, $_POST['id']);
+    $precio = mysqli_real_escape_string($enlace, $_POST['precio']);
+    $descripcion = mysqli_real_escape_string($enlace, $_POST['descripcion']);
+    $imagen = mysqli_real_escape_string($enlace, $_POST['imagen']);
+
+    // Insertar el nuevo producto en la base de datos
+    $sql = "INSERT INTO productos (producto, id, precio, descripcion, imagen) 
+            VALUES ('$producto', '$id', '$precio', '$descripcion', '$imagen')";
+    if (mysqli_query($enlace, $sql)) {
+        echo "<p>Producto agregado exitosamente.</p>";
+    } else {
+        echo "<p>Error al agregar el producto: " . mysqli_error($enlace) . "</p>";
+    }
+}
+
+mysqli_close($enlace);
 ?>
 
 <!DOCTYPE html>
@@ -18,101 +38,55 @@ if (!$enlace) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sección de Ventas</title>
+    <title>Agregar Producto</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
             margin: 0;
             padding: 0;
-            background-color: #f9f9f9;
         }
-
-        .sales-section {
-            max-width: 1200px;
-            margin: 0 auto;
+        .container {
+            width: 50%;
+            margin: 50px auto;
             padding: 20px;
-            text-align: center;
-        }
-
-        .sales-title {
-            font-size: 2.5rem;
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .sales-description {
-            font-size: 1.2rem;
-            color: #555;
-            margin-bottom: 20px;
-        }
-
-        .sales-cards {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        .sales-card {
             background-color: #fff;
-            border: 1px solid #ddd;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 300px;
-            padding: 20px;
-            text-align: left;
-            transition: transform 0.3s;
         }
-
-        .sales-card:hover {
-            transform: translateY(-10px);
-        }
-
-        .product-title {
-            font-size: 1.5rem;
+        h1 {
+            text-align: center;
             color: #333;
-            margin-bottom: 10px;
         }
-
-        .product-description {
-            font-size: 1rem;
-            color: #666;
-            margin-bottom: 15px;
+        label {
+            font-size: 16px;
+            margin-bottom: 8px;
+            display: block;
+            color: #333;
         }
-
-        .product-price {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #7d1b1b;
-            margin-bottom: 20px;
-        }
-
-        .buy-button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #7d1b1b;
-            color: #fff;
-            text-decoration: none;
+        input[type="text"],
+        input[type="number"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
             border-radius: 4px;
-            transition: background-color 0.3s;
+            box-sizing: border-box;
+            font-size: 14px;
         }
-
-        .buy-button:hover {
-            background-color: #7d1b1b;
-        }
-
-        .des-button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #7d1b1b;
-            color: #fff;
-            text-decoration: none;
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            border: none;
             border-radius: 4px;
-            transition: background-color 0.3s;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
         }
-
-        .des-button:hover {
-            background-color: #7d1b1b;
+        input[type="submit"]:hover {
+            background-color: #45a049;
         }
 
         /* Estilos para mostrar los productos */
@@ -154,37 +128,26 @@ if (!$enlace) {
     </style>
 </head>
 <body>
+    <div class="container">
+        <h1>Formulario para agregar un nuevo producto</h1>
+        <form method="post">
+            <label for="producto">Nombre del producto:</label>
+            <input type="text" id="producto" name="producto" required><br><br>
 
-<section class="sales-section">
-    <h1 class="sales-title">Materiales</h1>
-    <p class="sales-description">Explora la variedad de materiales cargados por los alumnos</p>
+            <label for="id">ID del producto:</label>
+            <input type="text" id="id" name="id" required><br><br>
 
-    <div class="sales-cards">
-        <?php
-        // Consultar los productos de la base de datos
-        $sql = "SELECT * FROM productos";
-        $result = mysqli_query($enlace, $sql);
+            <label for="precio">Precio:</label>
+            <input type="number" id="precio" name="precio" required><br><br>
 
-        if (mysqli_num_rows($result) > 0) {
-            // Mostrar los productos
-            while ($row = mysqli_fetch_assoc($result)) {
-                echo '<div class="product-card">';
-                echo "<h3>" . htmlspecialchars($row['producto']) . "</h3>";
-                echo "<img src='" . htmlspecialchars($row['imagen']) . "' alt='" . htmlspecialchars($row['producto']) . "' class='product-image'><br>";
-                echo "<p><strong>Precio:</strong> $" . htmlspecialchars($row['precio']) . "</p>";
-                echo "<p><strong>Descripción:</strong> " . htmlspecialchars($row['descripcion']) . "</p>";
-                echo '<a href="#" class="buy-button">Comprar</a>'; // Botón de compra (puedes redirigir a una página de compra)
-                echo '</div>';
-            }
-        } else {
-            echo "<p>No se encontraron productos.</p>";
-        }
+            <label for="descripcion">Descripción:</label>
+            <textarea id="descripcion" name="descripcion" required></textarea><br><br>
 
-        // Cerrar la conexión
-        mysqli_close($enlace);
-        ?>
+            <label for="imagen">URL de la imagen:</label>
+            <input type="text" id="imagen" name="imagen" required><br><br>
+
+            <input type="submit" value="Agregar Producto">
+        </form>
     </div>
-</section>
-
 </body>
 </html>
