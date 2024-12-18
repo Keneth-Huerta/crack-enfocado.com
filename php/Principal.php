@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Plantilla de Sitio Web</title>
     <link rel="stylesheet" href="../css/estilosprin.css">
 </head>
+
 <body>
         <nav>
             <ul>
@@ -52,4 +54,5 @@
         <!-- Contenido del pie de página -->
     </footer>
 </body>
-</html>     
+
+</html>
