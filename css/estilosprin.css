@@ -153,7 +153,7 @@ margin-left: 10px;
 }
 */
 /* Estilos del footer */
-footer {
+.footer-container {
     background-color: #952F57; 
     color: white; 
     padding: 20px;
