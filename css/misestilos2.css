@@ -73,9 +73,9 @@ button {
 a{
     text-decoration: none;
     outline: none;
-    color: inherit;
+    color: black;
 }
 a:focus,a:hover{
     text-decoration: none;
-    color:inherit
+    color:black
 }
