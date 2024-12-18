@@ -120,7 +120,7 @@
         .post-actions button {
             background: none;
             border: none;
-            color: #4267B2;
+            color:  #7d1b1b;
             cursor: pointer;
             font-size: 0.95rem;
             font-weight: bold;
