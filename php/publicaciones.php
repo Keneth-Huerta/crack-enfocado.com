@@ -132,7 +132,7 @@
     </style>
 </head>
 <body>
-    <div class="navbar">Publicaciones</div>
+    <div class="navbar">Publicaciones nuevas</div>
 
     <div class="container">
         <!-- Formulario para crear una publicación -->
@@ -182,7 +182,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = "Usuario Anónimo"; 
     $imagePath = null;
 
-    // Procesar la imagen subida
+    // Procesar
     if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
         $uploadDir = 'uploads/';
         if (!is_dir($uploadDir)) {
@@ -196,7 +196,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    // Insertar la publicación en la base de datos
+    // Insertar la publicación en la base datoosss 
     $stmt = $pdo->prepare("INSERT INTO publicaciones (username, content, image_path) VALUES (:username, :content, :image_path)");
     $stmt->execute([
         ':username' => $username,
