@@ -47,6 +47,7 @@ ul{
     display: flex;
     justify-content: space-between;
     list-style-type: none;
+    background-color: #952F57;
 }
 .boton{
     display: flex;
