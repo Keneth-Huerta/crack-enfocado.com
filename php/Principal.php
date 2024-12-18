@@ -1,17 +1,15 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>Plantilla de Sitio Web</title>
     <link rel="stylesheet" href="../css/estilosprin.css">
 </head>
-
 <body>
-        <nav>
+        <nav class= "cabeza">
             <ul>
-                <li><a href=".cabeza">Logos</a></li>
-                <li><a href=".cabeza">Ventas</a></li>
-                <li><a href="">Ayuda Estudiantil</a></li>
+                <li><a href="#">Logos</a></li>
+                <li><a href="#">Ventas</a></li>
+                <li><a href="#">Ayuda Estudiantil</a></li>
             </ul>
         </nav>
 
@@ -54,5 +52,4 @@
         <!-- Contenido del pie de página -->
     </footer>
 </body>
-
-</html>
+</html>     
