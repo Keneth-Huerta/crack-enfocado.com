@@ -182,7 +182,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = "Usuario Anónimo"; 
     $imagePath = null;
 
-    // Procesar la imagen subida
+    // Procesar
     if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
         $uploadDir = 'uploads/';
         if (!is_dir($uploadDir)) {
