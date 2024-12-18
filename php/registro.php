@@ -3,6 +3,8 @@ $servidor = "localhost";
 $usuarioBD = "u288355303_Keneth";
 $claveBD = "1420Genio.";
 $baseDeDatos = "u288355303_Usuarios";
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
 // Conexión a la base de datos
 $enlace = mysqli_connect($servidor, $usuarioBD, $claveBD, $baseDeDatos);
@@ -21,6 +23,8 @@ if (isset($_POST['registrar'])) {
 
     // Cifrar la contraseña
     $contraseñaCifrada = password_hash($contraseña, PASSWORD_DEFAULT);
+    ini_set('display_errors', 1);
+    error_reporting(E_ALL);
 
     // Preparar la consulta SQL con parámetros
     $insertarDatos = "INSERT INTO registro (nombre, apellido, boleta, correo, contraseña) VALUES (?, ?, ?, ?, ?)";
@@ -40,5 +44,5 @@ if (isset($_POST['registrar'])) {
     mysqli_stmt_close($stmt);
     mysqli_close($enlace);
 }
-?>
-
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
