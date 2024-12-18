@@ -54,7 +54,7 @@
 
         .post-form button {
             background-color: # #7d1b1b;
-            color: white;
+            color:  #7d1b1b;
             border: none;
             padding: 10px 20px;
             border-radius: 6px;
