@@ -115,7 +115,7 @@
             </div>
         </form>
     </div>
-/* */
+
 <?php
 if (isset($_POST['submit'])) {
     $producto = $_POST['producto'];
