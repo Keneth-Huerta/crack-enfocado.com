@@ -19,7 +19,8 @@ if (!$enlace) {
 }
 
 // Función para escapar entradas
-function escapar_entrada($entrada, $enlace) {
+function escapar_entrada($entrada, $enlace)
+{
     return mysqli_real_escape_string($enlace, trim($entrada));
 }
 
@@ -87,4 +88,3 @@ if (isset($_POST['registrar'])) {
     // Cerrar la conexión
     mysqli_close($enlace);
 }
-?>

@@ -168,6 +168,13 @@ footer .footer-container {
     max-width: 1200px; /* Ancho máximo para que no se expanda demasiado */
     margin: 0 auto; /* Centrar el contenido */
     padding: 10px;
+    background-color: #952F57; /* Mismo color que la barra de navegación */
+    color: white; /* Texto en blanco para buena legibilidad */
+    padding: 20px;
+    text-align: center;
+    font-size: 14px; /* Tamaño de fuente más pequeño */
+    border-top: 5px solid #4CAF50; /* Borde verde en la parte superior */
+    box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1); /* Sombra sutil para dar profundidad */
 }
 
 footer p {
