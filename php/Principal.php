@@ -31,8 +31,8 @@
                             <a class="nav-link" href="/ayuda-estudiantil">Ayuda Estudiantil</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="perfil.php">
-                                <img src="../media/user.png" alt="Perfil" style="max-height: 25px;">
+                            <a class="nav-link; " href="perfil.php">
+                                <img  class="rounded-circle" src="../media/user.png" alt="Perfil" style="max-height: 25px;">
                             </a>
                         </li>
                     </ul>
