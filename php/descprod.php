@@ -28,9 +28,6 @@
             <h1>Producto</h1>
             <!-- Descuento -->
             <div class="Descuento" style="color: #7d1b1b; margin-top: 10px;">
-                <p>
-                    <span class="label label-danger">50% Descuento</span>
-                </p>
             </div>
             <!-- Precio -->
             <p>
@@ -42,6 +39,7 @@
             <p>
                 <a href="https://crack-enfocado.com/php/ventas.php" class="btn btn-primary" role="button">REGRESAR</a>
             </p>
+                <a href='#' class='buy-button' style="color: #7d1b1b; margin-top: 10px;">Comprar ahora</a>
         </div>
     </div>
 </body>
