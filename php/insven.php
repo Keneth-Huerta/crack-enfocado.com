@@ -1,9 +1,5 @@
 <?php
 include('header.php')
-// Conexión a la base de datos
-if (!$enlace) {
-    die("Conexión fallida: " . mysqli_connect_error());
-}
 
 // Procesar el formulario para agregar un nuevo producto
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
