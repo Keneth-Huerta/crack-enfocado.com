@@ -13,5 +13,6 @@
          <p><span class="label label-danger">50%</span></p>
          </div>
         <p><font size="4px"><b>$300</b></font><sup>00</sup></small></p>
-        <p>Mini simi para que te desestreses puedes aventarlo y pegarle :D</p></div>        <p><a href="http://localhost/tienda5.com/admingrupo/productos.php" class="btn btn-primary" role="button">REGRESAR</a></p>
+        <p>Mini simi para que te desestreses puedes aventarlo y pegarle :D</p></div>        
+        <p><a href="https://crack-enfocado.com/php/ventas.php" class="btn btn-primary" role="button">REGRESAR</a></p>
 </div>
