@@ -2,14 +2,14 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>CECyT 3 - Página Principal</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CECyT 3 - Página Principal</title>
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     
     <!-- Custom CSS -->
-<link rel="stylesheet" href="../CSS/estilosprin.css">
+    <link rel="stylesheet" href="../CSS/estilosprin.css">
 </head>
 <body>
     <div class="container-fluid">
@@ -31,7 +31,7 @@
                             <a class="nav-link" href="/ayuda-estudiantil">Ayuda Estudiantil</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link; btn btn-primary rounded;" href="perfil.php">
+                            <a class="nav-link" href="perfil.php">
                                 <img src="../media/user.png" alt="Perfil" style="max-height: 25px;">
                             </a>
                         </li>
@@ -44,33 +44,30 @@
         <main class="container mt-4">
             <h2 class="mb-4 fs-1">Más publicaciones</h2>
             
-            <div class="row mb-4 publicaciones" style="background-color: darkgrey; padding-top: 4rem; padding-bottom: 4rem;">
-    <div class="col-12">
-        <div class="content-item">
-            <div class="d-flex" style="gap: 10px;">
-                <!-- Imagen con 5px menos de largo -->
-                <div style="flex: 0 0 60%; height: calc(100% - 5px);">
-                    <img src="../media/user_icon_001.jpg" 
-                         class="img-fluid imagengrande rounded border border-dark" 
-                         alt="Imagen de contenido"
-                         style="height: 50%; width: 40%; object-fit: cover;">
+            <!-- Publicaciones destacadas -->
+            <div class="row mb-4 publicaciones bg-light p-4 rounded-3 shadow-sm">
+                <div class="col-12">
+                    <div class="content-item d-flex gap-3 align-items-center">
+                        <div style="flex: 0 0 60%; height: 200px;">
+                            <img src="../media/user_icon_001.jpg" 
+                                 class="img-fluid rounded-3 border border-dark" 
+                                 alt="Imagen de contenido" 
+                                 style="object-fit: cover; height: 100%; width: 100%;">
+                        </div>
+                        <div>
+                            <a href="publicaciones.php" class="btn btn-primary mt-3">Ver más</a>
+                        </div>
+                    </div>
                 </div>
-                
-                <!-- Botón alineado arriba con 10px de separación -->
-                <div style="padding-top: 2px; margin-left: -450px;">
-                <a href="publicaciones.php" class="btn btn-primary">Ver más</a>
             </div>
-            </div>
-        </div>
-    </div>
-</div>
-            
+
             <h2 class="mb-4 fs-3">Lo más reciente...</h2>
 
-            <div class="row row-cols-1 row-cols-md-3 g-4 publicaciones">
+            <!-- Lista de publicaciones -->
+            <div class="row row-cols-1 row-cols-md-3 g-4">
                 <?php for ($i = 0; $i < 6; $i++): ?>
                 <div class="col">
-                    <div class="card h-100">
+                    <div class="card h-100 shadow-sm">
                         <img src="../media/logoweb.jpg" class="card-img-top" alt="Imagen de publicación">
                         <div class="card-body">
                             <h5 class="card-title">Título de la publicación</h5>
