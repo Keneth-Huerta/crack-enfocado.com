@@ -37,7 +37,7 @@
 
 <div class="content-item">
     <div>
-        <img src="user_icon_001.jpg" class="imagengrande" alt="Imagen de contenido">
+        <img src="../media/user_icon_001.jpg" class="imagengrande" alt="Imagen de contenido">
     </div>
     <div class="ver">
         <a href="">Ver más</a>
@@ -51,41 +51,41 @@
 <div class="publicaciones">
 
     <div class="post-item">
-        <img src="logoweb.jpg" alt="Imagen de publicación">
+        <img src="../media/ilogoweb.jpg" alt="Imagen de publicación">
         <h3>Título de la publicación</h3>
         <p>Resumen de la publicación</p>
         <a href="#">Leer más</a>
     </div>
     <div class="post-item">
-        <img src="logoweb.jpg" alt="Imagen de publicación">
-        <h3>Título de la publicación</h3>
-        <p>Resumen de la publicación</p>
-        <a href="#">Leer más</a>
-
-    </div>
-    <div class="post-item">
-        <img src="logoweb.jpg" alt="Imagen de publicación">
+        <img src="../media/ilogoweb.jpg" alt="Imagen de publicación">
         <h3>Título de la publicación</h3>
         <p>Resumen de la publicación</p>
         <a href="#">Leer más</a>
 
     </div>
     <div class="post-item">
-        <img src="logoweb.jpg" alt="Imagen de publicación">
+        <img src="../media/ilogoweb.jpg" alt="Imagen de publicación">
         <h3>Título de la publicación</h3>
         <p>Resumen de la publicación</p>
         <a href="#">Leer más</a>
 
     </div>
     <div class="post-item">
-        <img src="logoweb.jpg" alt="Imagen de publicación">
+        <img src="../media/ilogoweb.jpg" alt="Imagen de publicación">
         <h3>Título de la publicación</h3>
         <p>Resumen de la publicación</p>
         <a href="#">Leer más</a>
 
     </div>
     <div class="post-item">
-        <img src="logoweb.jpg" alt="Imagen de publicación">
+        <img src="../media/ilogoweb.jpg" alt="Imagen de publicación">
+        <h3>Título de la publicación</h3>
+        <p>Resumen de la publicación</p>
+        <a href="#">Leer más</a>
+
+    </div>
+    <div class="post-item">
+        <img src="../media/ilogoweb.jpg" alt="Imagen de publicación">
         <h3>Título de la publicación</h3>
         <p>Resumen de la publicación</p>
         <a href="#">Leer más</a>
