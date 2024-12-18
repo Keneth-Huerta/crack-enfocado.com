@@ -1,151 +1,150 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Página de Feed Social</title>
-  <style>
-    /* Estilos generales */
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f0f2f5;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publicaciones Creativas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+        }
 
-    /* Estilos del encabezado */
-    header {
-      background-color: #3b5998;
-      color: #fff;
-      padding: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+        .navbar {
+            background-color: #4267B2;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
 
-    .logo {
-      font-size: 24px;
-      font-weight: bold;
-    }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 10px;
+        }
 
-    .search-bar {
-      width: 300px;
-      padding: 8px 12px;
-      border-radius: 20px;
-      border: none;
-      outline: none;
-    }
+        .post-form {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
 
-    /* Estilos de las publicaciones */
-    .post-container {
-      margin: 20px;
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
+        .post-form textarea {
+            width: 100%;
+            height: 100px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            resize: none;
+            font-size: 1rem;
+        }
 
-    .post-header {
-      display: flex;
-      align-items: center;
-      padding: 12px;
-    }
+        .post-form button {
+            background-color: #4267B2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
 
-    .profile-picture {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      margin-right: 12px;
-    }
+        .post-form button:hover {
+            background-color: #365899;
+        }
 
-    .username {
-      font-weight: bold;
-    }
+        .post {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
 
-    .post-content {
-      padding: 12px;
-    }
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
 
-    .post-image {
-      width: 100%;
-      max-height: 400px;
-      object-fit: cover;
-      border-radius: 8px;
-    }
+        .post-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #ddd;
+            margin-right: 10px;
+        }
 
-    .post-actions {
-      display: flex;
-      justify-content: space-between;
-      padding: 12px;
-    }
+        .post-username {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
 
-    .like-button,
-    .comment-button,
-    .share-button {
-      background-color: transparent;
-      border: none;
-      color: #606770;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      font-size: 14px;
-    }
+        .post-content {
+            font-size: 1rem;
+            color: #333;
+        }
 
-    .like-button:hover,
-    .comment-button:hover,
-    .share-button:hover {
-      color: #1877f2;
-    }
-  </style>
+        .post-actions {
+            margin-top: 10px;
+        }
+
+        .post-actions button {
+            background: none;
+            border: none;
+            color: #4267B2;
+            cursor: pointer;
+            margin-right: 10px;
+            font-size: 0.9rem;
+        }
+
+        .post-actions button:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
-
 <body>
-  <header>
-    <div class="logo">Página de Feed Social</div>
-    <input type="text" class="search-bar" placeholder="Buscar">
-  </header>
+    <div class="navbar">Mi Red Social Creativa</div>
 
-  <?php
-    // Array de publicaciones de ejemplo
-    $posts = array(
-      array(
-        'profile_picture' => '/profile-picture-1.jpg',
-        'username' => 'Usuario 1',
-        'post_image' => '/post-image-1.jpg',
-        'post_content' => 'Este es el contenido de la primera publicación.'
-      ),
-      array(
-        'profile_picture' => '/profile-picture-2.jpg',
-        'username' => 'Usuario 2',
-        'post_content' => 'Este es el contenido de la segunda publicación.'
-      )
-    );
+    <div class="container">
+        <!-- Formulario para crear una publicación -->
+        <div class="post-form">
+            <form action="" method="post">
+                <textarea name="content" placeholder="¿Qué estás pensando?"></textarea>
+                <button type="submit">Publicar</button>
+            </form>
+        </div>
 
-    // Recorrer el array de publicaciones y mostrarlas
-    foreach ($posts as $post) {
-  ?>
-  <div class="post-container">
-    <div class="post-header">
-      <img src="<?php echo $post['profile_picture']; ?>" alt="Perfil" class="profile-picture">
-      <div class="username"><?php echo $post['username']; ?></div>
+        <!-- Mostrar publicaciones -->
+        <?php
+        $publicaciones = [
+            ["username" => "Juan Pérez", "content" => "¡Hoy es un gran día! 😊"],
+            ["username" => "Ana López", "content" => "Me encanta este lugar. 🌄"],
+            ["username" => "Carlos Gómez", "content" => "¿Alguien tiene recomendaciones de películas? 🎥"],
+        ];
+
+        foreach ($publicaciones as $publicacion) {
+            echo "<div class='post'>";
+            echo "<div class='post-header'>";
+            echo "<div class='post-avatar'></div>";
+            echo "<div class='post-username'>{$publicacion['username']}</div>";
+            echo "</div>";
+            echo "<div class='post-content'>{$publicacion['content']}</div>";
+            echo "<div class='post-actions'>";
+            echo "<button>Me gusta</button>";
+            echo "<button>Comentar</button>";
+            echo "</div>";
+            echo "</div>";
+        }
+        ?>
     </div>
-    <div class="post-content">
-      <?php if (isset($post['post_image'])) { ?>
-        <img src="<?php echo $post['post_image']; ?>" alt="Publicación" class="post-image">
-      <?php } ?>
-      <p><?php echo $post['post_content']; ?></p>
-    </div>
-    <div class="post-actions">
-      <button class="like-button">
-        <i class="fas fa-thumbs-up"></i> Me gusta
-      </button>
-      <button class="comment-button">
-        <i class="fas fa-comment"></i> Comentar
-      </button>
-      <button class="share-button">
-        <i class="fas fa-share"></i> Compartir
-      </button>
-    </div>
-  </div>
-  <?php } ?>
 </body>
 </html>
