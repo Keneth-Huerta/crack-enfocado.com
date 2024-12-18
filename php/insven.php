@@ -1,5 +1,16 @@
 <?php
-include('header.php')
+// Conexión a la base de datos
+session_start();
+$servidor = "localhost";
+$usuarioBD = "u288355303_Keneth"; // Usuario de la base de datos
+$claveBD = "1420Genio."; // Contraseña de la base de datos
+$baseDeDatos = "u288355303_Usuarios"; // Nombre de la base de datos
+
+// Conexión a la base de datos
+$enlace = mysqli_connect($servidor, $usuarioBD, $claveBD, $baseDeDatos);
+if (!$enlace) {
+    die("Conexión fallida: " . mysqli_connect_error());
+}
 
 // Procesar el formulario para agregar un nuevo producto
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
