@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Procesar la imagen (si existe)
     if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-        $uploadDir = '../media'; // Carpeta para guardar las imágenes
+        $uploadDir = '../media/'; // Carpeta para guardar las imágenes
     
 
         $imageName = time() . '_' . basename($_FILES['image']['name']);
@@ -39,11 +39,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Guardar la publicación en la base de datos
     try {
-        $stmt = $pdo->prepare("INSERT INTO publicaciones (usuario, contenido, imagen) VALUES (:username, :content, :image_path)");
+        $stmt = $pdo->prepare("INSERT INTO publicaciones (usuario, contenido, imagen) VALUES (:username, :content, :imagen)");
         $stmt->execute([
             ':username' => $username,
             ':content' => $content,
-            ':image_path' => $imagePath
+            ':imagen' => $imagePath
         ]);
 
         // Redirigir al usuario a la página principal tras publicar
