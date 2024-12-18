@@ -19,6 +19,7 @@
             text-align: center;
         }
 
+
         .sales-title {
             font-size: 2.5rem;
             color: #333;
@@ -68,14 +69,14 @@
         .product-price {
             font-size: 1.2rem;
             font-weight: bold;
-            color: #ff5722;
+            color: #7d1b1b;
             margin-bottom: 20px;
         }
 
         .buy-button {
             display: inline-block;
             padding: 10px 20px;
-            background-color: #ff5722;
+            background-color: #7d1b1b;
             color: #fff;
             text-decoration: none;
             border-radius: 4px;
@@ -83,8 +84,23 @@
         }
 
         .buy-button:hover {
-            background-color: #e64a19;
+            background-color: #7d1b1b;
         }
+
+        .des-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #7d1b1b;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .des-button:hover {
+            background-color: #7d1b1b;
+        }
+
 
         @media (max-width: 768px) {
             .sales-cards {
@@ -95,16 +111,21 @@
     </style>
 </head>
 <body>
+
+
+
+
+
     <section class="sales-section">
-        <h1 class="sales-title">Nuestros Productos</h1>
-        <p class="sales-description">Explora nuestra variedad de productos y encuentra lo que necesitas al mejor precio.</p>
+        <h1 class="sales-title">Materiales</h1>
+        <p class="sales-description">Explora la variedad de materiales cargados por los alumnos</p>
 
         <div class="sales-cards">
             <?php
                 $productos = [
-                    ["title" => "Producto 1", "description" => "Descripción breve del producto 1. Perfecto para tus necesidades.", "price" => "$49.99"],
-                    ["title" => "Producto 2", "description" => "Descripción breve del producto 2. Calidad garantizada.", "price" => "$79.99"],
-                    ["title" => "Producto 3", "description" => "Descripción breve del producto 3. Lo que necesitas, cuando lo necesitas.", "price" => "$99.99"],
+                    ["title" => "Producto 1", "description" => "Descripción", "price" => "$49.99"],
+                    ["title" => "Producto 2", "description" => "Descripción", "price" => "$79.99"],
+                    ["title" => "Producto 3", "description" => "Descripción", "price" => "$99.99"],
                 ];
 
                 foreach ($productos as $producto) {
@@ -113,6 +134,7 @@
                     echo "<p class='product-description'>{$producto['description']}</p>";
                     echo "<p class='product-price'>{$producto['price']}</p>";
                     echo "<a href='#' class='buy-button'>Comprar ahora</a>";
+                    echo "<p><a href='https://crack-enfocado.com/php/descprod.php' class='des-button'>Descripcion</a></p>";
                     echo "</div>";
                 }
             ?>
@@ -120,4 +142,3 @@
     </section>
 </body>
 </html>
-
