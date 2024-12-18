@@ -13,7 +13,7 @@
         }
 
         .navbar {
-            background-color: #4267B2;
+            background-color: #7d1b1b;
             color: white;
             padding: 15px;
             text-align: center;
