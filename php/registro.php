@@ -14,8 +14,7 @@ if (!$enlace) {
 }
 
 // Función para escapar entradas
-function escapar_entrada($entrada, $enlace)
-{
+function escapar_entrada($entrada, $enlace) {
     return mysqli_real_escape_string($enlace, trim($entrada));
 }
 
@@ -33,7 +32,7 @@ if (isset($_POST['registrar'])) {
         exit();
     }
 
-    // Validación de la contraseña (mínimo 6 caracteres, puedes ajustarlo)
+    // Validación de la contraseña (mínimo 6 caracteres)
     if (strlen($contraseña) < 6) {
         echo '<script>alert("La contraseña debe tener al menos 6 caracteres."); location.href="../registro.html";</script>';
         exit();
@@ -41,6 +40,20 @@ if (isset($_POST['registrar'])) {
 
     // Cifrar la contraseña
     $contraseñaCifrada = password_hash($contraseña, PASSWORD_DEFAULT);
+
+    // Verificar si el correo ya está registrado
+    $queryVerificarCorreo = "SELECT * FROM registro WHERE correo = ?";
+    if ($stmtVerificar = mysqli_prepare($enlace, $queryVerificarCorreo)) {
+        mysqli_stmt_bind_param($stmtVerificar, "s", $correo);
+        mysqli_stmt_execute($stmtVerificar);
+        $resultadoVerificar = mysqli_stmt_get_result($stmtVerificar);
+        if (mysqli_num_rows($resultadoVerificar) > 0) {
+            // Si el correo ya existe, mostrar mensaje y redirigir
+            echo '<script>alert("El correo ya está registrado."); location.href="../registro.html";</script>';
+            exit();
+        }
+        mysqli_stmt_close($stmtVerificar);
+    }
 
     // Preparar la consulta SQL con parámetros
     $insertarDatos = "INSERT INTO registro (nombre, apellido, boleta, correo, contraseña) VALUES (?, ?, ?, ?, ?)";
@@ -69,3 +82,4 @@ if (isset($_POST['registrar'])) {
     // Cerrar la conexión
     mysqli_close($enlace);
 }
+?>
