@@ -157,16 +157,17 @@ margin-left: 10px;
 footer {
     background-color: #952F57; /* Mismo color que la barra de navegación */
     color: white; /* Texto en blanco para buena legibilidad */
-    padding: 20px;
+    padding: 5px;
     text-align: center;
     font-size: 14px; /* Tamaño de fuente más pequeño */
+   
     box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1); /* Sombra sutil para dar profundidad */
 }
 
 footer .footer-container {
-    max-width: 1200px; /* Ancho máximo para que no se expanda demasiado */
-    margin: 0 auto; /* Centrar el contenido */
-    padding: 10px;
+    max-width: auto; /* Ancho máximo para que no se expanda demasiado */
+    margin: 0 ; /* Centrar el contenido */
+    padding: 2px;
     background-color: #952F57; /* Mismo color que la barra de navegación */
     color: white; /* Texto en blanco para buena legibilidad */
     padding: 20px;
@@ -200,4 +201,30 @@ footer .social-links a {
 
 footer .social-links a:hover {
     color: #2563eb; /* Cambiar el color cuando se pasa el cursor */
+}
+@media (max-width: 600px) {
+    footer {
+        font-size: 12px; /* Reducir el tamaño de la fuente en pantallas pequeñas */
+        padding: 15px 0; /* Ajustar el padding para que no se vea apretado */
+    }
+
+    footer .social-links a {
+        font-size: 14px; /* Hacer los enlaces más pequeños */
+    }
+
+    footer .footer-container {
+        padding: 0 15px; /* Reducir el espacio horizontal en pantallas pequeñas */
+    }
+}
+
+/* Media query para pantallas medianas (como tabletas) */
+@media (max-width: 900px) {
+    footer {
+        font-size: 13px; /* Ajustar tamaño de la fuente para pantallas medianas */
+        padding: 20px 0;
+    }
+
+    footer .footer-container {
+        padding: 0 20px; /* Mantener espacio lateral para tabletas */
+    }
 }

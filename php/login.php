@@ -47,7 +47,6 @@ if (isset($_POST['correo'], $_POST['contra'])) {
                 echo '<script>
                     
                     alert("contraseña inválida");
-                  
                 </script>';
             }
         } else {

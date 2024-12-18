@@ -1,0 +1,133 @@
+/* Color principal del IPN: Rojo y Blanco */
+:root {
+    --color-primario: #9C1C31; /* Rojo IPN */
+    --color-secundario: #FFFFFF; /* Blanco */
+    --color-texto: #333333; /* Negro para texto */
+    --color-gris: #E0E0E0; /* Gris claro para fondos */
+}
+
+/* General */
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--color-gris);
+    color: var(--color-texto);
+    margin: 0;
+    padding: 0;
+}
+
+/* Encabezado de la página */
+header {
+    background-color: var(--color-primario);
+    color: var(--color-secundario);
+    padding: 20px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin: 0;
+}
+
+/* Contenedor principal del perfil */
+.perfil-container {
+    max-width: 900px;
+    margin: 40px auto;
+    background-color: #FFF;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* Imagen de portada */
+.perfil-portada {
+    position: relative;
+    width: 100%;
+    height: 250px;
+}
+
+.perfil-portada img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Contenedor de la información del perfil */
+.perfil-info {
+    display: flex;
+    padding: 20px;
+    background-color: var(--color-secundario);
+}
+
+.perfil-img-container {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 20px;
+    border: 5px solid var(--color-primario);
+}
+
+.perfil-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.perfil-details {
+    flex-grow: 1;
+}
+
+.perfil-details h1 {
+    font-size: 2rem;
+    color: var(--color-primario);
+}
+
+.perfil-details p {
+    font-size: 1.1rem;
+    margin: 5px 0;
+}
+
+/* Botones de acción */
+.perfil-actions {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.perfil-actions .btn {
+    background-color: var(--color-primario);
+    color: var(--color-secundario);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    margin: 5px;
+}
+
+.perfil-actions .btn:hover {
+    background-color: #7b1222; /* Rojo más oscuro */
+    cursor: pointer;
+}
+
+/* Sección de actividades */
+.perfil-actividades {
+    padding: 20px;
+    background-color: var(--color-secundario);
+    border-top: 2px solid var(--color-primario);
+}
+
+.perfil-actividades h2 {
+    font-size: 1.8rem;
+    color: var(--color-primario);
+}
+
+.perfil-actividades ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.perfil-actividades li {
+    font-size: 1.1rem;
+    margin: 10px 0;
+}
+
