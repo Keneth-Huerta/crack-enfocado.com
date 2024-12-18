@@ -15,9 +15,9 @@ if (mysqli_connect_errno()) {
 session_start();
 
 // Validar si el formulario ha sido enviado
-if (isset($_POST['login'])) {
+if (isset($_POST['iniciar_sesion'])) {
     $login_input = $_POST['login_input'];  // Nombre de usuario o correo
-    $contraseña = $_POST['contraseña'];
+    $contraseña = $_POST['contra'];
 
     // Comprobar si el input es un correo electrónico o un nombre de usuario
     if (filter_var($login_input, FILTER_VALIDATE_EMAIL)) {
@@ -56,29 +56,3 @@ if (isset($_POST['login'])) {
 
 mysqli_close($enlace);
 ?>
-
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar Sesión</title>
-    <link rel="stylesheet" href="css/misestilos.css">
-</head>
-<body>
-
-<div class="form-container">
-    <h1>Iniciar Sesión</h1>
-    <form action="login.php" method="POST">
-        <div class="form-group">
-            <input type="text" name="login_input" required placeholder="Nombre de Usuario o Correo" />
-        </div>
-        <div class="form-group">
-            <input type="password" name="contraseña" required placeholder="Contraseña" />
-        </div>
-        <button type="submit" name="login">Iniciar Sesión</button>
-    </form>
-</div>
-
-</body>
-</html>
