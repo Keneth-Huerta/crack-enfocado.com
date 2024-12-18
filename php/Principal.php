@@ -24,7 +24,7 @@
     </nav>
 
     <main>
-    <h2>Lo más reciente...</h2>
+    <h2>Más publicaciones</h2>
         <div class="content-item">
             <img src="../media/user_icon_001.jpg" class="imagengrande"  alt="Imagen de contenido">
             <a href="publicaciones.php" style="top: 0;">Ver más</a>
@@ -32,7 +32,7 @@
 
 
 
-        <h2>Más publicaciones</h2>
+        <h2>Lo más reciente...</h2>
 
         <div class="publicaciones">
 
