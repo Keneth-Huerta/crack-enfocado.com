@@ -26,20 +26,19 @@
         <!-- Detalles del producto -->
         <div class="col-md-8">
             <h1>Producto</h1>
-            <!-- Descuento -->
-            <div class="Descuento" style="color: #7d1b1b; margin-top: 10px;">
+
             </div>
             <!-- Precio -->
             <p>
-                <font size="4"><b>$300</b></font><sup>00</sup>
+            <p><font size="4px"><b>$300</b></font><sup>00</sup></small></p>
             </p>
             <!-- Descripción -->
-            <p>Mini Simi para que te desestreses: puedes aventarlo y pegarle :D</p>
+            <p>:D</p>
             <!-- Botón -->
             <p>
                 <a href="https://crack-enfocado.com/php/ventas.php" class="btn btn-primary" role="button">REGRESAR</a>
             </p>
-                <a href='#' class='buy-button' style="color: #7d1b1b; margin-top: 10px;">Comprar ahora</a>
+                <a href='#' class='btn btn-primary'role ="button">Comprar ahora</a>
         </div>
     </div>
 </body>
