@@ -24,10 +24,15 @@ if (isset($_SESSION['usuario_id'])) {
 }
 ?>
 
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Custom CSS -->
+<link rel="stylesheet" href="../CSS/estilosprin.css">
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #952F57;">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="/index.html">
             <img src="../media/logoweb.svg" alt="Logo" class="img-fluid" style="max-height: 50px;">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -50,4 +55,3 @@ if (isset($_SESSION['usuario_id'])) {
         </div>
     </div>
 </nav>
-

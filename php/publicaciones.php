@@ -7,6 +7,8 @@
     <title>Publicaciones</title>
 </head>
 <body>
+    <?php include('header.php'); ?>
+    <link rel="stylesheet" href="../css/publicaciones.css">
     <div class="navbar">Publicaciones</div>
 
     <div class="container">
