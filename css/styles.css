@@ -1,51 +1,70 @@
-/* Estilos generales */
+/* Color principal del IPN: Rojo y Blanco */
+:root {
+    --color-primario: #9C1C31; /* Rojo IPN */
+    --color-secundario: #FFFFFF; /* Blanco */
+    --color-texto: #333333; /* Negro para texto */
+    --color-gris: #E0E0E0; /* Gris claro para fondos */
+}
+
+/* General */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f7fc;
+    background-color: var(--color-gris);
+    color: var(--color-texto);
     margin: 0;
     padding: 0;
 }
 
-.perfil-container {
-    width: 100%;
-    max-width: 900px;
-    margin: 40px auto;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+/* Encabezado de la página */
+header {
+    background-color: var(--color-primario);
+    color: var(--color-secundario);
     padding: 20px;
+    text-align: center;
 }
 
+header h1 {
+    font-size: 2.5rem;
+    margin: 0;
+}
+
+/* Contenedor principal del perfil */
+.perfil-container {
+    max-width: 900px;
+    margin: 40px auto;
+    background-color: #FFF;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* Imagen de portada */
 .perfil-portada {
+    position: relative;
     width: 100%;
     height: 250px;
-    overflow: hidden;
-    position: relative;
 }
 
 .perfil-portada img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 10px;
 }
 
+/* Contenedor de la información del perfil */
 .perfil-info {
     display: flex;
-    margin-top: -60px;
-    padding: 20px 0;
-    align-items: center;
-    justify-content: space-between;
+    padding: 20px;
+    background-color: var(--color-secundario);
 }
 
 .perfil-img-container {
-    flex-shrink: 0;
-    margin-right: 20px;
-    width: 120px;
-    height: 120px;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
     overflow: hidden;
-    border: 3px solid #fff;
+    margin-right: 20px;
+    border: 5px solid var(--color-primario);
 }
 
 .perfil-img {
@@ -59,80 +78,56 @@ body {
 }
 
 .perfil-details h1 {
-    font-size: 24px;
-    color: #333;
-    margin-bottom: 10px;
+    font-size: 2rem;
+    color: var(--color-primario);
 }
 
 .perfil-details p {
-    font-size: 16px;
-    color: #555;
+    font-size: 1.1rem;
+    margin: 5px 0;
 }
 
+/* Botones de acción */
 .perfil-actions {
-    display: flex;
-    justify-content: space-between;
+    text-align: center;
     margin-top: 20px;
 }
 
 .perfil-actions .btn {
-    background-color: #007bff;
-    color: white;
+    background-color: var(--color-primario);
+    color: var(--color-secundario);
     padding: 10px 20px;
-    text-decoration: none;
+    border: none;
     border-radius: 5px;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
+    text-decoration: none;
+    font-weight: bold;
+    margin: 5px;
 }
 
 .perfil-actions .btn:hover {
-    background-color: #0056b3;
+    background-color: #7b1222; /* Rojo más oscuro */
+    cursor: pointer;
 }
 
-.perfil-actions .btn:active {
-    background-color: #004085;
-}
-
+/* Sección de actividades */
 .perfil-actividades {
-    margin-top: 40px;
+    padding: 20px;
+    background-color: var(--color-secundario);
+    border-top: 2px solid var(--color-primario);
 }
 
 .perfil-actividades h2 {
-    font-size: 22px;
-    color: #333;
-    margin-bottom: 20px;
+    font-size: 1.8rem;
+    color: var(--color-primario);
 }
 
 .perfil-actividades ul {
     list-style-type: none;
-    padding: 0;
+    padding-left: 0;
 }
 
-.perfil-actividades ul li {
-    background-color: #f0f0f0;
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 5px;
+.perfil-actividades li {
+    font-size: 1.1rem;
+    margin: 10px 0;
 }
 
-@media (max-width: 768px) {
-    .perfil-info {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .perfil-img-container {
-        margin-right: 0;
-        margin-bottom: 20px;
-    }
-
-    .perfil-actions {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .perfil-actions .btn {
-        width: 100%;
-        margin-bottom: 10px;
-    }
-}
