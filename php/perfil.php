@@ -1,5 +1,8 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 require_once 'conexion.php'; // Conexión a la base de datos
 
 // Asegúrate de que el usuario esté logueado
