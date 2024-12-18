@@ -1,6 +1,6 @@
 <?php
 // Establecer la conexión con la base de datos
-$conn = new mysqli('https://crack-enfocado.com');
+$conn = new mysqli('localhost', 'root', '', 'ventas_db');
 
 // Verificar la conexión
 if ($conn->connect_error) {
