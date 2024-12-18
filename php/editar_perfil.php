@@ -58,7 +58,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Actualizar datos del perfil existente
         $update_query = "UPDATE perfiles SET nombre = ?, apellido = ?, carrera = ?, semestre = ?, foto_perfil = ?, foto_portada = ?, informacion_extra = ? WHERE usuario_id = ?";
         $stmt = mysqli_prepare($enlace, $update_query);
+        
         // Asegúrate de que el número de marcadores de tipo coincida con los valores
+        // 8 marcadores para las 8 variables: nombre, apellido, carrera, semestre, foto_perfil, foto_portada, informacion_extra, usuario_id
         mysqli_stmt_bind_param($stmt, "sssisiss", $nombre, $apellido, $carrera, $semestre, $foto_perfil, $foto_portada, $informacion_extra, $usuario_id);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
@@ -67,13 +69,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $insert_query = "INSERT INTO perfiles (usuario_id, nombre, apellido, carrera, semestre, foto_perfil, foto_portada, informacion_extra) 
                          VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = mysqli_prepare($enlace, $insert_query);
+        
         // Asegúrate de que el número de marcadores de tipo coincida con los valores
+        // 8 marcadores para las 8 variables: usuario_id, nombre, apellido, carrera, semestre, foto_perfil, foto_portada, informacion_extra
         mysqli_stmt_bind_param($stmt, "isssisiss", $usuario_id, $nombre, $apellido, $carrera, $semestre, $foto_perfil, $foto_portada, $informacion_extra);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
     }
 
-    header("Location: perfil.php"); // Redirigir al perfil después de guardar cambios
+    // Redirigir al perfil después de guardar cambios
+    header("Location: perfil.php");
     exit();
 }
 ?>
