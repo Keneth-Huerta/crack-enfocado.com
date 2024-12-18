@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'conexion.php'; // Conexión a la base de datos
+require_once '../php/conexion.php'; // Conexión a la base de datos
 
 // Asegúrate de que el usuario esté logueado
 if (!isset($_SESSION['usuario_id'])) {
@@ -55,15 +55,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Si el perfil ya existe, actualizamos, si no, insertamos uno nuevo
     if ($perfil['nombre'] != '') {
+        // Actualizar datos del perfil existente
         $update_query = "UPDATE perfiles SET nombre = ?, apellido = ?, carrera = ?, semestre = ?, foto_perfil = ?, foto_portada = ?, informacion_extra = ? WHERE usuario_id = ?";
         $stmt = mysqli_prepare($enlace, $update_query);
+        // Asegúrate de que el número de marcadores de tipo coincida con los valores
         mysqli_stmt_bind_param($stmt, "sssisiss", $nombre, $apellido, $carrera, $semestre, $foto_perfil, $foto_portada, $informacion_extra, $usuario_id);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
     } else {
+        // Insertar nuevo perfil si no existe
         $insert_query = "INSERT INTO perfiles (usuario_id, nombre, apellido, carrera, semestre, foto_perfil, foto_portada, informacion_extra) 
                          VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = mysqli_prepare($enlace, $insert_query);
+        // Asegúrate de que el número de marcadores de tipo coincida con los valores
         mysqli_stmt_bind_param($stmt, "isssisiss", $usuario_id, $nombre, $apellido, $carrera, $semestre, $foto_perfil, $foto_portada, $informacion_extra);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
@@ -74,14 +78,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 ?>
 
+
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar perfil</title>
     <link rel="stylesheet" href="../css/editar_perfil.css">
 </head>
+
 <body>
     <div class="form-container">
         <h1>Editar perfil</h1>
@@ -131,4 +138,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </form>
     </div>
 </body>
+
 </html>
