@@ -21,13 +21,16 @@ mysqli_stmt_close($stmt);
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi Perfil</title>
     <link rel="stylesheet" href="../css/misestilos.css">
 </head>
+
 <body>
+    <?php include('header.php'); ?>
     <div class="perfil-container">
         <!-- Foto de portada -->
         <div class="foto-portada">
@@ -55,4 +58,5 @@ mysqli_stmt_close($stmt);
         </div>
     </div>
 </body>
+
 </html>
