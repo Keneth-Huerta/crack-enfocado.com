@@ -42,7 +42,6 @@
                 echo '<img src="' . htmlspecialchars($publicacion['imagen'] ?? './media/logoweb.jpg') . '" alt="Imagen de publicación">';
                 echo '<h3>' . htmlspecialchars($publicacion['usuario'] ?? 'Usuario Anónimo') . '</h3>';
                 echo '<p>' . htmlspecialchars($publicacion['contenido'] ?? 'Sin contenido') . '</p>';
-                echo '<a href="#">Leer más</a>';
                 echo '</div>';
             }
             ?>
