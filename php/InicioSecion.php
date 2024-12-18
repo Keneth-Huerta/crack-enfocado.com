@@ -15,7 +15,8 @@ if (!$enlace) {
 session_start();
 
 // Función para escapar entradas
-function escapar_entrada($entrada, $enlace) {
+function escapar_entrada($entrada, $enlace)
+{
     return mysqli_real_escape_string($enlace, trim($entrada));
 }
 
@@ -71,4 +72,3 @@ if (isset($_POST['correo'], $_POST['contra'])) {
 
 // Cerrar conexión
 mysqli_close($enlace);
-?>
