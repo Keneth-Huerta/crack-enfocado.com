@@ -1,13 +1,12 @@
 <?php
 // Configuración de la base de datos
-$servor = "localhost";
-$usuarip = "u288355303_Keneth";
-$clave = "1420Genio.";
+$servidor = "localhost";
+$usuarioBD = "u288355303_Keneth";
+$claveBD = "1420Genio.";
 $baseDeDatos = "u288355303_Usuarios";
 
 // Conexión a la base de datos
-$enlace = mysqli_connect($servor, $usuarip, $clave, $baseDeDatos);
-
+$enlace = mysqli_connect($servidor, $usuarioBD, $claveBD, $baseDeDatos);
 if (!$enlace) {
     die("Conexión fallida: " . mysqli_connect_error());
 }
@@ -15,40 +14,55 @@ if (!$enlace) {
 // Iniciar sesión
 session_start();
 
+// Función para escapar entradas
+function escapar_entrada($entrada, $enlace) {
+    return mysqli_real_escape_string($enlace, trim($entrada));
+}
+
 // Validar entrada del formulario
 if (isset($_POST['correo'], $_POST['contra'])) {
-    $correo = $_POST['correo'];
+    $correo = escapar_entrada($_POST['correo'], $enlace);
     $contra = $_POST['contra'];
 
     // Preparar y ejecutar consulta segura
     $query = "SELECT * FROM registro WHERE correo = ?";
-    $stmt = mysqli_prepare($enlace, $query);
-    mysqli_stmt_bind_param($stmt, "s", $correo);
-    mysqli_stmt_execute($stmt);
-    $resultado = mysqli_stmt_get_result($stmt);
+    if ($stmt = mysqli_prepare($enlace, $query)) {
+        mysqli_stmt_bind_param($stmt, "s", $correo);
+        mysqli_stmt_execute($stmt);
+        $resultado = mysqli_stmt_get_result($stmt);
 
-    if ($fila = mysqli_fetch_assoc($resultado)) {
-        // Verificar la contraseña (si está cifrada)
-        if ($contra === $fila['contra']) {
-            // Guardar datos en sesión
-            $_SESSION['usuario'] = $fila['correo'];
-            header("Location: ../usuario.html");
-            exit();
+        if ($fila = mysqli_fetch_assoc($resultado)) {
+            // Verificar la contraseña (usando password_verify para contraseñas cifradas)
+            if (password_verify($contra, $fila['contra'])) {
+                // Guardar datos en sesión
+                $_SESSION['usuario'] = $fila['correo'];
+                header("Location: ../usuario.html");
+                exit();
+            } else {
+                // Contraseña incorrecta
+                echo '<script>
+                    alert("Usuario o contraseña inválidos");
+                    location.href="../index.html";
+                </script>';
+            }
         } else {
+            // Usuario no encontrado
             echo '<script>
                 alert("Usuario o contraseña inválidos");
                 location.href="../index.html";
             </script>';
         }
+
+        mysqli_stmt_close($stmt);
     } else {
+        // Error al preparar la consulta
         echo '<script>
-            alert("Usuario o contraseña inválidos");
+            alert("Ocurrió un error en el sistema. Por favor, inténtalo más tarde.");
             location.href="../index.html";
         </script>';
     }
-
-    mysqli_stmt_close($stmt);
 } else {
+    // Formulario incompleto
     echo '<script>
         alert("Por favor completa todos los campos");
         location.href="../index.html";
