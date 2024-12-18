@@ -53,7 +53,7 @@
                 // Mostrar la imagen de perfil del usuario
                 $foto_perfil = $publicacion['foto_perfil'] ? htmlspecialchars($publicacion['foto_perfil']) : 'default-profile.jpg';
                 echo '<div class="post-avatar">';
-                echo '<img src="' . $foto_perfil . '" alt="Foto de perfil" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">';
+                echo '<img src="' . $foto_perfil . '" alt="Foto de perfil" style="width: 40px; height: 40px; border-radius: 50%;">';
                 echo '</div>';
 
                 echo '<div class="post-username">' . htmlspecialchars($publicacion['nombre'] ?? 'Usuario Anónimo') . '</div>';
