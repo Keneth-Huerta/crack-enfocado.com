@@ -1,120 +1,108 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="es">
 <head>
-    <title>Plantilla de Sitio Web</title>
-    <link rel="stylesheet" href="../css/estilosprin.css">
+    <meta charset="UTF-8">
+    <title>CECyT 3 - Página Principal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+
 </head>
-
 <body>
-    <nav>
-        <ul>
-            <li>
-                <div class="logo"><img src="../media/logoweb.svg" alt=""></div>
-            </li>
-            <li>
-                <div class="nav-links">
-                    <a href="ventas.php">Ventas</a>
-                    <a href="/ayuda-estudiantil">Ayuda Estudiantil</a>
-                    <a href="perfil.php"><img src="../media/user.png" alt="Perfil"></a>
+    <div class="container-fluid">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                    <img src="../media/logoweb.jpg" alt="Logo" class="img-fluid" style="max-height: 50px;">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="ventas.php">Ventas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/ayuda-estudiantil">Ayuda Estudiantil</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="perfil.php">
+                                <img src="../media/user.png" alt="Perfil" style="max-height: 25px;">
+                            </a>
+                        </li>
+                    </ul>
                 </div>
-            </li>
-
-        </ul>
-    </nav>
-
-    <main>
-        <h2>Más publicaciones</h2>
-        <div class="content-item">
-            <div>
-                <img src="../media/user_icon_001.jpg" class="imagengrande" alt="Imagen de contenido">
             </div>
-            <div class="ver">
-                <a href="publicaciones.php">Ver más</a>
-            </div>
-        </div>
+        </nav>
 
-
-
-        <h2 style="margin-left: 50px;">Lo más reciente...</h2>
-
-        <div class="publicaciones">
-
-            <div class="post-item">
-                <img src="../media/logoweb.jpg" alt="Imagen de publicación">
-                <h3>Título de la publicación</h3>
-                <p>Resumen de la publicación</p>
-                <a href="#">Leer más</a>
-            </div>
-            <div class="post-item">
-                <img src="../media/logoweb.jpg" alt="Imagen de publicación">
-                <h3>Título de la publicación</h3>
-                <p>Resumen de la publicación</p>
-                <a href="#">Leer más</a>
-
-            </div>
-            <div class="post-item">
-                <img src="../media/logoweb.jpg" alt="Imagen de publicación">
-                <h3>Título de la publicación</h3>
-                <p>Resumen de la publicación</p>
-                <a href="#">Leer más</a>
-
-            </div>
-            <div class="post-item">
-                <img src="../media/logoweb.jpg" alt="Imagen de publicación">
-                <h3>Título de la publicación</h3>
-                <p>Resumen de la publicación</p>
-                <a href="#">Leer más</a>
-
-            </div>
-            <div class="post-item">
-                <img src="../media/logoweb.jpg" alt="Imagen de publicación">
-                <h3>Título de la publicación</h3>
-                <p>Resumen de la publicación</p>
-                <a href="#">Leer más</a>
-
-            </div>
-            <div class="post-item">
-                <img src="../media/logoweb.jpg" alt="Imagen de publicación">
-                <h3>Título de la publicación</h3>
-                <p>Resumen de la publicación</p>
-                <a href="#">Leer más</a>
-
+        <!-- Main Content -->
+        <main class="container mt-4">
+            <h2 class="mb-4">Más publicaciones</h2>
+            
+            <div class="row mb-4" class="publicaciones">
+                <div class="col-12">
+                    <div class="content-item text-center">
+                        <img src="../media/user_icon_001.jpg" class="img-fluid imagengrande mb-3" alt="Imagen de contenido">
+                        <div>
+                            <a href="publicaciones.php" class="btn btn-primary">Ver más</a>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-        </div>
-        
-        <div class="boton">
-            <div>
-                <a href="https://www.google.com/maps/place/Centro+de+Estudios+Cient%C3%ADficos+y+Tecnol%C3%B3gicos+N%C2%B0+3+%E2%80%9CEstanislao+Ram%C3%ADrez+Ruiz%E2%80%9D+IPN/@19.5707461,-99.021819,17z/data=!3m1!4b1!4m6!3m5!1s0x85d1f02f26af3137:0xe677294103786cf5!8m2!3d19.5707411!4d-99.0192441!16s%2Fg%2F1tdr3nhs?entry=ttu&g_ep=EgoyMDI0MTIxMS4wIKXMDSoASAFQAw%3D%3D  "
-                    class="uno" target="_blanck">Ubicación</a>
+            <h2 class="mb-4">Lo más reciente...</h2>
 
-
+            <div class="row row-cols-1 row-cols-md-3 g-4 publicaciones">
+                <?php for ($i = 0; $i < 6; $i++): ?>
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="../media/logoweb.jpg" class="card-img-top" alt="Imagen de publicación">
+                        <div class="card-body">
+                            <h5 class="card-title">Título de la publicación</h5>
+                            <p class="card-text">Resumen de la publicación</p>
+                            <a href="#" class="btn btn-outline-primary">Leer más</a>
+                        </div>
+                    </div>
+                </div>
+                <?php endfor; ?>
             </div>
-            <div>
-                <a href="https://www.cecyt3.ipn.mx/index.html#technicalCareers" class="uno" target="_blanck">Oferta educativa</a>
+
+            <div class="row mt-4">
+                <div class="col-12 col-md-4 mb-2">
+                    <a href="https://www.google.com/maps/place/Centro+de+Estudios+Cient%C3%ADficos+y+Tecnol%C3%B3gicos+N%C2%B0+3+%E2%80%9CEstanislao+Ram%C3%ADrez+Ruiz%E2%80%9D+IPN/@19.5707461,-99.021819,17z" 
+                       class="btn btn-secondary w-100" target="_blank">Ubicación</a>
+                </div>
+                <div class="col-12 col-md-4 mb-2">
+                    <a href="https://www.cecyt3.ipn.mx/index.html#technicalCareers" 
+                       class="btn btn-secondary w-100" target="_blank">Oferta educativa</a>
+                </div>
+                <div class="col-12 col-md-4 mb-2">
+                    <a href="https://www.saes.cecyt3.ipn.mx/" 
+                       class="btn btn-secondary w-100" target="_blank">SAES</a>
+                </div>
             </div>
-            <div>
-                <a href="https://www.saes.cecyt3.ipn.mx/" class="uno" target="_blanck">SAES</a>
+        </main>
 
+        <!-- Footer -->
+        <footer class="container-fluid bg-light mt-4 py-3">
+            <div class="text-center">
+                <p>&copy; 2024 Centro de Estudios Científicos y Tecnológicos No. 3 "Estanislao Ramírez Ruiz". Todos los derechos reservados.</p>
+                <div class="social-links mb-2">
+                    <a href="https://www.facebook.com" target="_blank" class="text-decoration-none me-2">Facebook</a>
+                    <a href="https://www.twitter.com" target="_blank" class="text-decoration-none me-2">Twitter</a>
+                    <a href="https://www.instagram.com" target="_blank" class="text-decoration-none">Instagram</a>
+                </div>
+                <p>Contacto: <a href="mailto:info@cecyt3.ipn.mx">info@cecyt3.ipn.mx</a></p>
             </div>
+        </footer>
+    </div>
 
-
-        </div>
-
-    </main>
-
-    <footer>
-        <div class="footer-container">
-            <p>&copy; 2024 Centro de Estudios Científicos y Tecnológicos No. 3 "Estanislao Ramírez Ruiz". Todos los derechos reservados.</p>
-            <div class="social-links">
-                <a href="https://www.facebook.com" target="_blank">Facebook</a> |
-                <a href="https://www.twitter.com" target="_blank">Twitter</a> |
-                <a href="https://www.instagram.com" target="_blank">Instagram</a>
-            </div>
-            <p>Contacto: <a href="mailto:info@cecyt3.ipn.mx">info@cecyt3.ipn.mx</a></p>
-        </div>
-    </footer>
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>
