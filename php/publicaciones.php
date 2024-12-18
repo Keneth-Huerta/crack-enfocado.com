@@ -54,7 +54,7 @@
                 echo '<img src="' . $foto_perfil . '" alt="Foto de perfil" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">';
                 echo '</div>';
 
-                echo '<div class="post-username">' . htmlspecialchars($publicacion['usuario'] ?? 'Usuario Anónimo') . '</div>';
+                echo '<div class="post-username">' . htmlspecialchars($publicacion['nombre'] ?? 'Usuario Anónimo') . '</div>';
                 echo '</div>';
         
                 // Contenido de la publicación
