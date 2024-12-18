@@ -84,10 +84,7 @@
 
 <?php
 // Conectar a la base de datos
-$host = 'localhost';
-$dbname = 'u288355303_Usuarios';
-$username = 'u288355303_Keneth';
-$password = '1420Genio.';
+require_once 'conexion.php';
 
 $conn = new mysqli($host, $dbname, $username, $password);
 
