@@ -34,7 +34,15 @@ if (isset($_POST['registrar'])) {
     // Preparar la consulta SQL con parámetros
     $insertarDatos = "INSERT INTO registro (nombre, apellido, boleta, correo, contraseña) VALUES (?, ?, ?, ?, ?)";
     $stmt = mysqli_prepare($enlace, $insertarDatos);
+    if (!$stmt) {
+        die("Error en la preparación de la consulta: " . mysqli_error($enlace));
+    }
+
     mysqli_stmt_bind_param($stmt, "sssss", $usuario, $apellido, $boleta, $correo, $contraseñaCifrada);
+
+    if (!mysqli_stmt_execute($stmt)) {
+        die("Error al ejecutar la consulta: " . mysqli_stmt_error($stmt));
+    }
 
     // Ejecutar la consulta
     if (mysqli_stmt_execute($stmt)) {
