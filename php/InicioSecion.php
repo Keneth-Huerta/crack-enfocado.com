@@ -41,14 +41,14 @@ if (isset($_POST['correo'], $_POST['contra'])) {
             } else {
                 // Contraseña incorrecta
                 echo '<script>
-                    alert("Usuario o contraseña inválidos");
+                    alert("contraseña inválida");
                     location.href="../index.html";
                 </script>';
             }
         } else {
             // Usuario no encontrado
             echo '<script>
-                alert("Usuario o contraseña inválidos");
+                alert("Usuario inválido");
                 location.href="../index.html";
             </script>';
         }
