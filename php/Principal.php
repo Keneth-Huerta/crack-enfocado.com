@@ -16,44 +16,7 @@
 <body>
     <?php include('header.php'); ?>
 
-    <!-- Main Content -->
-    <main class="container mt-4">
-        <h2 class="mb-4 fs-1">Más publicaciones</h2>
-
-        <!-- Publicaciones destacadas -->
-        <div class="row mb-4 publicaciones bg-light p-4 rounded-3 shadow-sm">
-            <div class="col-12">
-                <div class="content-item d-flex gap-3 align-items-center">
-                    <div style="flex: 0 0 60%; height: 200px;">
-                        <img src="../media/user_icon_001.jpg"
-                            class="img-fluid rounded-3 border border-dark"
-                            alt="Imagen de contenido"
-                            style="object-fit: cover; height: 100%; width: 100%;">
-                    </div>
-                    <div>
-                        <a href="publicaciones.php" class="btn btn-primary mt-3">Ver más</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <h2 class="mb-4 fs-3">Lo más reciente...</h2>
-
-        <!-- Lista de publicaciones -->
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            <?php for ($i = 0; $i < 6; $i++): ?>
-                <div class="col">
-                    <div class="card h-100 shadow-sm">
-                        <img src="../media/logoweb.jpg" class="card-img-top" alt="Imagen de publicación">
-                        <div class="card-body">
-                            <h5 class="card-title">Título de la publicación</h5>
-                            <p class="card-text">Resumen de la publicación</p>
-                            <a href="#" class="btn btn-outline-primary">Leer más</a>
-                        </div>
-                    </div>
-                </div>
-            <?php endfor; ?>
-        </div>
+    <?php include('publicaciones.php'); ?>
 
         <div class="row mt-4">
             <div class="col-12 col-md-4 mb-2">
