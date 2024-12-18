@@ -20,17 +20,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $descripcion = mysqli_real_escape_string($enlace, $_POST['descripcion']);
     $imagen = mysqli_real_escape_string($enlace, $_POST['imagen']);
 
-    // Insertar el nuevo producto en la base de datos
-    $sql = "INSERT INTO productos (producto, id, precio, descripcion, imagen) 
-            VALUES ('$producto', '$id', '$precio', '$descripcion', '$imagen')";
-    if (mysqli_query($enlace, $sql)) {
-        
+    // Validaciones
+    if (empty($producto) || empty($id) || empty($precio) || empty($descripcion) || empty($imagen)) {
+        echo "<p>Por favor, complete todos los campos.</p>";
+    } elseif (!is_numeric($precio) || $precio <= 0) {
+        echo "<p>El precio debe ser un número positivo.</p>";
+    } elseif (!filter_var($imagen, FILTER_VALIDATE_URL)) {
+        echo "<p>La URL de la imagen no es válida.</p>";
     } else {
-        echo "<p>Error al agregar el producto: " . mysqli_error($enlace) . "</p>";
+        // Verificar si el producto ya existe en la base de datos (basado en el id o el nombre)
+        $sql_verificar = "SELECT * FROM productos WHERE id = '$id' OR producto = '$producto'";
+        $resultado_verificar = mysqli_query($enlace, $sql_verificar);
+
+        if (mysqli_num_rows($resultado_verificar) > 0) {
+            // El producto ya existe
+            echo "<p>El producto ya existe en la base de datos.</p>";
+        } else {
+            // Insertar el nuevo producto en la base de datos
+            $sql_insertar = "INSERT INTO productos (producto, id, precio, descripcion, imagen) 
+                             VALUES ('$producto', '$id', '$precio', '$descripcion', '$imagen')";
+            if (mysqli_query($enlace, $sql_insertar)) {
+                echo "<p>Producto agregado correctamente.</p>";
+            } else {
+                echo "<p>Error al agregar el producto: " . mysqli_error($enlace) . "</p>";
+            }
+        }
     }
 }
-
-echo '</div>';
 
 mysqli_close($enlace);
 ?>
@@ -153,4 +169,3 @@ mysqli_close($enlace);
     </div>
 </body>
 </html>
-
