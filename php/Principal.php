@@ -57,9 +57,9 @@
                 </div>
                 
                 <!-- Botón alineado arriba con 10px de separación -->
-                <div style="padding-top: 2px; width: 10px;;">
-                    <a href="publicaciones.php" class="btn btn-primary">Ver más</a>
-                </div>
+                <div style="padding-top: 2px; margin-left: 10px;">
+                <a href="publicaciones.php" class="btn btn-primary">Ver más</a>
+            </div>
             </div>
         </div>
     </div>
