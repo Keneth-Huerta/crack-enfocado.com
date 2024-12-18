@@ -1,12 +1,12 @@
 <?php
 // Configuración de la base de datos
-$servidor = "localhost";
-$usuarioBD = "u288355303_Keneth";
-$claveBD = "1420Genio.";
-$baseDeDatos = "u288355303_Usuarios";
+$host = 'localhost';
+$dbname = 'u288355303_Usuarios';
+$username = 'u288355303_Keneth';
+$password = '1420Genio.';
 
 // Conexión a la base de datos
-$enlace = mysqli_connect($servidor, $usuarioBD, $claveBD, $baseDeDatos);
+$enlace = mysqli_connect($host, $dbname, $username, $password);
 if (!$enlace) {
     error_log("Error en la conexión a la base de datos: " . mysqli_connect_error());
     echo "No se puede conectar a la base de datos en este momento. Inténtalo más tarde.";

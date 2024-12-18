@@ -85,11 +85,11 @@
 <?php
 // Conectar a la base de datos
 $host = 'localhost';
-$usuario = 'u288355303_Keneth';
-$contraseña = '1420Genio.';
-$base_datos = 'u288355303_Usuarios'; // Cambia esto por el nombre de tu base de datos
+$dbname = 'u288355303_Usuarios';
+$username = 'u288355303_Keneth';
+$password = '1420Genio.';
 
-$conn = new mysqli($host, $usuario, $contraseña, $base_datos);
+$conn = new mysqli($host, $dbname, $username, $password);
 
 if ($conn->connect_error) {
     die("Error de conexión: " . $conn->connect_error);

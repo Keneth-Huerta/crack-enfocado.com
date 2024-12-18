@@ -7,6 +7,11 @@ $baseDeDatos = "u288355303_Usuarios";
 
 // Conexión a la base de datos
 $enlace = mysqli_connect($servidor, $usuarioBD, $claveBD, $baseDeDatos);
+if (mysqli_connect_errno()) {
+    die("Conexión fallida: " . mysqli_connect_error());
+} else {
+    echo "Conexión exitosa";
+}
 
 // Verificar la conexión
 if (!$enlace) {
