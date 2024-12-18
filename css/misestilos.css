@@ -143,50 +143,41 @@ body {
     align-items: center;
     justify-content: center;
     border: 2px solid var(--color-principal);
-}
-
-.acciones a:hover {
-    background-color: var(--color-principal);
-    color: white;
-    transform: translateY(-3px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Botón de cerrar sesión */
-.btn-cerrar-sesion {
-    background-color: transparent;
-    color: #A41A2A; /* More accessible dark red */
-    border: 2px solid #A41A2A;
     position: relative;
     overflow: hidden;
     z-index: 1;
-    transition: all 0.3s ease;
-    font-weight: 600;
 }
 
-.btn-cerrar-sesion::before {
+.acciones a::before {
     content: '';
     position: absolute;
     top: 0;
     left: -100%;
     width: 100%;
     height: 100%;
-    background-color: #A41A2A;
+    background-color: var(--color-principal);
     z-index: -1;
     transition: all 0.3s ease;
 }
 
-.btn-cerrar-sesion:hover {
-    color: white;
-}
-
-.btn-cerrar-sesion:hover::before {
+.acciones a:hover::before {
     left: 0;
 }
 
-.btn-cerrar-sesion:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 8px rgba(164, 26, 42, 0.3);
+.acciones a:hover {
+    color: white;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Botón de cerrar sesión */
+.btn-cerrar-sesion {
+    color: #A41A2A;
+    border-color: #A41A2A;
+}
+
+.btn-cerrar-sesion::before {
+    background-color: #A41A2A;
 }
 
 /* Responsividad */
