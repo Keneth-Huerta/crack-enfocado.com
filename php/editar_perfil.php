@@ -41,8 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $informacion_extra = $_POST['informacion_extra'];
 
     // Subir las nuevas fotos si se han proporcionado
-    $foto_perfil = $_FILES['foto_perfil']['name'] ? 'uploads/' . basename($_FILES['foto_perfil']['name']) : $perfil['foto_perfil'];
-    $foto_portada = $_FILES['foto_portada']['name'] ? 'uploads/' . basename($_FILES['foto_portada']['name']) : $perfil['foto_portada'];
+    $foto_perfil = $_FILES['foto_perfil']['name'] ? 'media/uploads/' . basename($_FILES['foto_perfil']['name']) : $perfil['foto_perfil'];
+    $foto_portada = $_FILES['foto_portada']['name'] ? 'meida/uploads/' . basename($_FILES['foto_portada']['name']) : $perfil['foto_portada'];
 
     // Validar si las imágenes fueron subidas correctamente
     $upload_error = false;
