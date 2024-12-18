@@ -58,6 +58,7 @@ button {
     background-color: white;
     color: #666;
     margin-top: 25px;
+
 }
 
 .forgot-password {
@@ -68,4 +69,13 @@ button {
 .forgot-password a {
     color: #000;
     text-decoration: underline;
+}
+a{
+    text-decoration: none;
+    outline: none;
+    color: inherit;
+}
+a:focus,a:hover{
+    text-decoration: none;
+    color:inherit
 }

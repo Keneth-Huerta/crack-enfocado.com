@@ -1,42 +1,61 @@
-
 <?php
-$servor="localhost";
-$usuarip="u288355303_Keneth";
-$clave="1420Genio.";
-$baseDeDatos="u288355303_Usuarios";
+// Configuración de la base de datos
+$servidor = "fdb1029.awardspace.net";
+$usuario = "4565088_usuarios";
+$clave = "alexander1234";
+$baseDeDatos = "4565088_usuarios";
 
-
-$enlace = mysqli_connect($servor, $usuarip, $clave, $baseDeDatos);
-
+// Conexión a la base de datos
+$enlace = mysqli_connect($servidor, $usuario, $clave, $baseDeDatos);
 
 if (!$enlace) {
     die("Conexión fallida: " . mysqli_connect_error());
 }
 
+// Iniciar sesión
+session_start();
 
-$correo = $_POST['correo'];
-$contra = $_POST['contra'];
+// Validar entrada del formulario
+if (isset($_POST['correo'], $_POST['contra'])) {
+    $correo = $_POST['correo'];
+    $contra = $_POST['contra'];
 
+    // Preparar y ejecutar consulta segura
+    $query = "SELECT * FROM registro WHERE correo = ?";
+    $stmt = mysqli_prepare($enlace, $query);
+    mysqli_stmt_bind_param($stmt, "s", $correo);
+    mysqli_stmt_execute($stmt);
+    $resultado = mysqli_stmt_get_result($stmt);
 
-$query = "SELECT * FROM registro WHERE correo = '$correo' AND contra = '$contra'";
-$resultado = mysqli_query($enlace, $query);
+    if ($fila = mysqli_fetch_assoc($resultado)) {
+        // Verificar la contraseña (si está cifrada)
+        if ($contra=$fila['contra']) {
+            // Guardar datos en sesión
+            $_SESSION['usuario'] = $fila['correo'];
+            header("Location: ../usuario.html");
+            exit();
+        } else {
+            echo '<script>
+                alert("Usuario o contraseña inválidos");
+                location.href="../formulario2.html";
+            </script>';
+        }
+    } else {
+        echo '<script>
+            alert("Usuario o contraseña inválidos");
+            location.href="../formulario2.html";
+        </script>';
+    }
 
-
-if (mysqli_num_rows($resultado) > 0) {
-   
-    session_start();
-    
-    $fila = mysqli_fetch_assoc($resultado);
-    header("Location: ../usuario.html");
-    exit();
-} else{
-    echo ' <script>
-    alert("Usuario o contraseña son invalidos");
-    location.href="../formulario2.html";
- </script>';
+    mysqli_stmt_close($stmt);
+} else {
+    echo '<script>
+        alert("Por favor completa todos los campos");
+        location.href="../formulario2.html";
+    </script>';
 }
 
-
-mysqli_free_result($resultado);
+// Cerrar conexión
 mysqli_close($enlace);
 ?>
+

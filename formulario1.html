@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Usuario</title>
+    <link rel="stylesheet" href="css/misestilos.css">
+</head>
+
+<body>
+    <div class="form-container">
+        <h1>Crear una cuenta</h1>
+        <form id="formulario" action="php/registro.php" method="post" >
+            <div class="name-group">
+                <input type="text" name="nombre" placeholder="Nombre" required>
+                <input type="text" name="apellido" placeholder="Apellido" required>
+            </div>
+
+            <div class="form-group">
+                <input type="text" name="boleta" placeholder="Boleta" required>
+            </div>
+
+            <div class="form-group">
+                <input type="email" name="correo" placeholder="Correo electrónico" required>
+            </div>
+
+            <div class="form-group">
+                <input type="password" name="contraseña" placeholder="Contraseña" required>
+            </div>
+
+            <button type="submit" name="registrar">CREAR</button>
+
+            <div class="login-link">
+                <a href="index.html">¿Ya tienes una cuenta?</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Scripts necesarios -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js" integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="js/funciones_Campos.js"></script>
+</body>
+</html>

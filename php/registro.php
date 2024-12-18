@@ -1,24 +1,44 @@
-
 <?php
-$servor="localhost";
-$usuarip="u288355303_Keneth";
-$clave="1420Genio.";
-$baseDeDatos="u288355303_Usuarios";
-$enlace= mysqli_connect($servor,$usuarip,$clave,$baseDeDatos);
+// Conexión a la base de datos
+$servidor = "fdb1029.awardspace.net";
+$usuario = "4565088_usuarios";
+$clave = "alexander1234";
+$baseDeDatos = "4565088_usuarios";
 
-if(isset($_POST['registrar'])){
-    $usuario=$_POST['nombre'];
-    $apellido=$_POST['apellido'];
-    $boleta=$_POST['boleta'];
-    $correo=$_POST['correo'];
-    $contraseña=$_POST['contraseña'];
+// Conexión a la base de datos
+$enlace = mysqli_connect($servidor, $usuario, $clave, $baseDeDatos);
 
-    $insertarDatos="INSERT INTO registro VALUES ('','$usuario','$apellido','$boleta','$correo','$contraseña')";
-    $ejecutarInser=mysqli_query($enlace,$insertarDatos);
-    echo ' <script>
-    location.href="../formulario2.html";
- </script>';
+if (!$enlace) {
+    die("Conexión fallida: " . mysqli_connect_error());
 }
 
+// Validación y sanitización de los datos del formulario
+if (isset($_POST['registrar'])) {
+    $usuario = mysqli_real_escape_string($enlace, $_POST['nombre']);
+    $apellido = mysqli_real_escape_string($enlace, $_POST['apellido']);
+    $boleta = mysqli_real_escape_string($enlace, $_POST['boleta']);
+    $correo = mysqli_real_escape_string($enlace, $_POST['correo']);
+    $contraseña = $_POST['contraseña'];
 
+    // Cifrar la contraseña
+    $contraseñaCifrada = password_hash($contraseña, PASSWORD_DEFAULT);
+
+    // Preparar la consulta SQL con parámetros
+    $insertarDatos = "INSERT INTO registro (nombre, apellido, boleta, correo, contraseña) VALUES (?, ?, ?, ?, ?)";
+    $stmt = mysqli_prepare($enlace, $insertarDatos);
+    mysqli_stmt_bind_param($stmt, "sssss", $usuario, $apellido, $boleta, $correo, $contraseñaCifrada);
+
+    // Ejecutar la consulta
+    if (mysqli_stmt_execute($stmt)) {
+        echo ' <script>
+            location.href="../index.html"; // Redirigir al índice
+        </script>';
+    } else {
+        echo "Error al registrar: " . mysqli_error($enlace);
+    }
+
+    // Cerrar la declaración y la conexión
+    mysqli_stmt_close($stmt);
+    mysqli_close($enlace);
+}
 ?>

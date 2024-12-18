@@ -3,42 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Usuario</title>
-    <link rel="stylesheet" href="css/misestilos.css">
+    <link rel="stylesheet" href="css/misestilos2.css">
 </head>
 
 <body>
     <div class="form-container">
-        <h1>Crear una cuenta</h1>
-        <form id="formulario" action="php/registro.php" method="post" >
-            <div class="name-group">
-                <input type="text" name="nombre" placeholder="Nombre" required>
-                <input type="text" name="apellido" placeholder="Apellido" required>
+        <h1>Iniciar sesión</h1>
+        <form method="post" action="php/InicioSecion.php">
+            <div class="form-group">
+                <input type="email" name="correo" placeholder="Correo electrónico" >
             </div>
 
             <div class="form-group">
-                <input type="text" name="boleta" placeholder="Boleta" required>
+                <input type="password" name="contra" placeholder="Contraseña" >
             </div>
 
-            <div class="form-group">
-                <input type="email" name="correo" placeholder="Correo electrónico" required>
+            <button type="submit" class="login-button">INICIAR SESIÓN</button>
+            <div class="forgot-password">
+                <a href="#">¿Olvidaste tu contraseña?</a>
             </div>
-
-            <div class="form-group">
-                <input type="password" name="contraseña" placeholder="Contraseña" required>
-            </div>
-
-            <button type="submit" name="registrar">CREAR</button>
-
-            <div class="login-link">
-                <a href="#">¿Ya tienes una cuenta?</a>
-            </div>
+            
+            
+            
+            
         </form>
+        <div class="crear">
+            <button class="signup-button"><a href="formulario1.html" >CREAR CUENTA</button></a>
+        </div>
+          
     </div>
-
-    <!-- Scripts necesarios -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js" integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="js/funciones_Campos.js"></script>
 </body>
 </html>
