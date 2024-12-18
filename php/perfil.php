@@ -1,99 +1,95 @@
 <?php
+// Iniciar sesión
 session_start();
 
-// Verificar si el usuario ha iniciado sesión
-if (!isset($_SESSION['usuario'])) {
-    header("Location: ../index.html");
+// Verificar si el usuario está logueado
+if (!isset($_SESSION['usuario_id'])) {
+    header("Location: login.html");  // Si no está logueado, redirigimos al login
     exit();
 }
 
-// Configuración de la base de datos
+// Conexión a la base de datos
 $servidor = "localhost";
 $usuarioBD = "u288355303_Keneth";
 $claveBD = "1420Genio.";
 $baseDeDatos = "u288355303_Usuarios";
 
-// Conexión a la base de datos
 $enlace = mysqli_connect($servidor, $usuarioBD, $claveBD, $baseDeDatos);
 if (mysqli_connect_errno()) {
     die("Conexión fallida: " . mysqli_connect_error());
 }
 
-// Obtener el correo del usuario desde la sesión
-$correo = $_SESSION['usuario'];
+// Obtener los datos del usuario
+$usuario_id = $_SESSION['usuario_id'];
 
-// Preparar la consulta SQL para obtener los datos del usuario
-$query = "SELECT nombre, apellido, boleta, carrera, semestre, foto_perfil, foto_portada, informacion_extra FROM registro WHERE correo = ?";
+$query = "SELECT u.username, u.correo, p.nombre, p.apellido, p.carrera, p.semestre, p.foto_perfil, p.informacion_extra 
+          FROM usuarios u
+          LEFT JOIN perfiles p ON u.id = p.usuario_id
+          WHERE u.id = ?";
+
 if ($stmt = mysqli_prepare($enlace, $query)) {
-    mysqli_stmt_bind_param($stmt, "s", $correo);
+    mysqli_stmt_bind_param($stmt, "i", $usuario_id);
     mysqli_stmt_execute($stmt);
-    mysqli_stmt_bind_result($stmt, $nombre, $apellido, $boleta, $carrera, $semestre, $fotoPerfil, $fotoPortada, $informacionExtra);
-    
-    // Si el usuario existe, obtener los datos
-    if (mysqli_stmt_fetch($stmt)) {
-        // Datos del usuario
-    } else {
-        // Si no se encuentra el usuario en la base de datos
-        echo "Usuario no encontrado.";
-        exit();
-    }
+    $resultado = mysqli_stmt_get_result($stmt);
 
-    // Cerrar la consulta
+    if ($fila = mysqli_fetch_assoc($resultado)) {
+        // Si el usuario tiene un perfil, lo obtenemos
+        $usuario = $fila['username'];
+        $correo = $fila['correo'];
+        $nombre = $fila['nombre'];
+        $apellido = $fila['apellido'];
+        $carrera = $fila['carrera'];
+        $semestre = $fila['semestre'];
+        $foto_perfil = $fila['foto_perfil'];
+        $informacion_extra = $fila['informacion_extra'];
+    }
     mysqli_stmt_close($stmt);
+} else {
+    // Error en la consulta
+    echo "Error al obtener los datos del usuario.";
 }
 
-// Cerrar la conexión a la base de datos
+// Cerrar conexión
 mysqli_close($enlace);
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil de Usuario - IPN</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <title>Perfil - <?php echo $usuario; ?></title>
+    <link rel="stylesheet" href="../css/misestilos.css">
 </head>
+
 <body>
-    <header>
-        <h1>Bienvenido al Perfil de Usuario - IPN</h1>
-    </header>
-
-    <div class="perfil-container">
-        <!-- Imagen de portada -->
-        <div class="perfil-portada">
-            <img src="<?php echo $fotoPortada ? $fotoPortada : 'img/portada.jpg'; ?>" alt="Imagen de portada">
-        </div>
-
-        <!-- Contenedor de la información del usuario -->
+    <div class="form-container">
+        <h1>Mi Perfil</h1>
+        
         <div class="perfil-info">
-            <div class="perfil-img-container">
-                <img src="<?php echo $fotoPerfil ? $fotoPerfil : 'img/avatar.png'; ?>" alt="Avatar" class="perfil-img">
-            </div>
+            <!-- Foto de perfil -->
+            <img src="uploads/<?php echo $foto_perfil; ?>" alt="Foto de perfil" class="foto-perfil">
+
             <div class="perfil-details">
-                <h1><?php echo $nombre . ' ' . $apellido; ?></h1>
-                <p><strong>Boleta:</strong> <?php echo $boleta; ?></p>
-                <p><strong>Carrera:</strong> <?php echo $carrera; ?></p>
-                <p><strong>Semestre:</strong> <?php echo $semestre; ?></p>
-                <p><strong>Acerca de mí:</strong> <?php echo nl2br(htmlspecialchars($informacionExtra)); ?></p>
+                <p><strong>Nombre:</strong> <?php echo htmlspecialchars($nombre); ?> <?php echo htmlspecialchars($apellido); ?></p>
+                <p><strong>Correo:</strong> <?php echo htmlspecialchars($correo); ?></p>
+                <p><strong>Carrera:</strong> <?php echo htmlspecialchars($carrera); ?></p>
+                <p><strong>Semestre:</strong> <?php echo htmlspecialchars($semestre); ?></p>
+                <p><strong>Información adicional:</strong></p>
+                <p><?php echo nl2br(htmlspecialchars($informacion_extra)); ?></p>
+            </div>
+
+            <!-- Enlace para editar el perfil -->
+            <div class="edit-link">
+                <a href="editar_perfil.php">Editar perfil</a>
             </div>
         </div>
 
-        <!-- Acciones y botones -->
-        <div class="perfil-actions">
-            <a href="editar_perfil.php" class="btn">Editar perfil</a>
-            <a href="logout.php" class="btn">Cerrar sesión</a>
-        </div>
-
-        <!-- Sección de Actividades o Proyectos -->
-        <div class="perfil-actividades">
-            <h2>Mis Actividades</h2>
-            <ul>
-                <li>Proyecto 1: Desarrollo de aplicación para gestión de inventarios</li>
-                <li>Proyecto 2: Investigación sobre IA en programación de videojuegos</li>
-                <li>Curso 1: Introducción a la Inteligencia Artificial</li>
-            </ul>
+        <div class="logout-link">
+            <a href="php/logout.php">Cerrar sesión</a>
         </div>
     </div>
 </body>
+
 </html>

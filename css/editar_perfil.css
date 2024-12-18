@@ -1,0 +1,128 @@
+/* Estilo general para el body */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f5f5; /* Fondo claro para contrastar */
+    color: #333; /* Color de texto oscuro */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* Contenedor principal */
+.form-container {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Estilo del título */
+h1 {
+    font-size: 28px;
+    color: #7d1b1b; /* Rojo tirando a violeta (color representativo del IPN) */
+    margin-bottom: 30px;
+}
+
+/* Estilo de los inputs */
+.form-group {
+    margin-bottom: 20px;
+}
+
+input[type="text"], input[type="number"], input[type="file"], textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+input[type="text"]:focus, input[type="number"]:focus, textarea:focus {
+    border-color: #7d1b1b; /* Bordes rojos al enfocar */
+    box-shadow: 0 0 8px rgba(125, 27, 27, 0.4); /* Sombra suave en el borde */
+}
+
+/* Estilo del botón */
+button {
+    width: 100%;
+    padding: 14px;
+    background-color: #7d1b1b; /* Rojo tirando a violeta (IPN) */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #6b1515; /* Color ligeramente más oscuro para el hover */
+}
+
+/* Estilo de las etiquetas */
+label {
+    font-size: 16px;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 6px;
+    color: #333;
+}
+
+/* Estilo para el campo de información adicional */
+textarea {
+    height: 120px;
+    resize: vertical;
+    font-family: Arial, sans-serif;
+}
+
+/* Enlaces y texto */
+.login-link {
+    margin-top: 15px;
+}
+
+.login-link a {
+    color: #7d1b1b; /* Rojo tirando a violeta (IPN) */
+    text-decoration: underline;
+}
+
+.login-link a:hover {
+    color: #6b1515; /* Color de hover más oscuro */
+}
+
+/* Estilo para los mensajes de error */
+label.error {
+    color: #ff0000;
+    font-size: 14px;
+    margin-top: 8px;
+}
+
+/* Estilo para imágenes de perfil y portada */
+.profile-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    border: 3px solid #ccc;
+    object-fit: cover;
+}
+
+.profile-image:hover {
+    border-color: #7d1b1b; /* Borde rojo al pasar el ratón */
+}
+
+/* Estilos para el formulario con la foto de portada */
+.upload-section {
+    margin-bottom: 20px;
+}
+
+.upload-section input[type="file"] {
+    font-size: 14px;
+    padding: 10px;
+}

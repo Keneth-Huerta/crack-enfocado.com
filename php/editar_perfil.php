@@ -1,9 +1,10 @@
 <?php
+// Iniciar sesión
 session_start();
 
-// Verificar si el usuario está autenticado
-if (!isset($_SESSION['usuario'])) {
-    header("Location: ../index.html"); // Redirigir al login si no está autenticado
+// Verificar si el usuario está logueado
+if (!isset($_SESSION['usuario_id'])) {
+    header("Location: login.html");  // Si no está logueado, redirigimos al login
     exit();
 }
 
@@ -14,120 +15,141 @@ $claveBD = "1420Genio.";
 $baseDeDatos = "u288355303_Usuarios";
 
 $enlace = mysqli_connect($servidor, $usuarioBD, $claveBD, $baseDeDatos);
-
 if (mysqli_connect_errno()) {
     die("Conexión fallida: " . mysqli_connect_error());
 }
 
-// Obtener el correo del usuario desde la sesión
-$correo = $_SESSION['usuario'];
+// Obtener los datos del usuario para pre-poblar el formulario
+$usuario_id = $_SESSION['usuario_id'];
 
-// Consultar los datos del usuario en la base de datos
-$query = "SELECT * FROM usuarios WHERE correo = ?";
-$stmt = mysqli_prepare($enlace, $query);
-mysqli_stmt_bind_param($stmt, "s", $correo);
-mysqli_stmt_execute($stmt);
-$resultado = mysqli_stmt_get_result($stmt);
-$usuario = mysqli_fetch_assoc($resultado);
+$query = "SELECT u.username, u.correo, p.nombre, p.apellido, p.carrera, p.semestre, p.foto_perfil, p.informacion_extra 
+          FROM usuarios u
+          LEFT JOIN perfiles p ON u.id = p.usuario_id
+          WHERE u.id = ?";
 
-// Si no se encuentran los datos del usuario
-if (!$usuario) {
-    echo '<script>alert("Error al cargar los datos del usuario.");</script>';
-    exit();
+if ($stmt = mysqli_prepare($enlace, $query)) {
+    mysqli_stmt_bind_param($stmt, "i", $usuario_id);
+    mysqli_stmt_execute($stmt);
+    $resultado = mysqli_stmt_get_result($stmt);
+
+    if ($fila = mysqli_fetch_assoc($resultado)) {
+        // Si el usuario tiene un perfil, lo obtenemos
+        $nombre = $fila['nombre'];
+        $apellido = $fila['apellido'];
+        $correo = $fila['correo'];
+        $carrera = $fila['carrera'];
+        $semestre = $fila['semestre'];
+        $foto_perfil = $fila['foto_perfil'];
+        $informacion_extra = $fila['informacion_extra'];
+    }
+    mysqli_stmt_close($stmt);
+} else {
+    // Error en la consulta
+    echo "Error al obtener los datos del usuario.";
 }
 
-mysqli_stmt_close($stmt);
+// Cerrar conexión
 mysqli_close($enlace);
 
-// Procesar la actualización de datos
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Recoger los nuevos valores
-    $nombre = $_POST['nombre'];
-    $apellido = $_POST['apellido'];
-    $boleta = $_POST['boleta'];
-    $correo = $_POST['correo'];
+// Procesar el formulario de edición
+if (isset($_POST['guardar_perfil'])) {
+    $nombre = mysqli_real_escape_string($enlace, $_POST['nombre']);
+    $apellido = mysqli_real_escape_string($enlace, $_POST['apellido']);
+    $correo = mysqli_real_escape_string($enlace, $_POST['correo']);
+    $carrera = mysqli_real_escape_string($enlace, $_POST['carrera']);
+    $semestre = mysqli_real_escape_string($enlace, $_POST['semestre']);
+    $informacion_extra = mysqli_real_escape_string($enlace, $_POST['informacion_extra']);
 
-    // Subir la imagen (si se selecciona una nueva)
-    $imagenPerfil = $usuario['imagen']; // Usar la imagen actual por defecto
-    if (isset($_FILES['imagen']['name']) && $_FILES['imagen']['name'] != '') {
-        $target_dir = "media/uploads/"; // Directorio donde guardar las imágenes
-        $target_file = $target_dir . basename($_FILES["imagen"]["name"]);
-        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-
-        // Verificar si la imagen es válida
-        if (in_array($imageFileType, ['jpg', 'jpeg', 'png', 'gif'])) {
-            if (move_uploaded_file($_FILES["imagen"]["tmp_name"], $target_file)) {
-                $imagenPerfil = $target_file; // Actualizar la imagen
-            } else {
-                echo '<script>alert("Error al cargar la imagen de perfil.");</script>';
-            }
-        } else {
-            echo '<script>alert("Solo se permiten imágenes JPG, JPEG, PNG o GIF.");</script>';
-        }
-    }
-
-    // Conectar a la base de datos y actualizar los datos
-    $enlace = mysqli_connect($servidor, $usuarioBD, $claveBD, $baseDeDatos);
-    $updateQuery = "UPDATE usuarios SET nombre = ?, apellido = ?, boleta = ?, correo = ?, imagen = ? WHERE correo = ?";
-    $stmt = mysqli_prepare($enlace, $updateQuery);
-    mysqli_stmt_bind_param($stmt, "ssssss", $nombre, $apellido, $boleta, $correo, $imagenPerfil, $_SESSION['usuario']);
-
-    if (mysqli_stmt_execute($stmt)) {
-        $_SESSION['usuario'] = $correo; // Actualizar correo en la sesión
-        echo '<script>alert("Perfil actualizado con éxito.");</script>';
+    // Si se sube una nueva foto de perfil
+    if (isset($_FILES['foto_perfil']) && $_FILES['foto_perfil']['error'] == 0) {
+        $foto_perfil = $_FILES['foto_perfil']['name'];
+        $ruta_foto = 'uploads/' . basename($foto_perfil);
+        move_uploaded_file($_FILES['foto_perfil']['tmp_name'], $ruta_foto);
     } else {
-        echo '<script>alert("Error al actualizar los datos.");</script>';
+        // Si no hay nueva foto, se mantiene la actual
+        $foto_perfil = $_POST['foto_perfil_actual'];
     }
 
-    mysqli_stmt_close($stmt);
+    // Actualizar los datos en la base de datos
+    $query = "UPDATE perfiles 
+              SET nombre = ?, apellido = ?, correo = ?, carrera = ?, semestre = ?, foto_perfil = ?, informacion_extra = ? 
+              WHERE usuario_id = ?";
+
+    if ($stmt = mysqli_prepare($enlace, $query)) {
+        mysqli_stmt_bind_param($stmt, "ssssisss", $nombre, $apellido, $correo, $carrera, $semestre, $foto_perfil, $informacion_extra, $usuario_id);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
+    }
+
     mysqli_close($enlace);
+
+    // Redirigir al perfil actualizado
+    header("Location: perfil.php");
+    exit();
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Perfil</title>
-    <link rel="stylesheet" href="css/misestilos.css">
+    <link rel="stylesheet" href="../css/misestilos.css">
 </head>
-<body>
 
+<body>
     <div class="form-container">
         <h1>Editar Perfil</h1>
+
         <form action="editar_perfil.php" method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="nombre">Nombre:</label>
-                <input type="text" name="nombre" id="nombre" value="<?php echo htmlspecialchars($usuario['nombre']); ?>" required>
+                <input type="text" id="nombre" name="nombre" value="<?php echo htmlspecialchars($nombre); ?>" required>
             </div>
 
             <div class="form-group">
                 <label for="apellido">Apellido:</label>
-                <input type="text" name="apellido" id="apellido" value="<?php echo htmlspecialchars($usuario['apellido']); ?>" required>
-            </div>
-
-            <div class="form-group">
-                <label for="boleta">Boleta:</label>
-                <input type="text" name="boleta" id="boleta" value="<?php echo htmlspecialchars($usuario['boleta']); ?>" required>
+                <input type="text" id="apellido" name="apellido" value="<?php echo htmlspecialchars($apellido); ?>" required>
             </div>
 
             <div class="form-group">
                 <label for="correo">Correo:</label>
-                <input type="email" name="correo" id="correo" value="<?php echo htmlspecialchars($usuario['correo']); ?>" required>
+                <input type="email" id="correo" name="correo" value="<?php echo htmlspecialchars($correo); ?>" required>
             </div>
 
             <div class="form-group">
-                <label for="imagen">Imagen de perfil:</label>
-                <input type="file" name="imagen" id="imagen" accept="image/*">
-                <?php if ($usuario['imagen']): ?>
-                    <img src="<?php echo $usuario['imagen']; ?>" alt="Imagen de perfil" width="100" height="100">
-                <?php endif; ?>
+                <label for="carrera">Carrera:</label>
+                <select name="carrera" id="carrera" required>
+                    <option value="Técnico en Aeronáutica" <?php echo ($carrera == 'Técnico en Aeronáutica') ? 'selected' : ''; ?>>Técnico en Aeronáutica</option>
+                    <option value="Técnico en Computación" <?php echo ($carrera == 'Técnico en Computación') ? 'selected' : ''; ?>>Técnico en Computación</option>
+                    <option value="Técnico en Manufactura Asistida por Computadora" <?php echo ($carrera == 'Técnico en Manufactura Asistida por Computadora') ? 'selected' : ''; ?>>Técnico en Manufactura Asistida por Computadora</option>
+                    <option value="Técnico en Sistemas Automotrices" <?php echo ($carrera == 'Técnico en Sistemas Automotrices') ? 'selected' : ''; ?>>Técnico en Sistemas Automotrices</option>
+                    <option value="Técnico en Sistemas Digitales" <?php echo ($carrera == 'Técnico en Sistemas Digitales') ? 'selected' : ''; ?>>Técnico en Sistemas Digitales</option>
+                </select>
             </div>
 
-            <button type="submit">Guardar cambios</button>
+            <div class="form-group">
+                <label for="semestre">Semestre:</label>
+                <input type="number" id="semestre" name="semestre" value="<?php echo htmlspecialchars($semestre); ?>" required>
+            </div>
+
+            <div class="form-group">
+                <label for="informacion_extra">Información adicional:</label>
+                <textarea name="informacion_extra" id="informacion_extra"><?php echo htmlspecialchars($informacion_extra); ?></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="foto_perfil">Foto de perfil:</label>
+                <input type="file" name="foto_perfil" id="foto_perfil">
+                <input type="hidden" name="foto_perfil_actual" value="<?php echo $foto_perfil; ?>">
+                <img src="uploads/<?php echo $foto_perfil; ?>" alt="Foto de perfil actual" class="foto-perfil">
+            </div>
+
+            <button type="submit" name="guardar_perfil">Guardar cambios</button>
         </form>
     </div>
-
 </body>
+
 </html>
