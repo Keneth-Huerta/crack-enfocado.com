@@ -29,7 +29,7 @@
 $host = 'localhost';
 $usuario = 'root';
 $contraseña = '';
-$base_datos = 'tienda_chocolates'; // Cambia esto por el nombre de tu base de datos
+$base_datos = 'u288355303_Usuarios'; // Cambia esto por el nombre de tu base de datos
 
 $conn = new mysqli($host, $usuario, $contraseña, $base_datos);
 
@@ -39,14 +39,14 @@ if ($conn->connect_error) {
 
 // Verificar si el formulario ha sido enviado
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nombre = $_POST['nombre'];
+    $producto = $_POST['producto'];
+    $id = $_POST['id'];
     $precio = $_POST['precio'];
     $descripcion = $_POST['descripcion'];
-    $categoria = $_POST['categoria'];
+    $imagen = $_POST['imagen'];
 
     // Preparar la consulta SQL
-    $sql = "INSERT INTO productos (nombre, precio, descripcion, categoria) 
-            VALUES ('$nombre', '$precio', '$descripcion', '$categoria')";
+    $sql = "INSERT INTO productos VALUES ('$producto', '$id', '$precio', '$descripcion','$imagen')";
 
     if ($conn->query($sql) === TRUE) {
         echo "Producto agregado correctamente.";
