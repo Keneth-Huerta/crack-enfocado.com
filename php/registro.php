@@ -13,6 +13,6 @@ if (isset($_POST['registrar'])) {
     $insertarDatos = "INSERT INTO registro VALUES ('','$usuario','$apellido','$boleta','$correo','$contraseña')";
     $ejecutarInser = mysqli_query($enlace, $insertarDatos);
     echo ' <script>
-    location.href="../formulario2.html";
+    location.href="../index.html";
  </script>';
 }
