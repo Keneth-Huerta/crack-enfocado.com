@@ -69,8 +69,9 @@
                 // Contenido del encabezado (usuario y avatar)
                 echo '<div class="post-header">';
                 $foto_perfil = $publicacion['foto_perfil'] ? htmlspecialchars($publicacion['foto_perfil']) : '../media/user.png';
+                $id_user = $publicacion['usuario_id'];
                 echo '<div class="post-avatar">';
-                echo '<img src="' . $foto_perfil . '" alt="Foto de perfil" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">';
+                echo '<a href="perfil.php?usuario_id=' .$id_user. '"><img src="' . $foto_perfil . '" alt="Foto de perfil" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;"></a>';
                 echo '</div>';
                 echo '<div class="post-username">' . htmlspecialchars($publicacion['nombre'] ?? 'Usuario Anónimo') . '</div>';
                 echo '</div>';
