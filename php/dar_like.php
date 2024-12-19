@@ -13,14 +13,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id_publicacion = $_POST['id_publicacion'];
 
     // Verificar si el usuario ya ha dado "Me gusta" a esta publicación
-    $stmt = $enlace->prepare("SELECT * FROM likes WHERE usuario_id = ? AND id_publicacion = ?");
+    $stmt = $enlace->prepare("SELECT * FROM likes WHERE usuario_id = ? AND publicacion_id = ?");
     $stmt->bind_param("ii", $_SESSION['usuario_id'], $id_publicacion);
     $stmt->execute();
     $like_check = $stmt->get_result();
 
     if (mysqli_num_rows($like_check) == 0) {
         // Si no ha dado "Me gusta", insertamos el like
-        $stmt_insert = $enlace->prepare("INSERT INTO likes (usuario_id, id_publicacion) VALUES (?, ?)");
+        $stmt_insert = $enlace->prepare("INSERT INTO likes (usuario_id, publicacion_id) VALUES (?, ?)");
         $stmt_insert->bind_param("ii", $_SESSION['usuario_id'], $id_publicacion);
         $stmt_insert->execute();
 
