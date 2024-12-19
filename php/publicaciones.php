@@ -163,6 +163,9 @@
             var formData = new FormData();
             formData.append('id_publicacion', publicacion_id);
 
+            // Añadir la clase 'clicked' para evitar el conflicto con el cambio de tamaño
+            likeButton.classList.add('clicked');
+
             fetch('dar_like.php', {
                     method: 'POST',
                     body: formData
@@ -179,19 +182,34 @@
                 })
                 .catch(error => {
                     console.error('Error al procesar el like:', error);
+                })
+                .finally(() => {
+                    // Después de la acción, eliminar la clase 'clicked' para permitir el siguiente clic
+                    setTimeout(() => likeButton.classList.remove('clicked'), 200); // Espera 200ms antes de permitir otro clic
                 });
         }
 
         // Evento para detectar cuando el usuario toca el botón
         document.querySelectorAll('.btn-like').forEach(button => {
-            button.addEventListener('touchstart', function() {
-                // Escalar el botón cuando el usuario toca
-                button.style.transform = 'scale(1.2)';
+            button.addEventListener('touchstart', function(e) {
+                // Solo cambiar el tamaño si el botón no ha sido presionado recientemente
+                if (!button.classList.contains('clicked')) {
+                    button.style.transform = 'scale(1.2)';
+                }
             });
 
             button.addEventListener('touchend', function() {
                 // Volver al tamaño normal cuando el usuario suelta el toque
                 button.style.transform = 'scale(1)';
+            });
+
+            // Agregar evento 'click' por si es una interacción normal
+            button.addEventListener('click', function() {
+                // Solo cambiar el tamaño si el botón no ha sido presionado recientemente
+                if (!button.classList.contains('clicked')) {
+                    button.style.transform = 'scale(1.2)';
+                    setTimeout(() => button.style.transform = 'scale(1)', 200); // Vuelve al tamaño original después de 200ms
+                }
             });
         });
     </script>

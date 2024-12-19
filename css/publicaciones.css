@@ -283,3 +283,12 @@ form button:hover {
 .btn-like i {
     margin-right: 10px; /* Espacio entre el icono y el texto */
 }
+/* Estilo para el botón agrandado */
+.btn-like.clicked {
+    transform: scale(1.2);
+    transition: transform 0.2s ease; /* Transición suave al cambiar el tamaño */
+}
+
+.btn-like.liked {
+    color: red; /* Cambia el color o el estilo cuando se ha dado "Me gusta" */
+}
