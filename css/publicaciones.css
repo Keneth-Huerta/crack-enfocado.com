@@ -23,7 +23,7 @@ body {
     line-height: 1.5;
 }
 
-.navbar {
+.snavbar {
     background-color: var(--primary-color);
     color: white;
     padding: var(--spacing);

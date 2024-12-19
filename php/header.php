@@ -29,7 +29,7 @@ if (isset($_SESSION['usuario_id'])) {
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <!-- Incluir solo el archivo CSS de tu proyecto -->
-<link rel="stylesheet" href="../CSS/estilosprin.css">
+<link rel="stylesheet" href="../css/publicaciones.css">
 
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
@@ -41,7 +41,16 @@ if (isset($_SESSION['usuario_id'])) {
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
+
             <ul class="navbar-nav ms-auto">
+                <!-- Formulario de búsqueda -->
+                <li class="nav-item">
+                    <form class="d-flex" action="busqueda.php" method="GET">
+                        <input class="form-control me-2" type="search" name="query" placeholder="Buscar" aria-label="Buscar">
+                        <button class="btn btn-outline-light" type="submit"><i class="bi bi-search"></i> Buscar</button>
+                    </form>
+                </li>
+
                 <li class="nav-item">
                     <a class="nav-link" href="ventas.php">
                         <i class="bi bi-cart-fill"></i> Ventas
@@ -58,13 +67,7 @@ if (isset($_SESSION['usuario_id'])) {
                     </a>
                 </li>
 
-                <!-- Formulario de búsqueda -->
-                <li class="nav-item">
-                    <form class="d-flex" action="busqueda.php" method="GET">
-                        <input class="form-control me-2" type="search" name="query" placeholder="Buscar" aria-label="Buscar">
-                        <button class="btn btn-outline-light" type="submit"><i class="bi bi-search"></i> Buscar</button>
-                    </form>
-                </li>
+
             </ul>
         </div>
     </div>
