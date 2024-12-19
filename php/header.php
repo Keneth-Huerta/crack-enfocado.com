@@ -26,7 +26,6 @@ if (isset($_SESSION['usuario_id'])) {
 
 <!-- Incluir solo Bootstrap de manera selectiva -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
 <!-- Incluir solo el archivo CSS de tu proyecto -->
 <link rel="stylesheet" href="../CSS/estilosprin.css">
@@ -61,7 +60,6 @@ if (isset($_SESSION['usuario_id'])) {
         </div>
     </div>
 </nav>
-
 
 <!-- Script de Bootstrap (lo movemos aquí para asegurar que cargue al final) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
