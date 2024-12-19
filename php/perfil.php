@@ -16,7 +16,13 @@ if (!isset($_SESSION['usuario_id'])) {
     exit();
 }
 
-$usuario_id = $_SESSION['usuario_id'];
+// Obtener el ID del usuario desde la URL
+if (isset($_GET['usuario_id'])) {
+    $usuario_id = (int) $_GET['usuario_id'];
+} else {
+    // Si no se pasa el ID de usuario, redirigir al perfil del usuario actual
+    $usuario_id = $_SESSION['usuario_id'];
+}
 $perfil = [];
 $publicaciones = [];
 
@@ -143,7 +149,7 @@ try {
                                 <?php if (!empty($publicacion['imagen'])): ?>
                                     <div class="publicacion-imagen">
                                         <img src="<?php echo htmlspecialchars($publicacion['imagen']); ?>"
-                                             alt="Imagen de publicación">
+                                            alt="Imagen de publicación">
                                     </div>
                                 <?php endif; ?>
                             </div>
@@ -151,12 +157,12 @@ try {
                             <!-- Botones de acción -->
                             <div class="acciones-publicacion">
                                 <a href="editar_publicacion.php?id=<?php echo $publicacion['id_publicacion']; ?>"
-                                   class="btn-editar">
+                                    class="btn-editar">
                                     <i class="fas fa-edit"></i> Editar
                                 </a>
                                 <a href="eliminar_publicacion.php?id=<?php echo $publicacion['id_publicacion']; ?>"
-                                   class="btn-eliminar"
-                                   onclick="return confirm('¿Estás seguro de que deseas eliminar esta publicación?')">
+                                    class="btn-eliminar"
+                                    onclick="return confirm('¿Estás seguro de que deseas eliminar esta publicación?')">
                                     <i class="fas fa-trash-alt"></i> Eliminar
                                 </a>
                             </div>
