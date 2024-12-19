@@ -68,7 +68,7 @@
 
                 // Contenido del encabezado (usuario y avatar)
                 echo '<div class="post-header">';
-                $foto_perfil = $publicacion['foto_perfil'] ? htmlspecialchars($publicacion['foto_perfil']) : 'default-profile.jpg';
+                $foto_perfil = $publicacion['foto_perfil'] ? htmlspecialchars($publicacion['foto_perfil']) : '../media/user.png';
                 echo '<div class="post-avatar">';
                 echo '<img src="' . $foto_perfil . '" alt="Foto de perfil" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">';
                 echo '</div>';

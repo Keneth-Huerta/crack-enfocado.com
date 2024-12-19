@@ -18,9 +18,9 @@ if (isset($_SESSION['usuario_id'])) {
     mysqli_stmt_close($stmt);
 
     // Definir la ruta de la foto de perfil
-    $foto_perfil = $perfil['foto_perfil'] ?? 'default-profile.jpg'; // Si no tiene foto, usa la predeterminada
+    $foto_perfil = $perfil['foto_perfil'] ?? '../media/user.png'; // Si no tiene foto, usa la predeterminada
 } else {
-    $foto_perfil = 'default-profile.jpg'; // Si no está logueado, usa la predeterminada
+    $foto_perfil = '../media/user.png'; // Si no está logueado, usa la predeterminada
 }
 ?>
 
