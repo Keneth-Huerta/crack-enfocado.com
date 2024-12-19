@@ -1,6 +1,8 @@
 <?php
 // Conexión a la base de datos
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 $servidor = "localhost";
 $usuarioBD = "u288355303_Keneth"; // Usuario de la base de datos
 $claveBD = "1420Genio."; // Contraseña de la base de datos

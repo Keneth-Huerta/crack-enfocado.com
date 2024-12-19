@@ -6,53 +6,122 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CECyT 3 - Página Principal</title>
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Estilos adicionales para mejorar la apariencia del carrusel -->
+    <style>
+        /* Ajuste de las imágenes dentro del carrusel */
+        .carousel-item img {
+            width: 100%; /* Asegura que la imagen ocupe todo el ancho del contenedor */
+            height: 300px; /* Altura fija para todas las imágenes */
+            object-fit: cover; /* Asegura que la imagen cubra el área sin distorsionarse */
+        }
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="../CSS/estilosprin.css">
+        /* Personalización de las flechas del carrusel */
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            background-color: black; /* Cambia las flechas a color negro */
+            border-radius: 50%; /* Hace las flechas redondas */
+            padding: 3px;
+        }
+
+        .carousel-control-prev-icon:hover,
+        .carousel-control-next-icon:hover {
+            background-color: #333; /* Cambia el color al pasar el ratón por encima */
+        }
+
+        /* Estilo adicional para el contenido del carrusel */
+        .carousel-item h5 {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .carousel-item p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .carousel-item .row {
+            padding: 10px;
+        }
+
+        /* Botón para ver todas las publicaciones */
+        .btn-ver-todas {
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            padding: 10px 20px;
+            text-decoration: none;
+        }
+
+        .btn-ver-todas:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
+
 
 <body>
     <?php include('header.php'); ?>
+    
+    <div class="container mt-4">
+        <!-- Carrusel de Publicaciones Recientes -->
+        <h2>Publicaciones Recientes</h2>
+        <div id="publicacionesCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <?php
+                
+                if (session_status() == PHP_SESSION_NONE) {
+                    session_start();
+                }
+                require_once 'conexion.php';
 
-    <!-- Main Content -->
-    <main class="container mt-4">
-        <h2 class="mb-4 fs-1">Más publicaciones</h2>
+                // Obtener las últimas 5 publicaciones
+                $query = "SELECT * FROM publicaciones ORDER BY fecha_publicada DESC LIMIT 5";
+                $resultado = mysqli_query($enlace, $query);
 
-        <!-- Publicaciones destacadas -->
-        <div class="row mb-4 publicaciones bg-light p-4 rounded-3 shadow-sm">
-            <div class="col-12">
-                <div class="content-item d-flex gap-3 align-items-center">
-                    <div style="flex: 0 0 60%; height: 200px;">
-                        <img src="../media/user_icon_001.jpg"
-                            class="img-fluid rounded-3 border border-dark"
-                            alt="Imagen de contenido"
-                            style="object-fit: cover; height: 100%; width: 100%;">
-                    </div>
-                    <div>
-                        <a href="publicaciones.php" class="btn btn-primary mt-3">Ver más</a>
-                    </div>
-                </div>
+                if ($resultado && mysqli_num_rows($resultado) > 0) {
+                    $first = true;
+                    while ($publicacion = mysqli_fetch_assoc($resultado)) {
+                        $activeClass = $first ? "active" : "";
+                        $first = false;
+                ?>
+                        <div class="carousel-item <?php echo $activeClass; ?>">
+                            <div class="row">
+                                <div class="col-12 col-md-4">
+                                    <?php if (!empty($publicacion['imagen'])): ?>
+                                        <img src="<?php echo htmlspecialchars($publicacion['imagen']); ?>" class="d-block w-100" alt="Publicación">
+                                    <?php else: ?>
+                                        <img src="https://via.placeholder.com/300" class="d-block w-100" alt="Publicación">
+                                    <?php endif; ?>
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <h5><?php echo nl2br(htmlspecialchars($publicacion['contenido'])); ?></h5>
+                                    <p><small>Publicado el <?php echo date("d/m/Y H:i", strtotime($publicacion['fecha_publicada'])); ?></small></p>
+                                </div>
+                            </div>
+                        </div>
+                <?php
+                    }
+                } else {
+                    echo "<p>No hay publicaciones recientes.</p>";
+                }
+                ?>
             </div>
+
+            <!-- Controles del Carrusel -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#publicacionesCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#publicacionesCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Siguiente</span>
+            </button>
         </div>
 
-        <h2 class="mb-4 fs-3">Lo más reciente...</h2>
-
-        <!-- Lista de publicaciones -->
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            <?php for ($i = 0; $i < 6; $i++): ?>
-                <div class="col">
-                    <div class="card h-100 shadow-sm">
-                        <img src="../media/logoweb.jpg" class="card-img-top" alt="Imagen de publicación">
-                        <div class="card-body">
-                            <h5 class="card-title">Título de la publicación</h5>
-                            <p class="card-text">Resumen de la publicación</p>
-                            <a href="#" class="btn btn-outline-primary">Leer más</a>
-                        </div>
-                    </div>
-                </div>
-            <?php endfor; ?>
+        <!-- Enlace a la página de todas las publicaciones -->
+        <div class="text-center mt-4">
+            <a href="publicaciones.php" class="btn-ver-todas">Ver todas las publicaciones</a>
         </div>
 
         <div class="row mt-4">
@@ -69,7 +138,7 @@
                     class="btn btn-secondary w-100" target="_blank">SAES</a>
             </div>
         </div>
-    </main>
+    </div>
 
     <!-- Footer -->
     <footer class="container-fluid bg-light mt-4 py-3">
@@ -83,10 +152,8 @@
             <p>Contacto: <a href="mailto:info@cecyt3.ipn.mx">info@cecyt3.ipn.mx</a></p>
         </div>
     </footer>
-    </div>
 
-    <!-- Bootstrap JS and Popper.js -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
 </body>
 
 </html>

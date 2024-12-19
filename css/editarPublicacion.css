@@ -1,0 +1,200 @@
+/* General styles for the profile and publication management pages */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+/* Container for the profile and publication sections */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header */
+header {
+    background-color: #282828;
+    padding: 10px 0;
+    text-align: center;
+}
+
+header a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.2em;
+}
+
+header a:hover {
+    text-decoration: underline;
+}
+
+/* Form and edit publication page styles */
+form {
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+h1 {
+    font-size: 1.8em;
+    color: #5c5c5c;
+    margin-bottom: 20px;
+}
+
+/* Input fields and textarea */
+input[type="file"],
+textarea,
+button {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0 20px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 150px;
+}
+
+input[type="file"] {
+    background-color: #f9f9f9;
+}
+
+button {
+    background-color: #28a745;
+    color: white;
+    cursor: pointer;
+    border: none;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+button:disabled {
+    background-color: #d6d6d6;
+    cursor: not-allowed;
+}
+
+/* Error message style */
+.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.error p {
+    margin: 0;
+}
+
+/* Publicación item styles */
+.publicacion-item {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+.publicacion-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9em;
+    color: #888;
+}
+
+.publicacion-contenido {
+    margin-top: 15px;
+    font-size: 1em;
+    line-height: 1.6;
+}
+
+.publicacion-imagen img {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    margin-top: 15px;
+}
+
+.acciones-publicacion a {
+    text-decoration: none;
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 1em;
+    margin-right: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.acciones-publicacion a:hover {
+    background-color: #0056b3;
+}
+
+.acciones-publicacion a.delete {
+    background-color: #dc3545;
+}
+
+.acciones-publicacion a.delete:hover {
+    background-color: #c82333;
+}
+
+/* Sin publicaciones message */
+.sin-publicaciones {
+    text-align: center;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+}
+
+.sin-publicaciones p {
+    font-size: 1.2em;
+    color: #777;
+}
+
+.btn-nueva-publicacion {
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1.1em;
+}
+
+.btn-nueva-publicacion:hover {
+    background-color: #0056b3;
+}
+
+/* Botones de cancelar y cerrar sesión */
+.acciones{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.acciones a {
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    color: #333;
+    font-weight: bold;
+    margin-right: 20px;
+}
+
+.acciones a:hover {
+    background-color: #ddd;
+}

@@ -1,17 +1,19 @@
 <?php
 include 'basePublicacion.php'; // Archivo de conexión a la base de datos
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Verificar si el usuario ha iniciado sesión
 if (!isset($_SESSION['usuario'])) {
-    header("Location: ../index.html"); // Redirige al login si no está autenticado
+    header("Location: ../index.php"); // Redirige al login si no está autenticado
     exit;
 }
 
 // Verificar si la solicitud es POST
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $content = trim($_POST['contenido']);
-    $username = $_SESSION['usuario'];
+    $username = $_SESSION['usuario_id'];
     $imagePath = null;
 
     // Validar contenido
@@ -22,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Procesar la imagen (si existe)
     if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-        $uploadDir = '../media/'; // Carpeta para guardar las imágenes
+        $uploadDir = '../media/uploads/'; // Carpeta para guardar las imágenes
     
 
         $imageName = time() . '_' . basename($_FILES['image']['name']);
@@ -39,9 +41,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Guardar la publicación en la base de datos
     try {
-        $stmt = $pdo->prepare("INSERT INTO publicaciones (usuario, contenido, imagen) VALUES (:username, :content, :imagen)");
+        $stmt = $pdo->prepare("INSERT INTO publicaciones (usuario_id, contenido, imagen) VALUES (:usuario_id, :content, :imagen)");
         $stmt->execute([
-            ':username' => $username,
+            ':usuario_id' => $username,
             ':content' => $content,
             ':imagen' => $imagePath
         ]);

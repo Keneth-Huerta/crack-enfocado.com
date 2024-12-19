@@ -1,6 +1,8 @@
 <?php
 // Conexión a la base de datos
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 $servidor = "localhost";
 $usuarioBD = "u288355303_Keneth"; // Usuario de la base de datos
 $claveBD = "1420Genio."; // Contraseña de la base de datos
@@ -20,31 +22,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $descripcion = mysqli_real_escape_string($enlace, $_POST['descripcion']);
     $imagen = mysqli_real_escape_string($enlace, $_POST['imagen']);
 
-    // Validaciones
-    if (empty($producto) || empty($id) || empty($precio) || empty($descripcion) || empty($imagen)) {
-        echo "<p>Por favor, complete todos los campos.</p>";
-    } elseif (!is_numeric($precio) || $precio <= 0) {
-        echo "<p>El precio debe ser un número positivo.</p>";
-    } elseif (!filter_var($imagen, FILTER_VALIDATE_URL)) {
-        echo "<p>La URL de la imagen no es válida.</p>";
+    // Insertar el nuevo producto en la base de datos
+    $sql = "INSERT INTO productos (producto, id, precio, descripcion, imagen) 
+            VALUES ('$producto', '$id', '$precio', '$descripcion', '$imagen')";
+    if (mysqli_query($enlace, $sql)) {
+        echo "<p>Producto agregado exitosamente.</p>";
     } else {
-        // Verificar si el producto ya existe en la base de datos (basado en el id o el nombre)
-        $sql_verificar = "SELECT * FROM productos WHERE id = '$id' OR producto = '$producto'";
-        $resultado_verificar = mysqli_query($enlace, $sql_verificar);
-
-        if (mysqli_num_rows($resultado_verificar) > 0) {
-            // El producto ya existe
-            echo "<p>El producto ya existe en la base de datos.</p>";
-        } else {
-            // Insertar el nuevo producto en la base de datos
-            $sql_insertar = "INSERT INTO productos (producto, id, precio, descripcion, imagen) 
-                             VALUES ('$producto', '$id', '$precio', '$descripcion', '$imagen')";
-            if (mysqli_query($enlace, $sql_insertar)) {
-                echo "<p>Producto agregado correctamente.</p>";
-            } else {
-                echo "<p>Error al agregar el producto: " . mysqli_error($enlace) . "</p>";
-            }
-        }
+        echo "<p>Error al agregar el producto: " . mysqli_error($enlace) . "</p>";
     }
 }
 
@@ -53,6 +37,7 @@ mysqli_close($enlace);
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -64,6 +49,7 @@ mysqli_close($enlace);
             margin: 0;
             padding: 0;
         }
+
         .container {
             width: 50%;
             margin: 50px auto;
@@ -72,16 +58,19 @@ mysqli_close($enlace);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
         }
+
         h1 {
             text-align: center;
             color: #333;
         }
+
         label {
             font-size: 16px;
             margin-bottom: 8px;
             display: block;
             color: #333;
         }
+
         input[type="text"],
         input[type="number"],
         textarea {
@@ -93,8 +82,9 @@ mysqli_close($enlace);
             box-sizing: border-box;
             font-size: 14px;
         }
+
         input[type="submit"] {
-            background-color: #4CAF50;
+            background-color: # #7d1b1b;
             color: white;
             padding: 14px 20px;
             border: none;
@@ -103,8 +93,9 @@ mysqli_close($enlace);
             font-size: 16px;
             width: 100%;
         }
+
         input[type="submit"]:hover {
-            background-color: #45a049;
+            background-color: # #7d1b1b;
         }
 
         /* Estilos para mostrar los productos */
@@ -115,6 +106,7 @@ mysqli_close($enlace);
             padding: 20px;
             justify-items: center;
         }
+
         .product-card {
             background-color: #fff;
             border: 1px solid #ddd;
@@ -124,10 +116,12 @@ mysqli_close($enlace);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+
         .product-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
         }
+
         .product-image {
             max-width: 100%;
             max-height: 200px;
@@ -135,21 +129,24 @@ mysqli_close($enlace);
             margin-bottom: 10px;
             border-radius: 4px;
         }
+
         .product-card h3 {
             font-size: 18px;
             color: #333;
         }
+
         .product-card p {
             font-size: 14px;
             color: #666;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>Formulario para agregar un nuevo producto</h1>
-        <form method="post" action="ventas.php">
-            <label for="producto">Nombre del producto:</label>
+        <form method="post">
+            <label for="producto" action="ventas.php">Nombre del producto:</label>
             <input type="text" id="producto" name="producto" required><br><br>
 
             <label for="id">ID del producto:</label>
@@ -168,4 +165,5 @@ mysqli_close($enlace);
         </form>
     </div>
 </body>
+
 </html>

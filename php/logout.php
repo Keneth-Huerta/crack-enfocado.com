@@ -1,6 +1,8 @@
 <?php
 // Iniciar la sesión
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Eliminar todas las variables de sesión
 session_unset();
@@ -9,6 +11,6 @@ session_unset();
 session_destroy();
 
 // Redirigir al inicio de sesión
-header("Location: ../index.html");
+header("Location: ../index.php");
 exit();
 ?>
