@@ -20,14 +20,14 @@ try {
     mysqli_stmt_bind_param($stmt, "i", $usuario_id);
     mysqli_stmt_execute($stmt);
     $resultado = mysqli_stmt_get_result($stmt);
-    
+
     if (!$resultado) {
         throw new Exception("Error al obtener los datos del perfil");
     }
-    
+
     $perfil = mysqli_fetch_assoc($resultado);
     mysqli_stmt_close($stmt);
-    
+
     // Verificar si los campos existen y asignarles valores predeterminados si no están definidos
     $nombre = $perfil['nombre'] ?? 'Nombre no disponible';
     $apellido = $perfil['apellido'] ?? 'Apellido no disponible';
@@ -51,15 +51,17 @@ try {
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi Perfil - <?php echo htmlspecialchars($nombre); ?></title>
     <link rel="stylesheet" href="../css/misestilos.css">
 </head>
+
 <body>
     <?php include('header.php'); ?>
-    
+
     <div class="perfil-container">
         <!-- Foto de portada -->
         <div class="foto-portada">
@@ -73,7 +75,7 @@ try {
             <div class="foto-perfil">
                 <img src="<?php echo htmlspecialchars($foto_perfil); ?>" alt="Foto de perfil">
             </div>
-            
+
             <div class="informacion">
                 <p><strong>Nombre Completo:</strong> <?php echo htmlspecialchars($nombre . ' ' . $apellido); ?></p>
                 <p><strong>Carrera:</strong> <?php echo htmlspecialchars($carrera); ?></p>
@@ -90,4 +92,5 @@ try {
 
 
 </body>
+
 </html>

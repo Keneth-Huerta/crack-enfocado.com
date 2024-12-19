@@ -20,6 +20,7 @@ if (isset($_SESSION['usuario_id'])) {
         mysqli_stmt_bind_param($stmt, "i", $id_publicacion);  // Vinculamos el parámetro de la consulta
         if (mysqli_stmt_execute($stmt)) {
             echo "Like registrado exitosamente!";
+            header("Location: publicaciones.php");
         } else {
             echo "Error al registrar el like.";
         }
