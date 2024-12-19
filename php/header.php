@@ -23,8 +23,8 @@ if (isset($_SESSION['usuario_id'])) {
     $foto_perfil = 'default-profile.jpg'; // Si no está logueado, usa la predeterminada
 }
 ?>
-    <!-- Font Awesome para iconos -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<!-- Font Awesome para iconos -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <!-- Incluir solo Bootstrap de manera selectiva -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
