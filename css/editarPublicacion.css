@@ -180,6 +180,11 @@ button:disabled {
 }
 
 /* Botones de cancelar y cerrar sesión */
+.acciones{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
 .acciones a {
     text-decoration: none;
     padding: 10px 20px;
@@ -187,7 +192,7 @@ button:disabled {
     background-color: #f0f0f0;
     color: #333;
     font-weight: bold;
-    margin-right: 15px;
+    margin-right: 20px;
 }
 
 .acciones a:hover {
