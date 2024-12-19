@@ -1,58 +1,66 @@
+/* Variables globales */
+:root {
+    --primary-color: #7d1b1b;
+    --text-color: #333;
+    --bg-color: #f0f2f5;
+    --shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    --border-radius: 10px;
+    --spacing: 20px;
+}
+
+/* Estilos base */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f0f2f5;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.5;
 }
 
 .navbar {
-    background-color: #7d1b1b;
+    background-color: var(--primary-color);
     color: white;
-    padding: 15px;
+    padding: var(--spacing);
     text-align: center;
     font-size: 1.8rem;
     font-weight: bold;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow);
 }
 
 .container {
     max-width: 800px;
-    margin: 20px auto;
+    margin: var(--spacing) auto;
     padding: 10px;
 }
 
-/* Estilos para el contenedor de publicaciones */
+/* Publicaciones */
 .publicaciones {
     margin-top: 30px;
 }
 
-/* Estilo para cada publicación */
 .post-item {
     background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
+    padding: var(--spacing);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    margin-bottom: var(--spacing);
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
-/* Estilo para la imagen de la publicación */
 .post-item img {
-    width: 100%;  /* Hace que la imagen ocupe el 100% del contenedor */
-    max-width: 500px;  /* Limita el tamaño máximo de la imagen a 500px */
-    max-height: 300px; /* Limita la altura máxima de la imagen */
-    object-fit: cover;  /* Asegura que la imagen se recorte y se ajuste sin deformarse */
-    border-radius: 10px; /* Bordes redondeados */
-    margin-bottom: 15px;  /* Separación inferior */
-    display: block;  /* Elimina los márgenes extra alrededor de la imagen */
-    margin-left: auto;  /* Centra la imagen en su contenedor */
-    margin-right: auto; /* Centra la imagen en su contenedor */
+    width: 100%;
+    max-width: 500px;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+    margin: 0 auto 15px;
+    display: block;
 }
 
-
-/* Estilo para el encabezado de la publicación */
+/* Header de publicación */
 .post-header {
     display: flex;
     align-items: center;
@@ -69,76 +77,52 @@ body {
 .post-username {
     font-weight: bold;
     font-size: 1.2rem;
-    color: #333;
 }
 
-/* Estilo para el contenido de la publicación */
+/* Contenido y acciones */
 .post-content {
     font-size: 1rem;
-    color: #444;
     margin-bottom: 15px;
-    line-height: 1.5;
 }
 
-.post-form {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-    margin-bottom: 30px;
-}
-
-.post-form textarea {
-    width: 100%;
-    height: 100px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    padding: 10px;
-    resize: none;
-    font-size: 1rem;
-    box-sizing: border-box;
-}
-
-.post-form input[type="file"] {
-    margin-top: 10px;
-    font-size: 0.9rem;
-}
-
-.post-form button {
-    background-color: #7d1b1b;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 1rem;
-    margin-top: 10px;
-    transition: background-color 0.3s;
-}
-
-/* Estilo para las acciones de la publicación */
 .post-actions {
     margin-top: 10px;
     display: flex;
     gap: 15px;
 }
 
-.post-actions button {
-    background: none;
-    border: none;
-    color: #7d1b1b;
-    cursor: pointer;
-    font-size: 0.95rem;
-    font-weight: bold;
+/* Formulario de publicación */
+.post-form {
+    background: white;
+    padding: var(--spacing);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 30px;
 }
 
-.post-actions button:hover {
-    text-decoration: underline;
+.post-form textarea,
+.comments-section textarea {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 1rem;
+    box-sizing: border-box;
 }
 
-/* Estilo básico para el botón */
+.post-form textarea {
+    height: 100px;
+    resize: none;
+}
+
+.comments-section textarea {
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+/* Botón Me gusta */
 .btn-like {
-    background-color: #ff5c5c; /* Rojo claro */
+    background-color: #ff5c5c;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -147,45 +131,37 @@ body {
     cursor: pointer;
     display: flex;
     align-items: center;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    transition: all 0.3s ease;
 }
 
-/* Efecto hover */
-.btn-like:hover {
-    background-color: #ff3838; /* Rojo oscuro */
+.btn-like:hover,
+.btn-like.clicked {
+    background-color: #ff3838;
     transform: scale(1.1);
 }
 
-/* Efecto cuando el usuario da like */
 .btn-like.liked {
-    background-color: #4CAF50; /* Verde */
+    background-color: #4CAF50;
 }
 
 .btn-like i {
-    margin-right: 10px; /* Espacio entre el icono y el texto */
+    margin-right: 10px;
 }
 
-/* Estilo para los botones en dispositivos pequeños */
-@media (max-width: 600px) {
-    .btn-like {
-        font-size: 14px;
-        padding: 8px 15px;
-    }
-}
+/* Comentarios */
 .comments-section {
-    margin-top: 20px;
+    margin-top: var(--spacing);
     border-top: 1px solid #ccc;
     padding-top: 10px;
 }
 
 .comment-item {
     margin-bottom: 10px;
-    padding-left: 20px;
+    padding-left: var(--spacing);
 }
 
 .comment-item strong {
     font-size: 14px;
-    color: #333;
 }
 
 .comment-item p {
@@ -193,102 +169,30 @@ body {
     color: #666;
 }
 
-form {
-    margin-top: 15px;
-}
-
-form textarea {
-    width: 100%;
-    height: 50px;
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-form button {
-    padding: 10px 20px;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-form button:hover {
-    background-color: #0056b3;
-}
-/* Estilo básico para el botón */
-.btn-like {
-    background-color: #ff5c5c; /* Rojo claro */
+/* Botones generales */
+button {
+    background-color: var(--primary-color);
     color: white;
     border: none;
     padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 25px;
+    border-radius: 6px;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Transición para el tamaño y color */
+    font-size: 1rem;
+    transition: background-color 0.3s;
 }
 
-/* Efecto hover */
-.btn-like:hover {
-    background-color: #ff3838; /* Rojo oscuro */
-    transform: scale(1.1); /* Crecer al pasar el cursor */
+button:hover {
+    opacity: 0.9;
 }
 
-/* Efecto cuando el usuario da like */
-.btn-like.liked {
-    background-color: #4CAF50; /* Verde */
-    transform: scale(1.1); /* Mantener el tamaño grande cuando se da like */
-}
+/* Media queries */
+@media (max-width: 600px) {
+    :root {
+        --spacing: 15px;
+    }
 
-/* Cuando el usuario hace clic, el botón se hace grande y luego vuelve a su tamaño */
-.btn-like:active {
-    transform: scale(1.2); /* Aumenta el tamaño cuando se presiona */
-    transition: transform 0.1s ease; /* Transición rápida para reducir el tamaño */
-}
-
-.btn-like i {
-    margin-right: 10px; /* Espacio entre el icono y el texto */
-}
-/* Estilo básico para el botón */
-.btn-like {
-    background-color: #ff5c5c; /* Rojo claro */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 25px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Transición para el tamaño y color */
-}
-
-/* Efecto hover */
-.btn-like:hover {
-    background-color: #ff3838; /* Rojo oscuro */
-    transform: scale(1.1); /* Crecer al pasar el cursor */
-}
-
-/* Efecto cuando el usuario da like */
-.btn-like.liked {
-    background-color: #4CAF50; /* Verde */
-    transform: scale(1.1); /* Mantener el tamaño grande cuando se da like */
-}
-
-/* Estilo para el icono */
-.btn-like i {
-    margin-right: 10px; /* Espacio entre el icono y el texto */
-}
-/* Estilo para el botón agrandado */
-.btn-like.clicked {
-    transform: scale(1.2);
-    transition: transform 0.2s ease; /* Transición suave al cambiar el tamaño */
-}
-
-.btn-like.liked {
-    color: red; /* Cambia el color o el estilo cuando se ha dado "Me gusta" */
+    .btn-like {
+        font-size: 14px;
+        padding: 8px 15px;
+    }
 }
