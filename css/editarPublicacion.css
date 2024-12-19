@@ -33,7 +33,7 @@ header a:hover {
 }
 
 /* Form and edit publication page styles */
-form {
+.form {
     background-color: white;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

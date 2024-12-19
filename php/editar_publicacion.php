@@ -91,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         <?php endif; ?>
 
-        <form action="editar_publicacion.php?id=<?php echo $publicacion_id; ?>" method="POST" enctype="multipart/form-data">
+        <form action="editar_publicacion.php?id=<?php echo $publicacion_id; ?>" method="POST" class="form" enctype="multipart/form-data">
             <label for="contenido">Contenido:</label>
             <textarea id="contenido" name="contenido" rows="5" required><?php echo htmlspecialchars($publicacion['contenido']); ?></textarea>
 
