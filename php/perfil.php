@@ -120,7 +120,9 @@ try {
         </div>
         <?
         if ($usuario_id == $_SESSION['usuario_id']) {
-            echo '<div class="acciones">
+            echo '
+            <link rel="stylesheet" href="../css/misestilos.css">
+            <div class="acciones">
             <a href="editar_perfil.php" class="btn-editar">
                 <i class="fas fa-edit"></i> Editar perfil
             </a>
