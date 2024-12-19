@@ -108,7 +108,7 @@ try {
         <div class="perfil-info">
             <!-- Foto de perfil -->
             <div class="foto-perfil">
-                <img src="<?php echo htmlspecialchars($perfil['foto_perfil']); ?>" alt="Foto de perfil">
+                <img src="<?php echo htmlspecialchars($foto_perfil); ?>" alt="Foto de perfil">
             </div>
 
             <div class="informacion">
@@ -128,7 +128,7 @@ try {
                 <a href="logout.php" class="btn-cerrar-sesion">
                     <i class="fas fa-sign-out-alt"></i> Cerrar sesión
                 </a>
-            </div>';
+            </div>
         <?php endif; ?>
 
         <!-- Mostrar publicaciones del usuario -->
