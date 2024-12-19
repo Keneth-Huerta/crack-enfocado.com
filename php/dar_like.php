@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'basePublicacion.php'; // Conexión a la base de datos
+include 'conexion.php'; // Conexión a la base de datos
 
 // Verificar si el usuario está logueado
 if (!isset($_SESSION['usuario_id'])) {
