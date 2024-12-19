@@ -47,6 +47,13 @@ try {
     $foto_perfil = '../media/user.png';
     $foto_portada = '../media/default-cover.jpg';
 }
+
+// Obtener las publicaciones del usuario
+$publicaciones_query = "SELECT * FROM publicaciones WHERE usuario_id = ? ORDER BY fecha_publicada DESC";
+$stmt_publicaciones = mysqli_prepare($enlace, $publicaciones_query);
+mysqli_stmt_bind_param($stmt_publicaciones, "i", $usuario_id);
+mysqli_stmt_execute($stmt_publicaciones);
+$publicaciones_result = mysqli_stmt_get_result($stmt_publicaciones);
 ?>
 
 <!DOCTYPE html>
@@ -88,9 +95,32 @@ try {
             <a href="editar_perfil.php" class="btn-editar">Editar perfil</a>
             <a href="logout.php" class="btn-cerrar-sesion">Cerrar sesión</a>
         </div>
+
+        <!-- Mostrar publicaciones del usuario -->
+        <div class="publicaciones-usuario">
+            <h2>Mis Publicaciones</h2>
+            <?php if (mysqli_num_rows($publicaciones_result) > 0): ?>
+                <div class="lista-publicaciones">
+                    <?php while ($publicacion = mysqli_fetch_assoc($publicaciones_result)): ?>
+                        <div class="publicacion-item">
+                            <p><strong><?php echo htmlspecialchars($publicacion['titulo']); ?></strong></p>
+                            <p><?php echo nl2br(htmlspecialchars($publicacion['contenido'])); ?></p>
+                            <?php if (!empty($publicacion['imagen'])): ?>
+                                <img src="<?php echo htmlspecialchars($publicacion['imagen']); ?>" alt="Imagen de publicación">
+                            <?php endif; ?>
+                            <p><small>Publicado el: <?php echo htmlspecialchars($publicacion['fecha_publicada']); ?></small></p>
+                        </div>
+                    <?php endwhile; ?>
+                </div>
+            <?php else: ?>
+                <p>Aún no has realizado ninguna publicación.</p>
+            <?php endif; ?>
+        </div>
     </div>
-
-
 </body>
 
 </html>
+
+<?php
+mysqli_stmt_close($stmt_publicaciones);
+?>
