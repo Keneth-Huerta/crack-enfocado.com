@@ -184,4 +184,24 @@ button:hover {
         font-size: 14px;
         padding: 8px 15px;
     }
+} .btn-like {
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    background: none;
+    color: #666;
+    transition: all 0.3s ease;
+}
+
+.btn-like .fa-heart {
+    color: #666;
+    transition: all 0.3s ease;
+}
+
+.btn-like.liked {
+    color: #ff4444;
+}
+
+.btn-like.liked .fa-heart {
+    color: #ff4444;
 }

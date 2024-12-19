@@ -160,10 +160,10 @@
                     return;
                 }
 
-                // Actualizar estado visual
+                // Actualizar estado visual inmediatamente
                 if (status === 'liked') {
                     likeButton.classList.add('liked');
-                } else {
+                } else if (status === 'unliked') {
                     likeButton.classList.remove('liked');
                 }
 
@@ -176,11 +176,6 @@
                 console.error('Error al procesar el like:', error);
             }
         }
-
-        // Inicializar cuando el DOM esté listo
-        document.addEventListener('DOMContentLoaded', () => {
-            // No necesitamos inicialización especial para este caso
-        });
     </script>
 </body>
 
