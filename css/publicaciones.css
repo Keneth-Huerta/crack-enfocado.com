@@ -218,3 +218,38 @@ form button {
 form button:hover {
     background-color: #0056b3;
 }
+/* Estilo básico para el botón */
+.btn-like {
+    background-color: #ff5c5c; /* Rojo claro */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 25px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Transición para el tamaño y color */
+}
+
+/* Efecto hover */
+.btn-like:hover {
+    background-color: #ff3838; /* Rojo oscuro */
+    transform: scale(1.1); /* Crecer al pasar el cursor */
+}
+
+/* Efecto cuando el usuario da like */
+.btn-like.liked {
+    background-color: #4CAF50; /* Verde */
+    transform: scale(1.1); /* Mantener el tamaño grande cuando se da like */
+}
+
+/* Cuando el usuario hace clic, el botón se hace grande y luego vuelve a su tamaño */
+.btn-like:active {
+    transform: scale(1.2); /* Aumenta el tamaño cuando se presiona */
+    transition: transform 0.1s ease; /* Transición rápida para reducir el tamaño */
+}
+
+.btn-like i {
+    margin-right: 10px; /* Espacio entre el icono y el texto */
+}
