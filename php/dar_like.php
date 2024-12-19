@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt_insert->execute();
 
         // Actualizamos el contador de "Me gusta" en la publicación
-        $stmt_update = $enlace->prepare("UPDATE publicaciones SET cantidad_megusta = cantidad_megusta + 1 WHERE publicacion_id = ?");
+        $stmt_update = $enlace->prepare("UPDATE publicaciones SET cantidad_megusta = cantidad_megusta + 1 WHERE id_publicacion = ?");
         $stmt_update->bind_param("i", $id_publicacion);
         $stmt_update->execute();
     }
