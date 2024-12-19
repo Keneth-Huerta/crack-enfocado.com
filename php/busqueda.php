@@ -19,7 +19,7 @@ if ($searchTerm != '') {
     ";
 
     $stmt_usuarios = mysqli_prepare($enlace, $query_usuarios);
-    mysqli_stmt_bind_param($stmt_usuarios, 'sssss', $searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm);
+    mysqli_stmt_bind_param($stmt_usuarios, 'ssssss', $searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm);
     mysqli_stmt_execute($stmt_usuarios);
     $resultado_usuarios = mysqli_stmt_get_result($stmt_usuarios);
 
@@ -68,7 +68,8 @@ if ($searchTerm != '') {
                         <img src="<?php echo htmlspecialchars($usuario['foto_perfil']); ?>" alt="Foto de perfil" class="rounded-circle" width="40" height="40">
                         <div class="ms-3">
                             <strong><?php echo htmlspecialchars($usuario['nombre'] . ' ' . $usuario['apellido']); ?></strong><br>
-                            <span class="text-muted"><?php echo htmlspecialchars($usuario['username']); ?></span>
+                            <span class="text-muted"><?php echo htmlspecialchars($usuario['username']); ?></span><br>
+                            <a href="perfil.php?usuario_id=<?php echo htmlspecialchars($usuario['usuario_id']); ?>" class="btn btn-info btn-sm mt-2">Ver Perfil</a>
                         </div>
                     </li>
                 <?php endwhile; ?>
@@ -85,6 +86,7 @@ if ($searchTerm != '') {
                     <li class="list-group-item">
                         <p><strong>Publicado el: <?php echo date("d/m/Y", strtotime($publicacion['fecha_publicada'])); ?></strong></p>
                         <p><?php echo nl2br(htmlspecialchars($publicacion['contenido'])); ?></p>
+                        <a href="detalle_publicacion.php?id_publicacion=<?php echo htmlspecialchars($publicacion['id_publicacion']); ?>" class="btn btn-info btn-sm">Ver Detalles</a>
                     </li>
                 <?php endwhile; ?>
             </ul>
