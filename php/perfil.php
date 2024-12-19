@@ -28,7 +28,7 @@ $publicaciones = [];
 
 // Obtener perfil con manejo de errores mejorado
 try {
-    $query = "SELECT * FROM perfiles JOIN usuarios on perfiles.usuario_id=usuarios.id WHERE usuario_id = ?";
+    $query = "SELECT * FROM perfiles JOIN usuarios on perfiles.usuario_id = usuarios.id WHERE usuario_id = ?";
     if ($stmt = mysqli_prepare($enlace, $query)) {
         mysqli_stmt_bind_param($stmt, "i", $usuario_id);
 
@@ -108,7 +108,7 @@ try {
         <div class="perfil-info">
             <!-- Foto de perfil -->
             <div class="foto-perfil">
-                <img src="<?php echo htmlspecialchars($foto_perfil); ?>" alt="Foto de perfil">
+                <img src="<?php echo htmlspecialchars($perfil['foto_perfil']); ?>" alt="Foto de perfil">
             </div>
 
             <div class="informacion">
