@@ -23,16 +23,18 @@ if (isset($_SESSION['usuario_id'])) {
     $foto_perfil = 'default-profile.jpg'; // Si no está logueado, usa la predeterminada
 }
 ?>
+
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
 <!-- Font Awesome para iconos -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<!-- Incluir solo Bootstrap de manera selectiva -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <!-- Incluir solo el archivo CSS de tu proyecto -->
 <link rel="stylesheet" href="../CSS/estilosprin.css">
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #952F57;">
     <div class="container-fluid">
         <a class="navbar-brand" href="/index.php">
             <img src="../media/logoweb.svg" alt="Logo" class="img-fluid" style="max-height: 50px;">
@@ -41,7 +43,6 @@ if (isset($_SESSION['usuario_id'])) {
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-
             <ul class="navbar-nav ms-auto">
                 <!-- Formulario de búsqueda -->
                 <li class="nav-item">
@@ -63,16 +64,13 @@ if (isset($_SESSION['usuario_id'])) {
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="perfil.php">
-                        <img src="<?php echo htmlspecialchars($foto_perfil); ?>" alt="Foto de perfil" class="rounded-circle" style="width: 40px; height: 40px;">
+                        <img src="<?php echo htmlspecialchars($foto_perfil); ?>" alt="Foto de perfil" style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;">
                     </a>
                 </li>
-
-
             </ul>
         </div>
     </div>
 </nav>
-
 
 <!-- Script de Bootstrap (lo movemos aquí para asegurar que cargue al final) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
