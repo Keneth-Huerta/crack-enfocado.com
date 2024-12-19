@@ -19,7 +19,7 @@ if ($searchTerm != '') {
     ";
 
     $stmt_usuarios = mysqli_prepare($enlace, $query_usuarios);
-    mysqli_stmt_bind_param($stmt_usuarios, 'ssssss', $searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm);
+    mysqli_stmt_bind_param($stmt_usuarios, 'sssss', $searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm);
     mysqli_stmt_execute($stmt_usuarios);
     $resultado_usuarios = mysqli_stmt_get_result($stmt_usuarios);
 
