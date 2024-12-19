@@ -4,7 +4,7 @@ include 'conexion.php'; // Conexión a la base de datos
 
 // Verificar si el usuario está logueado
 if (!isset($_SESSION['usuario_id'])) {
-    header('Location: ../index.php'); // Redirigir si no está logueado
+    echo "No estás logueado"; // Opcional: puedes redirigir al login si es necesario
     exit();
 }
 
@@ -28,8 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt_update = $enlace->prepare("UPDATE publicaciones SET cantidad_megusta = cantidad_megusta + 1 WHERE id_publicacion = ?");
         $stmt_update->bind_param("i", $id_publicacion);
         $stmt_update->execute();
-        
-        // Opcional: retornar un mensaje de éxito
+
         echo "Like agregado!";
     } else {
         // Si ya ha dado "Me gusta", lo quitamos
@@ -42,12 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt_update->bind_param("i", $id_publicacion);
         $stmt_update->execute();
 
-        // Opcional: retornar un mensaje de éxito
         echo "Like eliminado!";
     }
-
-    // Redirigir de nuevo a la página de publicaciones
-    header('Location: publicaciones.php');
-    exit();
 }
 ?>

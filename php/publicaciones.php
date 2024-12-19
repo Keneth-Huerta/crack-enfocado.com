@@ -90,13 +90,10 @@
                 $like_check = $stmt_likes->get_result();
                 $liked_class = (mysqli_num_rows($like_check) > 0) ? 'liked' : '';
 
-                // Botón para dar like
-                echo '<form action="dar_like.php" method="post">';
-                echo '<input type="hidden" name="id_publicacion" value="' . $publicacion['id_publicacion'] . '">';
-                echo '<button type="submit" class="btn-like ' . $liked_class . '">';
-                echo '<i class="fas fa-heart"></i> Me gusta (' . $publicacion['cantidad_megusta'] . ')';
+                // Botón para dar like (AJAX)
+                echo '<button type="button" class="btn-like ' . $liked_class . '" onclick="toggleLike(' . $publicacion['id_publicacion'] . ')">';
+                echo '<i class="fas fa-heart"></i> Me gusta (<span id="like-count-' . $publicacion['id_publicacion'] . '">' . $publicacion['cantidad_megusta'] . '</span>)';
                 echo '</button>';
-                echo '</form>';
 
                 // Botón de "Comentar"
                 echo '<button type="button" onclick="toggleCommentSection(' . $publicacion['id_publicacion'] . ')">Comentar</button>';
@@ -155,6 +152,33 @@
                 commentsSection.style.display = "none"; // Ocultar comentarios
                 commentForm.style.display = "none"; // Ocultar formulario de comentario
             }
+        }
+
+        // Función para manejar el like con AJAX
+        function toggleLike(publicacion_id) {
+            var likeButton = document.querySelector('.btn-like');
+            var likeCount = document.getElementById('like-count-' + publicacion_id);
+
+            var formData = new FormData();
+            formData.append('id_publicacion', publicacion_id);
+
+            fetch('dar_like.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                if (data.includes('Like agregado!')) {
+                    likeCount.textContent = parseInt(likeCount.textContent) + 1;
+                    likeButton.classList.add('liked');
+                } else if (data.includes('Like eliminado!')) {
+                    likeCount.textContent = parseInt(likeCount.textContent) - 1;
+                    likeButton.classList.remove('liked');
+                }
+            })
+            .catch(error => {
+                console.error('Error al procesar el like:', error);
+            });
         }
     </script>
 
