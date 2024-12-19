@@ -126,3 +126,44 @@ label.error {
     font-size: 14px;
     padding: 10px;
 }
+/* Modificación para los botones de cancelar y guardar */
+.acciones {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px; /* Espacio entre los botones */
+    margin-top: 20px;
+}
+
+/* Botón guardar cambios */
+button[type="submit"] {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1.1em;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #218838;
+}
+
+/* Botón cancelar */
+a.btn-cancelar {
+    background-color: #f0f0f0;
+    color: #333;
+    padding: 12px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease;
+}
+
+a.btn-cancelar:hover {
+    background-color: #ddd;
+}
