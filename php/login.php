@@ -1,4 +1,5 @@
 <?php
+
 // Configuración de la base de datos
 $servidor = "localhost";
 $usuarioBD = "u288355303_Keneth";
@@ -12,7 +13,9 @@ if (mysqli_connect_errno()) {
 }
 
 // Iniciar sesión
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Validar si el formulario ha sido enviado
 if (isset($_POST['iniciar_sesion'])) {

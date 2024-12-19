@@ -71,6 +71,10 @@
         <div id="publicacionesCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <?php
+                
+                if (session_status() == PHP_SESSION_NONE) {
+                    session_start();
+                }
                 require_once 'conexion.php';
 
                 // Obtener las últimas 5 publicaciones
