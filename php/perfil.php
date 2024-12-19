@@ -101,7 +101,7 @@ try {
             <img src="<?php echo htmlspecialchars($foto_portada); ?>" alt="Foto de portada">
         </div>
 
-        <h1 class="titulo-perfil">Bienvenido, <?php echo htmlspecialchars($username); ?></h1>
+        <h1 class="titulo-perfil"><?php echo htmlspecialchars($username); ?></h1>
 
         <div class="perfil-info">
             <!-- Foto de perfil -->
