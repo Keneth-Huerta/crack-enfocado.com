@@ -26,7 +26,7 @@
 
 <body>
     <?php include('header.php'); ?>
-    <div class="navbar">Publicaciones</div>
+    <div class="navb">Publicaciones</div>
 
     <div class="container">
         <!-- Formulario para crear una publicación -->
@@ -140,127 +140,125 @@
     </div>
 
     <script>
-    // Debounce function para prevenir múltiples clicks rápidos
-    function debounce(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
+        // Debounce function para prevenir múltiples clicks rápidos
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
                 clearTimeout(timeout);
-                func(...args);
+                timeout = setTimeout(later, wait);
             };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
-    }
+        }
 
-    // Control de estado para los likes
-    const likeStates = new Map();
+        // Control de estado para los likes
+        const likeStates = new Map();
 
-    // Función mejorada para manejar likes
-    async function toggleLike(publicacion_id) {
-        const likeButton = document.querySelector(`.btn-like[data-id="${publicacion_id}"]`);
-        const likeCount = document.getElementById(`like-count-${publicacion_id}`);
-        
-        // Prevenir múltiples clicks mientras se procesa
-        if (likeStates.get(publicacion_id)) return;
-        likeStates.set(publicacion_id, true);
+        // Función mejorada para manejar likes
+        async function toggleLike(publicacion_id) {
+            const likeButton = document.querySelector(`.btn-like[data-id="${publicacion_id}"]`);
+            const likeCount = document.getElementById(`like-count-${publicacion_id}`);
 
-        try {
-            // Añadir clase de animación
-            likeButton.classList.add('clicked');
-            
-            const formData = new FormData();
-            formData.append('id_publicacion', publicacion_id);
+            // Prevenir múltiples clicks mientras se procesa
+            if (likeStates.get(publicacion_id)) return;
+            likeStates.set(publicacion_id, true);
 
-            const response = await fetch('dar_like.php', {
-                method: 'POST',
-                body: formData
-            });
-            
-            const data = await response.text();
-            
-            // Actualizar el contador y el estado visual
-            if (data.includes('Like agregado!')) {
-                likeCount.textContent = parseInt(likeCount.textContent) + 1;
-                likeButton.classList.add('liked');
-            } else if (data.includes('Like eliminado!')) {
-                likeCount.textContent = parseInt(likeCount.textContent) - 1;
-                likeButton.classList.remove('liked');
+            try {
+                // Añadir clase de animación
+                likeButton.classList.add('clicked');
+
+                const formData = new FormData();
+                formData.append('id_publicacion', publicacion_id);
+
+                const response = await fetch('dar_like.php', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.text();
+
+                // Actualizar el contador y el estado visual
+                if (data.includes('Like agregado!')) {
+                    likeCount.textContent = parseInt(likeCount.textContent) + 1;
+                    likeButton.classList.add('liked');
+                } else if (data.includes('Like eliminado!')) {
+                    likeCount.textContent = parseInt(likeCount.textContent) - 1;
+                    likeButton.classList.remove('liked');
+                }
+            } catch (error) {
+                console.error('Error al procesar el like:', error);
+            } finally {
+                // Limpiar el estado después de un breve delay
+                setTimeout(() => {
+                    likeButton.classList.remove('clicked');
+                    likeStates.set(publicacion_id, false);
+                }, 300);
             }
-        } catch (error) {
-            console.error('Error al procesar el like:', error);
-        } finally {
-            // Limpiar el estado después de un breve delay
-            setTimeout(() => {
-                likeButton.classList.remove('clicked');
-                likeStates.set(publicacion_id, false);
-            }, 300);
         }
-    }
 
-    // Manejador de eventos para los botones de like
-    function initializeLikeButtons() {
-        const buttons = document.querySelectorAll('.btn-like');
-        
-        buttons.forEach(button => {
-            // Crear versión con debounce del toggleLike
-            const debouncedToggleLike = debounce((id) => toggleLike(id), 300);
-            
-            // Manejar eventos touch
-            button.addEventListener('touchstart', (e) => {
-                e.preventDefault(); // Prevenir comportamiento por defecto
-                const id = button.dataset.id;
-                if (!likeStates.get(id)) {
-                    button.classList.add('clicked');
-                }
+        // Manejador de eventos para los botones de like
+        function initializeLikeButtons() {
+            const buttons = document.querySelectorAll('.btn-like');
+
+            buttons.forEach(button => {
+                // Crear versión con debounce del toggleLike
+                const debouncedToggleLike = debounce((id) => toggleLike(id), 300);
+
+                // Manejar eventos touch
+                button.addEventListener('touchstart', (e) => {
+                    e.preventDefault(); // Prevenir comportamiento por defecto
+                    const id = button.dataset.id;
+                    if (!likeStates.get(id)) {
+                        button.classList.add('clicked');
+                    }
+                });
+
+                button.addEventListener('touchend', (e) => {
+                    e.preventDefault();
+                    const id = button.dataset.id;
+                    if (!likeStates.get(id)) {
+                        debouncedToggleLike(id);
+                    }
+                });
+
+                // Manejar clicks normales
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const id = button.dataset.id;
+                    if (!likeStates.get(id)) {
+                        debouncedToggleLike(id);
+                    }
+                });
+
+                // Inicializar el estado
+                likeStates.set(button.dataset.id, false);
             });
-
-            button.addEventListener('touchend', (e) => {
-                e.preventDefault();
-                const id = button.dataset.id;
-                if (!likeStates.get(id)) {
-                    debouncedToggleLike(id);
-                }
-            });
-
-            // Manejar clicks normales
-            button.addEventListener('click', (e) => {
-                e.preventDefault();
-                const id = button.dataset.id;
-                if (!likeStates.get(id)) {
-                    debouncedToggleLike(id);
-                }
-            });
-
-            // Inicializar el estado
-            likeStates.set(button.dataset.id, false);
-        });
-    }
-
-    // Inicializar cuando el DOM esté listo
-    document.addEventListener('DOMContentLoaded', initializeLikeButtons);
-
-    // Función para actualizar botones después de cambios dinámicos en el DOM
-    function updateLikeButtons() {
-        initializeLikeButtons();
-    }
-
-    // Mantener la función toggleCommentSection que ya tenías
-    function toggleCommentSection(publicacion_id) {
-        var commentsSection = document.getElementById('comments-section-' + publicacion_id);
-        var commentForm = document.getElementById('comment-form-' + publicacion_id);
-
-        if (commentsSection.style.display === "none" || commentsSection.style.display === "") {
-            commentsSection.style.display = "block";
-            commentForm.style.display = "block";
-        } else {
-            commentsSection.style.display = "none";
-            commentForm.style.display = "none";
         }
-    }
-</script>
-<!-- Bootstrap Bundle with Popper -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+        // Inicializar cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', initializeLikeButtons);
+
+        // Función para actualizar botones después de cambios dinámicos en el DOM
+        function updateLikeButtons() {
+            initializeLikeButtons();
+        }
+
+        // Mantener la función toggleCommentSection que ya tenías
+        function toggleCommentSection(publicacion_id) {
+            var commentsSection = document.getElementById('comments-section-' + publicacion_id);
+            var commentForm = document.getElementById('comment-form-' + publicacion_id);
+
+            if (commentsSection.style.display === "none" || commentsSection.style.display === "") {
+                commentsSection.style.display = "block";
+                commentForm.style.display = "block";
+            } else {
+                commentsSection.style.display = "none";
+                commentForm.style.display = "none";
+            }
+        }
+    </script>
 </body>
 
 </html>
