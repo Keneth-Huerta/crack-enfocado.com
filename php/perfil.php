@@ -25,7 +25,7 @@ try {
     $query = "SELECT * FROM perfiles WHERE usuario_id = ?";
     if ($stmt = mysqli_prepare($enlace, $query)) {
         mysqli_stmt_bind_param($stmt, "i", $usuario_id);
-        
+
         if (mysqli_stmt_execute($stmt)) {
             $resultado = mysqli_stmt_get_result($stmt);
             $perfil = mysqli_fetch_assoc($resultado);
@@ -51,23 +51,18 @@ $foto_portada = $perfil['foto_portada'] ?? '../media/default-cover.jpg';
 
 // Obtener publicaciones del usuario con manejo de errores
 try {
-    $publicaciones_query = "SELECT p.*, 
-                          COUNT(DISTINCT l.id) as likes,
-                          COUNT(DISTINCT c.id) as comentarios
-                          FROM publicaciones p 
-                          LEFT JOIN likes l ON p.id = l.publicacion_id
-                          LEFT JOIN comentarios c ON p.id = c.publicacion_id
-                          WHERE p.usuario_id = ? 
-                          GROUP BY p.id
-                          ORDER BY p.fecha_publicada DESC";
-                          
+    $publicaciones_query = "SELECT id_publicacion, contenido, imagen, fecha_publicada 
+                            FROM publicaciones 
+                            WHERE usuario_id = ? 
+                            ORDER BY fecha_publicada DESC";
+
     if ($stmt_publicaciones = mysqli_prepare($enlace, $publicaciones_query)) {
         mysqli_stmt_bind_param($stmt_publicaciones, "i", $usuario_id);
-        
+
         if (!mysqli_stmt_execute($stmt_publicaciones)) {
             throw new Exception("Error al obtener publicaciones: " . mysqli_error($enlace));
         }
-        
+
         $publicaciones_result = mysqli_stmt_get_result($stmt_publicaciones);
     } else {
         throw new Exception("Error en la preparación de la consulta de publicaciones");
@@ -80,6 +75,7 @@ try {
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -134,15 +130,11 @@ try {
                             <div class="publicacion-meta">
                                 <p class="fecha">
                                     <i class="far fa-clock"></i>
-                                    <?php 
+                                    <?php
                                     $fecha = new DateTime($publicacion['fecha_publicada']);
-                                    echo $fecha->format('d/m/Y H:i'); 
+                                    echo $fecha->format('d/m/Y H:i');
                                     ?>
                                 </p>
-                                <div class="estadisticas">
-                                    <span><i class="far fa-heart"></i> <?php echo $publicacion['likes']; ?></span>
-                                    <span><i class="far fa-comment"></i> <?php echo $publicacion['comentarios']; ?></span>
-                                </div>
                             </div>
 
                             <!-- Contenido de la publicación -->
@@ -150,22 +142,22 @@ try {
                                 <p><?php echo nl2br(htmlspecialchars($publicacion['contenido'])); ?></p>
                                 <?php if (!empty($publicacion['imagen'])): ?>
                                     <div class="publicacion-imagen">
-                                        <img src="<?php echo htmlspecialchars($publicacion['imagen']); ?>" 
-                                             alt="Imagen de publicación"
-                                             loading="lazy">
+                                        <img src="<?php echo htmlspecialchars($publicacion['imagen']); ?>"
+                                            alt="Imagen de publicación"
+                                            loading="lazy">
                                     </div>
                                 <?php endif; ?>
                             </div>
 
                             <!-- Botones de acción -->
                             <div class="acciones-publicacion">
-                                <a href="editar_publicacion.php?id=<?php echo $publicacion['id']; ?>" 
-                                   class="btn-editar">
+                                <a href="editar_publicacion.php?id=<?php echo $publicacion['id_publicacion']; ?>"
+                                    class="btn-editar">
                                     <i class="fas fa-edit"></i> Editar
                                 </a>
-                                <a href="eliminar_publicacion.php?id=<?php echo $publicacion['id']; ?>" 
-                                   class="btn-eliminar"
-                                   onclick="return confirm('¿Estás seguro de que deseas eliminar esta publicación?')">
+                                <a href="eliminar_publicacion.php?id=<?php echo $publicacion['id_publicacion']; ?>"
+                                    class="btn-eliminar"
+                                    onclick="return confirm('¿Estás seguro de que deseas eliminar esta publicación?')">
                                     <i class="fas fa-trash-alt"></i> Eliminar
                                 </a>
                             </div>
@@ -207,6 +199,7 @@ try {
         });
     </script>
 </body>
+
 </html>
 
 <?php
