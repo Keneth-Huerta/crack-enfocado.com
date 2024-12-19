@@ -3,7 +3,6 @@ require_once 'conexion.php'; // Conexión a la base de datos
 
 // Obtener el término de búsqueda
 $searchTerm = isset($_GET['search']) ? '%' . $_GET['search'] . '%' : '';
-echo "$searchTerm+'30'";
 // Inicializar variables de resultado
 $resultado_usuarios = null;
 $resultado_publicaciones = null;
