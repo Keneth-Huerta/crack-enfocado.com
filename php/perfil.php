@@ -136,71 +136,73 @@ $foto_portada = $perfil['foto_portada'] ?? '../media/user_icon_001.jpg';
             <h2>Mis Publicaciones</h2>
             <?php if ($publicaciones_result && mysqli_num_rows($publicaciones_result) > 0): ?>
                 <div class="lista-publicaciones">
-    <?php while ($publicacion = mysqli_fetch_assoc($publicaciones_result)): ?>
-        <div class="post-item">
-            <!-- Encabezado de la publicación -->
-            <div class="post-header">
-                <img src="<?php echo htmlspecialchars($foto_perfils); ?>" alt="Foto de perfil" class="foto-perfil-publicacion">
-                <div class="post-usuario"><?php echo htmlspecialchars($nombre); ?></div>
-                <div class="post-fecha"><?php echo htmlspecialchars($publicacion['fecha_publicada']); ?></div>
-            </div>
+                    <?php while ($publicacion = mysqli_fetch_assoc($publicaciones_result)): ?>
+                        <div class="post-item">
+                            <!-- Encabezado de la publicación -->
+                            <div class="post-header">
+                                <img src="<?php echo htmlspecialchars($foto_perfils); ?>" alt="Foto de perfil" class="foto-perfil-publicacion">
+                                <div class="post-usuario"><?php echo htmlspecialchars($nombre); ?></div>
+                                <div class="post-fecha"><?php echo htmlspecialchars($publicacion['fecha_publicada']); ?></div>
+                            </div>
 
-            <!-- Contenido de la publicación -->
-            <div class="post-contenido"><?php echo nl2br(htmlspecialchars($publicacion['contenido'])); ?></div>
+                            <!-- Contenido de la publicación -->
+                            <div class="post-contenido"><?php echo nl2br(htmlspecialchars($publicacion['contenido'])); ?></div>
 
-            <!-- Imagen de la publicación -->
-            <?php if (!empty($publicacion['imagen'])): ?>
-                <img src="<?php echo htmlspecialchars($publicacion['imagen']); ?>" alt="Imagen de la publicación" class="post-imagen">
-            <?php endif; ?>
+                            <!-- Imagen de la publicación -->
+                            <?php if (!empty($publicacion['imagen'])): ?>
+                                <img src="<?php echo htmlspecialchars($publicacion['imagen']); ?>" alt="Imagen de la publicación" class="post-imagen">
+                            <?php endif; ?>
 
-            <!-- Sección de botones: Me gusta y comentar -->
-            <div class="post-botones">
-                <!-- Botón de "Me gusta" -->
-                <?php
-                $stmt_likes = $enlace->prepare("SELECT * FROM likes WHERE usuario_id = ? AND publicacion_id = ?");
-                $stmt_likes->bind_param("ii", $_SESSION['usuario_id'], $publicacion['id_publicacion']);
-                $stmt_likes->execute();
-                $like_check = $stmt_likes->get_result();
-                $liked_class = (mysqli_num_rows($like_check) > 0) ? 'liked' : '';
-                ?>
-                <button class="btn-like <?php echo $liked_class; ?>" data-id="<?php echo $publicacion['id_publicacion']; ?>" onclick="toggleLike(<?php echo $publicacion['id_publicacion']; ?>)">
-                    <i class="fas fa-heart"></i> Me gusta (<span id="like-count-<?php echo $publicacion['id_publicacion']; ?>"><?php echo $publicacion['cantidad_megusta']; ?></span>)
-                </button>
+                            <!-- Sección de botones: Me gusta y comentar -->
+                            <div class="post-botones">
+                                <!-- Botón de "Me gusta" -->
+                                <?php
+                                $stmt_likes = $enlace->prepare("SELECT * FROM likes WHERE usuario_id = ? AND publicacion_id = ?");
+                                $stmt_likes->bind_param("ii", $_SESSION['usuario_id'], $publicacion['id_publicacion']);
+                                $stmt_likes->execute();
+                                $like_check = $stmt_likes->get_result();
+                                $liked_class = (mysqli_num_rows($like_check) > 0) ? 'liked' : '';
+                                ?>
+                                <button class="btn-like <?php echo $liked_class; ?>" data-id="<?php echo $publicacion['id_publicacion']; ?>" onclick="toggleLike(<?php echo $publicacion['id_publicacion']; ?>)">
+                                    <i class="fas fa-heart"></i> Me gusta (<span id="like-count-<?php echo $publicacion['id_publicacion']; ?>"><?php echo $publicacion['cantidad_megusta']; ?></span>)
+                                </button>
 
-                <!-- Botón de "Comentar" -->
-                <button type="button" onclick="toggleCommentSection(<?php echo $publicacion['id_publicacion']; ?>)">Comentar</button>
-            </div>
+                                <!-- Botón de "Comentar" -->
+                                <button type="button" onclick="toggleCommentSection(<?php echo $publicacion['id_publicacion']; ?>)">Comentar</button>
+                            </div>
 
-            <!-- Sección de comentarios -->
-            <div id="comments-section-<?php echo $publicacion['id_publicacion']; ?>" class="comments-list">
-                <?php
-                $stmt_comentarios = $enlace->prepare("SELECT comentarios.*, perfiles.nombre AS usuario_nombre 
+                            <!-- Sección de comentarios -->
+                            <div id="comments-section-<?php echo $publicacion['id_publicacion']; ?>" class="comments-list">
+                                <?php
+                                $stmt_comentarios = $enlace->prepare("SELECT comentarios.*, perfiles.nombre AS usuario_nombre 
                                                       FROM comentarios 
                                                       JOIN perfiles ON comentarios.usuario_id = perfiles.usuario_id 
                                                       WHERE comentarios.publicacion_id = ? 
                                                       ORDER BY comentarios.fecha_comentario ASC");
-                $stmt_comentarios->bind_param("i", $publicacion['id_publicacion']);
-                $stmt_comentarios->execute();
-                $comentarios = $stmt_comentarios->get_result();
+                                $stmt_comentarios->bind_param("i", $publicacion['id_publicacion']);
+                                $stmt_comentarios->execute();
+                                $comentarios = $stmt_comentarios->get_result();
 
-                while ($comentario = $comentarios->fetch_assoc()):
-                ?>
-                    <div class="comment-item">
-                        <strong><?php echo htmlspecialchars($comentario['usuario_nombre']); ?>:</strong>
-                        <p><?php echo htmlspecialchars($comentario['contenido']); ?></p>
-                    </div>
-                <?php endwhile; ?>
+                                while ($comentario = $comentarios->fetch_assoc()):
+                                ?>
+                                    <div class="comment-item">
+                                        <strong><?php echo htmlspecialchars($comentario['usuario_nombre']); ?>:</strong>
+                                        <p><?php echo htmlspecialchars($comentario['contenido']); ?></p>
+                                    </div>
+                                <?php endwhile; ?>
 
-                <!-- Formulario para agregar un comentario -->
-                <div id="comment-form-<?php echo $publicacion['id_publicacion']; ?>" class="comment-form">
-                    <form action="agregar_comentario.php" method="POST">
-                        <input type="hidden" name="publicacion_id" value="<?php echo $publicacion['id_publicacion']; ?>">
-                        <textarea name="contenido_comentario" placeholder="Escribe un comentario..." required></textarea>
-                        <button type="submit">Comentar</button>
-                    </form>
+                                <!-- Formulario para agregar un comentario -->
+                                <div id="comment-form-<?php echo $publicacion['id_publicacion']; ?>" class="comment-form">
+                                    <form action="agregar_comentario.php" method="POST">
+                                        <input type="hidden" name="publicacion_id" value="<?php echo $publicacion['id_publicacion']; ?>">
+                                        <textarea name="contenido_comentario" placeholder="Escribe un comentario..." required></textarea>
+                                        <button type="submit">Comentar</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endwhile; ?>
                 </div>
-            </div>
-        </div>
             <?php else: ?>
                 <div class="sin-publicaciones">
                     <p><i class="far fa-newspaper"></i> Aún no has realizado ninguna publicación.</p>
