@@ -140,79 +140,125 @@
     </div>
 
     <script>
-        // Función para mostrar/ocultar los comentarios y el formulario de comentarios
-        function toggleCommentSection(publicacion_id) {
-            var commentsSection = document.getElementById('comments-section-' + publicacion_id);
-            var commentForm = document.getElementById('comment-form-' + publicacion_id);
+    // Debounce function para prevenir múltiples clicks rápidos
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
 
-            // Si los comentarios están ocultos, mostrar la lista y el formulario; si están visibles, ocultarlos
-            if (commentsSection.style.display === "none" || commentsSection.style.display === "") {
-                commentsSection.style.display = "block"; // Mostrar comentarios
-                commentForm.style.display = "block"; // Mostrar formulario de comentario
-            } else {
-                commentsSection.style.display = "none"; // Ocultar comentarios
-                commentForm.style.display = "none"; // Ocultar formulario de comentario
-            }
-        }
+    // Control de estado para los likes
+    const likeStates = new Map();
 
-        // Función para manejar el like con AJAX
-        function toggleLike(publicacion_id) {
-            var likeButton = document.querySelector('.btn-like[data-id="' + publicacion_id + '"]');
-            var likeCount = document.getElementById('like-count-' + publicacion_id);
+    // Función mejorada para manejar likes
+    async function toggleLike(publicacion_id) {
+        const likeButton = document.querySelector(`.btn-like[data-id="${publicacion_id}"]`);
+        const likeCount = document.getElementById(`like-count-${publicacion_id}`);
+        
+        // Prevenir múltiples clicks mientras se procesa
+        if (likeStates.get(publicacion_id)) return;
+        likeStates.set(publicacion_id, true);
 
-            var formData = new FormData();
+        try {
+            // Añadir clase de animación
+            likeButton.classList.add('clicked');
+            
+            const formData = new FormData();
             formData.append('id_publicacion', publicacion_id);
 
-            // Añadir la clase 'clicked' para evitar el conflicto con el cambio de tamaño
-            likeButton.classList.add('clicked');
-
-            fetch('dar_like.php', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.text())
-                .then(data => {
-                    if (data.includes('Like agregado!')) {
-                        likeCount.textContent = parseInt(likeCount.textContent) + 1;
-                        likeButton.classList.add('liked'); // Clase 'liked' añadida para cambio de color y tamaño
-                    } else if (data.includes('Like eliminado!')) {
-                        likeCount.textContent = parseInt(likeCount.textContent) - 1;
-                        likeButton.classList.remove('liked'); // Clase 'liked' eliminada
-                    }
-                })
-                .catch(error => {
-                    console.error('Error al procesar el like:', error);
-                })
-                .finally(() => {
-                    // Después de la acción, eliminar la clase 'clicked' para permitir el siguiente clic
-                    setTimeout(() => likeButton.classList.remove('clicked'), 200); // Espera 200ms antes de permitir otro clic
-                });
+            const response = await fetch('dar_like.php', {
+                method: 'POST',
+                body: formData
+            });
+            
+            const data = await response.text();
+            
+            // Actualizar el contador y el estado visual
+            if (data.includes('Like agregado!')) {
+                likeCount.textContent = parseInt(likeCount.textContent) + 1;
+                likeButton.classList.add('liked');
+            } else if (data.includes('Like eliminado!')) {
+                likeCount.textContent = parseInt(likeCount.textContent) - 1;
+                likeButton.classList.remove('liked');
+            }
+        } catch (error) {
+            console.error('Error al procesar el like:', error);
+        } finally {
+            // Limpiar el estado después de un breve delay
+            setTimeout(() => {
+                likeButton.classList.remove('clicked');
+                likeStates.set(publicacion_id, false);
+            }, 300);
         }
+    }
 
-        // Evento para detectar cuando el usuario toca el botón
-        document.querySelectorAll('.btn-like').forEach(button => {
-            button.addEventListener('touchstart', function(e) {
-                // Solo cambiar el tamaño si el botón no ha sido presionado recientemente
-                if (!button.classList.contains('clicked')) {
-                    button.style.transform = 'scale(1.2)';
+    // Manejador de eventos para los botones de like
+    function initializeLikeButtons() {
+        const buttons = document.querySelectorAll('.btn-like');
+        
+        buttons.forEach(button => {
+            // Crear versión con debounce del toggleLike
+            const debouncedToggleLike = debounce((id) => toggleLike(id), 300);
+            
+            // Manejar eventos touch
+            button.addEventListener('touchstart', (e) => {
+                e.preventDefault(); // Prevenir comportamiento por defecto
+                const id = button.dataset.id;
+                if (!likeStates.get(id)) {
+                    button.classList.add('clicked');
                 }
             });
 
-            button.addEventListener('touchend', function() {
-                // Volver al tamaño normal cuando el usuario suelta el toque
-                button.style.transform = 'scale(1)';
-            });
-
-            // Agregar evento 'click' por si es una interacción normal
-            button.addEventListener('click', function() {
-                // Solo cambiar el tamaño si el botón no ha sido presionado recientemente
-                if (!button.classList.contains('clicked')) {
-                    button.style.transform = 'scale(1.2)';
-                    setTimeout(() => button.style.transform = 'scale(1)', 200); // Vuelve al tamaño original después de 200ms
+            button.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                const id = button.dataset.id;
+                if (!likeStates.get(id)) {
+                    debouncedToggleLike(id);
                 }
             });
+
+            // Manejar clicks normales
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const id = button.dataset.id;
+                if (!likeStates.get(id)) {
+                    debouncedToggleLike(id);
+                }
+            });
+
+            // Inicializar el estado
+            likeStates.set(button.dataset.id, false);
         });
-    </script>
+    }
+
+    // Inicializar cuando el DOM esté listo
+    document.addEventListener('DOMContentLoaded', initializeLikeButtons);
+
+    // Función para actualizar botones después de cambios dinámicos en el DOM
+    function updateLikeButtons() {
+        initializeLikeButtons();
+    }
+
+    // Mantener la función toggleCommentSection que ya tenías
+    function toggleCommentSection(publicacion_id) {
+        var commentsSection = document.getElementById('comments-section-' + publicacion_id);
+        var commentForm = document.getElementById('comment-form-' + publicacion_id);
+
+        if (commentsSection.style.display === "none" || commentsSection.style.display === "") {
+            commentsSection.style.display = "block";
+            commentForm.style.display = "block";
+        } else {
+            commentsSection.style.display = "none";
+            commentForm.style.display = "none";
+        }
+    }
+</script>
 
 </body>
 
