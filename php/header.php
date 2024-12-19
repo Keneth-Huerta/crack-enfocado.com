@@ -32,7 +32,7 @@ if (isset($_SESSION['usuario_id'])) {
 <link rel="stylesheet" href="../CSS/estilosprin.css">
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #952F57;">
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #952F57;  line-height: 1vw !important;">
     <div class="container-fluid">
         <a class="navbar-brand" href="/index.php">
             <img src="../media/logoweb.svg" alt="Logo" class="img-fluid" style="max-height: 50px;">
