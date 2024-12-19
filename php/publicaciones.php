@@ -139,23 +139,10 @@
 
 
     <script>
-        // Debounce function para prevenir múltiples clicks rápidos
-        function debounce(func, wait) {
-            let timeout;
-            return function executedFunction(...args) {
-                const later = () => {
-                    clearTimeout(timeout);
-                    func(...args);
-                };
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-            };
-        }
-
         // Control de estado para los likes
         const likeStates = new Map();
 
-        // Función mejorada para manejar likes
+        // Función principal para manejar likes
         async function toggleLike(publicacion_id) {
             const likeButton = document.querySelector(`.btn-like[data-id="${publicacion_id}"]`);
             const likeCount = document.getElementById(`like-count-${publicacion_id}`);
@@ -177,8 +164,6 @@
                 });
 
                 const data = await response.text();
-
-                // Desglosar la respuesta
                 const [message, newLikeCount] = data.split('|');
 
                 if (message.includes('Like agregado!')) {
@@ -187,12 +172,10 @@
                     likeButton.classList.remove('liked');
                 }
 
-                // Actualizar el contador con el valor que se devuelve del servidor
                 likeCount.textContent = newLikeCount;
             } catch (error) {
                 console.error('Error al procesar el like:', error);
             } finally {
-                // Limpiar el estado después de un breve delay
                 setTimeout(() => {
                     likeButton.classList.remove('clicked');
                     likeStates.set(publicacion_id, false);
@@ -200,46 +183,23 @@
             }
         }
 
-        // Función para inicializar los botones de like
+        // Función simplificada para inicializar los botones
         function initializeLikeButtons() {
             const buttons = document.querySelectorAll('.btn-like');
 
             buttons.forEach(button => {
                 const id = button.dataset.id;
-                // Crear versión con debounce del toggleLike
-                const debouncedToggleLike = debounce((id) => toggleLike(id), 300);
 
-                // Manejar eventos touch (para dispositivos móviles)
-                button.addEventListener('touchstart', (e) => {
-                    e.preventDefault();
-                    if (!likeStates.get(id)) {
-                        button.classList.add('clicked');
-                    }
-                });
-
-                button.addEventListener('touchend', (e) => {
-                    e.preventDefault();
-                    if (!likeStates.get(id)) {
-                        debouncedToggleLike(id);
-                    }
-                });
-
-                // Manejar clicks normales (para computadoras)
-                button.addEventListener('mousedown', (e) => {
-                    e.preventDefault();
-                    if (!likeStates.get(id)) {
-                        button.classList.add('clicked');
-                    }
-                });
-
+                // Un solo manejador de eventos para click
                 button.addEventListener('click', (e) => {
                     e.preventDefault();
+                    e.stopPropagation(); // Prevenir la propagación del evento
                     if (!likeStates.get(id)) {
-                        debouncedToggleLike(id);
+                        toggleLike(id);
                     }
                 });
 
-                // Inicializar el estado de los botones
+                // Inicializar estado
                 likeStates.set(id, false);
             });
         }
@@ -247,12 +207,12 @@
         // Inicializar cuando el DOM esté listo
         document.addEventListener('DOMContentLoaded', initializeLikeButtons);
 
-        // Función para actualizar botones después de cambios dinámicos en el DOM
+        // Función para actualizar botones después de cambios dinámicos
         function updateLikeButtons() {
             initializeLikeButtons();
         }
 
-        // Mantener la función toggleCommentSection que ya tenías
+        // Mantener la función de comentarios sin cambios
         function toggleCommentSection(publicacion_id) {
             var commentsSection = document.getElementById('comments-section-' + publicacion_id);
             var commentForm = document.getElementById('comment-form-' + publicacion_id);
