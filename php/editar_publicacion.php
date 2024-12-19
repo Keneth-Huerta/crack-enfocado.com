@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         // Subir la nueva imagen si se ha seleccionado una
         if (!empty($nueva_imagen)) {
-            $imagen_subida = 'uploads/' . basename($nueva_imagen);
+            $imagen_subida = '../media/uploads/' . basename($nueva_imagen);
             move_uploaded_file($_FILES['imagen']['tmp_name'], $imagen_subida);
         } else {
             $imagen_subida = $publicacion['imagen']; // Mantener la imagen actual
