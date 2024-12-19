@@ -12,14 +12,14 @@ $resultado_publicaciones = null;
 if ($searchTerm != '') {
     // Búsqueda de usuarios en la tabla perfiles
     $query_usuarios = "
-        SELECT p.usuario_id, p.nombre, p.apellido, p.carrera, p.semestre, p.foto_perfil, u.username
+        SELECT p.usuario_id, p.nombre, p.apellido, p.carrera, u.username, u.correo
         FROM perfiles p
         JOIN usuarios u ON p.usuario_id = u.id
-        WHERE p.nombre LIKE ? OR p.apellido LIKE ? OR p.carrera LIKE ? OR p.semestre LIKE ? OR u.username LIKE ? OR u.correo LIKE ?
+        WHERE p.nombre LIKE ? OR p.apellido LIKE ? OR p.carrera LIKE ? OR u.username LIKE ? OR u.correo LIKE ?
     ";
 
     $stmt_usuarios = mysqli_prepare($enlace, $query_usuarios);
-    mysqli_stmt_bind_param($stmt_usuarios, 'ssssss', $searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm);
+    mysqli_stmt_bind_param($stmt_usuarios, 'sssss', $searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm);
     mysqli_stmt_execute($stmt_usuarios);
     $resultado_usuarios = mysqli_stmt_get_result($stmt_usuarios);
 
