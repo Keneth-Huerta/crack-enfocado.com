@@ -32,7 +32,7 @@ if (isset($_SESSION['usuario_id'])) {
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #952F57;">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/index.html">
+        <a class="navbar-brand" href="/index.php">
             <img src="../media/logoweb.svg" alt="Logo" class="img-fluid" style="max-height: 50px;">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">

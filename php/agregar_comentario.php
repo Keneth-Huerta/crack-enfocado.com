@@ -6,7 +6,7 @@ include 'conexion.php'; // Conexión a la base de datos
 
 // Verificar si el usuario está logueado
 if (!isset($_SESSION['usuario_id'])) {
-    header('Location: ../index.html'); // Redirigir si no está logueado
+    header('Location: ../index.php'); // Redirigir si no está logueado
     exit();
 }
 

@@ -130,7 +130,7 @@
                     class="btn btn-secondary w-100" target="_blank">Ubicación</a>
             </div>
             <div class="col-12 col-md-4 mb-2">
-                <a href="https://www.cecyt3.ipn.mx/index.html#technicalCareers"
+                <a href="https://www.cecyt3.ipn.mx/index.php#technicalCareers"
                     class="btn btn-secondary w-100" target="_blank">Oferta educativa</a>
             </div>
             <div class="col-12 col-md-4 mb-2">
