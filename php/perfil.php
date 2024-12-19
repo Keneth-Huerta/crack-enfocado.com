@@ -18,10 +18,10 @@ if (!isset($_SESSION['usuario_id'])) {
 
 // Obtener el ID del usuario desde la URL
 if (isset($_GET['usuario_id'])) {
-    $usuario_id = (int) $_GET['usuario_id'];
+    $usuario_ids = (int) $_GET['usuario_id'];
 } else {
     // Si no se pasa el ID de usuario, redirigir al perfil del usuario actual
-    $usuario_id = $_SESSION['usuario_id'];
+    $usuario_ids = $_SESSION['usuario_id'];
 }
 $perfil = [];
 $publicaciones = [];
@@ -35,7 +35,7 @@ try {
                             ORDER BY fecha_publicada DESC";
 
     if ($stmt_publicaciones = mysqli_prepare($enlace, $publicaciones_query)) {
-        mysqli_stmt_bind_param($stmt_publicaciones, "i", $usuario_id);
+        mysqli_stmt_bind_param($stmt_publicaciones, "i", $usuario_ids);
 
         if (!mysqli_stmt_execute($stmt_publicaciones)) {
             throw new Exception("Error al obtener publicaciones: " . mysqli_error($enlace));
@@ -54,7 +54,7 @@ try {
 try {
     $query = "SELECT * FROM perfiles JOIN usuarios on perfiles.usuario_id = usuarios.id WHERE usuario_id = ?";
     if ($stmt = mysqli_prepare($enlace, $query)) {
-        mysqli_stmt_bind_param($stmt, "i", $usuario_id);
+        mysqli_stmt_bind_param($stmt, "i", $usuario_ids);
 
         if (mysqli_stmt_execute($stmt)) {
             $resultado = mysqli_stmt_get_result($stmt);
@@ -77,9 +77,7 @@ $apellido = $perfil['apellido'] ?? 'Apellido no disponible';
 $carrera = $perfil['carrera'] ?? 'Carrera no disponible';
 $semestre = $perfil['semestre'] ?? 'Semestre no disponible';
 $informacion_extra = $perfil['informacion_extra'] ?? 'No disponible';
-$foto_perfil = $perfil['foto_perfil'] ?? '../media/user.png';
-echo $perfil['foto_perfil'];
-echo $perfil['usuario_id'];
+$foto_perfils = $perfil['foto_perfil'] ?? '../media/user.png';
 $foto_portada = $perfil['foto_portada'] ?? '../media/user_icon_001.jpg';
 
 ?>
@@ -110,7 +108,7 @@ $foto_portada = $perfil['foto_portada'] ?? '../media/user_icon_001.jpg';
         <div class="perfil-info">
             <!-- Foto de perfil -->
             <div class="foto-perfil">
-                <img src="<?php echo htmlspecialchars($foto_perfil); ?>" alt="Foto de perfil">
+                <img src="<?php echo htmlspecialchars($foto_perfils); ?>" alt="Foto de perfil">
             </div>
 
             <div class="informacion">
@@ -120,7 +118,7 @@ $foto_portada = $perfil['foto_portada'] ?? '../media/user_icon_001.jpg';
                 <p><strong>Información Extra:</strong> <?php echo nl2br(htmlspecialchars($informacion_extra)); ?></p>
             </div>
         </div>
-        <?php if ($usuario_id == $_SESSION['usuario_id']): echo $usuario_id;
+        <?php if ($usuario_ids == $_SESSION['usuario_id']): echo $usuario_ids;
             echo $_SESSION['usuario_id']; ?>
 
             <link rel="stylesheet" href="../css/misestilos.css">
