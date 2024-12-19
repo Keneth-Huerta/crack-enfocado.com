@@ -51,9 +51,7 @@ if (isset($_SESSION['usuario_id'])) {
                         <button class="btn btn-outline-light" type="submit"><i class="bi bi-search"></i> Buscar</button>
                     </form>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/ayuda-estudiantil">Ayuda Estudiantil</a>
-                </li>
+
                 <li class="nav-item">
                     <a class="nav-link" href="perfil.php">
                         <img src="<?php echo htmlspecialchars($foto_perfil); ?>" alt="Foto de perfil" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
