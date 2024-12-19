@@ -66,7 +66,7 @@
                 }
 
                 // Verificar si el usuario ya dio "Me gusta"
-                $stmt_likes = $enlace->prepare("SELECT * FROM likes WHERE usuario_id = ? AND id_publicacion = ?");
+                $stmt_likes = $enlace->prepare("SELECT * FROM likes WHERE usuario_id = ? AND publicacion_id = ?");
                 $stmt_likes->bind_param("ii", $_SESSION['usuario_id'], $publicacion['id_publicacion']);
                 $stmt_likes->execute();
                 $like_check = $stmt_likes->get_result();
