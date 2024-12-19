@@ -103,7 +103,6 @@ $publicaciones_result = mysqli_stmt_get_result($stmt_publicaciones);
                 <div class="lista-publicaciones">
                     <?php while ($publicacion = mysqli_fetch_assoc($publicaciones_result)): ?>
                         <div class="publicacion-item">
-                            <p><strong><?php echo htmlspecialchars($publicacion['titulo']); ?></strong></p>
                             <p><?php echo nl2br(htmlspecialchars($publicacion['contenido'])); ?></p>
                             <?php if (!empty($publicacion['imagen'])): ?>
                                 <img src="<?php echo htmlspecialchars($publicacion['imagen']); ?>" alt="Imagen de publicación">
