@@ -118,7 +118,7 @@ try {
                 <p><strong>Información Extra:</strong> <?php echo nl2br(htmlspecialchars($informacion_extra)); ?></p>
             </div>
         </div>
-        <?php if ($usuario_id == $_SESSION['usuario_id']): ?>
+        <?php if ($usuario_id == $_SESSION['usuario_id']): echo $usuario_id;echo $_SESSION['usuario_id']; ?>
 
             <link rel="stylesheet" href="../css/misestilos.css">
             <div class="acciones">
