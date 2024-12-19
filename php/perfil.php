@@ -118,21 +118,20 @@ try {
                 <p><strong>Información Extra:</strong> <?php echo nl2br(htmlspecialchars($informacion_extra)); ?></p>
             </div>
         </div>
-        <?
-        if ($usuario_id == $_SESSION['usuario_id']) {
+        <?php if ($usuario_id == $_SESSION['usuario_id']): ?>
+            if ($usuario_id == $_SESSION['usuario_id']) {
             echo '
             <link rel="stylesheet" href="../css/misestilos.css">
             <div class="acciones">
-            <a href="editar_perfil.php" class="btn-editar">
-                <i class="fas fa-edit"></i> Editar perfil
-            </a>
-            <a href="logout.php" class="btn-cerrar-sesion">
-                <i class="fas fa-sign-out-alt"></i> Cerrar sesión
-            </a>
-        </div>';
-        }
+                <a href="editar_perfil.php" class="btn-editar">
+                    <i class="fas fa-edit"></i> Editar perfil
+                </a>
+                <a href="logout.php" class="btn-cerrar-sesion">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+                </a>
+            </div>';
+        <?php endif; ?>
 
-        ?>
         <!-- Mostrar publicaciones del usuario -->
         <div class="publicaciones-usuario">
             <h2>Mis Publicaciones</h2>
@@ -163,17 +162,19 @@ try {
                             </div>
 
                             <!-- Botones de acción -->
-                            <div class="acciones-publicacion">
-                                <a href="editar_publicacion.php?id=<?php echo $publicacion['id_publicacion']; ?>"
-                                    class="btn-editar">
-                                    <i class="fas fa-edit"></i> Editar
-                                </a>
-                                <a href="eliminar_publicacion.php?id=<?php echo $publicacion['id_publicacion']; ?>"
-                                    class="btn-eliminar"
-                                    onclick="return confirm('¿Estás seguro de que deseas eliminar esta publicación?')">
-                                    <i class="fas fa-trash-alt"></i> Eliminar
-                                </a>
-                            </div>
+                            <?php if ($usuario_id == $_SESSION['usuario_id']): ?>
+                                <div class="acciones-publicacion">
+                                    <a href="editar_publicacion.php?id=<?php echo $publicacion['id_publicacion']; ?>"
+                                        class="btn-editar">
+                                        <i class="fas fa-edit"></i> Editar
+                                    </a>
+                                    <a href="eliminar_publicacion.php?id=<?php echo $publicacion['id_publicacion']; ?>"
+                                        class="btn-eliminar"
+                                        onclick="return confirm('¿Estás seguro de que deseas eliminar esta publicación?')">
+                                        <i class="fas fa-trash-alt"></i> Eliminar
+                                    </a>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     <?php endwhile; ?>
                 </div>
