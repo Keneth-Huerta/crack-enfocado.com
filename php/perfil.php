@@ -173,7 +173,7 @@ try {
             <?php else: ?>
                 <div class="sin-publicaciones">
                     <p><i class="far fa-newspaper"></i> Aún no has realizado ninguna publicación.</p>
-                    <a href="nueva_publicacion.php" class="btn-nueva-publicacion">
+                    <a href="publicaciones.php" class="btn-nueva-publicacion">
                         <i class="fas fa-plus"></i> Crear primera publicación
                     </a>
                 </div>
