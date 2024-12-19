@@ -1,315 +1,10 @@
-/* Colores basados en la identidad del IPN con paleta extendida */
-:root {
-    --color-principal: #9B1B30;
-    /* Rojo característico */
-    --color-secundario: #6A0D5D;
-    /* Violeta */
-    --color-terciario: #1A5F7A;
-    /* Azul profundo para contraste */
-    --color-fondo: #f4f4f4;
-    --color-texto: #333;
-    --color-texto-claro: #555;
-    --color-borde: #e0e0e0;
-    --sombra-suave: 0 6px 12px rgba(0, 0, 0, 0.08);
-}
-
-/* Estilos de reset y base */
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background-color: var(--color-fondo);
-    line-height: 1.6;
-    color: var(--color-texto);
-}
-
-/* Contenedor principal del perfil */
-.perfil-container {
-    max-width: 900px;
-    width: 95%;
-    margin: 2rem auto;
-    background-color: white;
-    border-radius: 12px;
-    box-shadow: var(--sombra-suave);
-    overflow: hidden;
-    transition: all 0.3s ease;
-}
-
-.perfil-container:hover {
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-}
-
-/* Estilo para la foto de portada */
-.foto-portada {
-    position: relative;
-    height: 250px;
-    overflow: hidden;
-}
-
-.foto-portada img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-}
-
-.foto-portada:hover img {
-    transform: scale(1.05);
-}
-
-/* Título de perfil */
-.titulo-perfil {
-    text-align: center;
-    color: var(--color-principal);
-    font-size: 2.2rem;
-    margin: 1.5rem 0;
-    font-weight: 600;
-    letter-spacing: -1px;
-}
-
-/* Información de perfil */
-.perfil-info {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    padding: 1.5rem;
-    align-items: center;
-    justify-content: center;
-}
-
-.foto-perfil {
-    flex-shrink: 0;
-    position: relative;
-}
-
-.foto-perfil img {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 4px solid var(--color-principal);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    transition: all 0.3s ease;
-}
-
-.foto-perfil img:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-}
-
-.informacion {
-    flex: 1;
-    min-width: 300px;
-    background-color: #f9f9f9;
-    padding: 1.5rem;
-    border-radius: 10px;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.informacion p {
-    margin: 0.8rem 0;
-    color: var(--color-texto-claro);
-    font-size: 1.1rem;
-    display: flex;
-    align-items: center;
-}
-
-.informacion strong {
-    color: var(--color-secundario);
-    margin-right: 0.5rem;
-    min-width: 120px;
-    display: inline-block;
-}
-
-/* Sección de acciones */
-.acciones {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    padding: 1.5rem;
-    background-color: #f8f8f8;
-    border-top: 1px solid var(--color-borde);
-}
-
-.acciones a {
-    text-decoration: none;
-    color: var(--color-principal);
-    font-weight: 600;
-    padding: 12px 24px;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid var(--color-principal);
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-}
-
-.acciones a::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background-color: var(--color-principal);
-    z-index: -1;
-    transition: all 0.3s ease;
-}
-
-.acciones a:hover::before {
-    left: 0;
-}
-
-.acciones a:hover {
-    color: white;
-    transform: none;
-    box-shadow: none;
-}
-
-/* Botón de cerrar sesión */
-.btn-cerrar-sesion {
-    color: #A41A2A;
-    border-color: #A41A2A;
-}
-
-.btn-cerrar-sesion::before {
-    background-color: #A41A2A;
-}
-
-/* Responsividad */
-@media screen and (max-width: 768px) {
-    .perfil-info {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .informacion {
-        width: 100%;
-        padding: 1rem;
-    }
-
-    .informacion p {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .informacion strong {
-        margin-bottom: 0.5rem;
-        min-width: auto;
-    }
-
-    .acciones {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-
-    .acciones a {
-        width: 100%;
-    }
-}
-
-/* Animaciones sutiles */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.perfil-container {
-    animation: fadeIn 0.5s ease-out;
-}
-
+/* Contenedor para la lista de publicaciones */
 .publicaciones-usuario {
     margin-top: 20px;
-}
-
-.lista-publicaciones {
-    margin-top: 10px;
-}
-
-.publicacion-item {
-    background-color: #f4f4f4;
-    padding: 15px;
-    margin-bottom: 15px;
-    border-radius: 8px;
-}
-
-.publicacion-item img {
-    max-width: 100%;
-    height: auto;
-    margin-top: 10px;
-}
-
-.publicacion-item small {
-    color: #888;
-}
-
-.acciones-publicacion {
-    margin-top: 10px;
-}
-
-.btn-editar,
-.btn-eliminar {
-    padding: 5px 15px;
-    margin-right: 10px;
-    text-decoration: none;
-    border-radius: 5px;
-    display: inline-block;
-}
-
-.btn-editar {
-    background-color: #4CAF50;
-    color: white;
-}
-
-.btn-editar:hover {
-    background-color: #45a049;
-}
-
-.btn-eliminar {
-    background-color: #f44336;
-    color: white;
-}
-
-.btn-eliminar:hover {
-    background-color: #e53935;
-}
-
-/* Variables de color actualizadas */
-:root {
-    --color-principal: #9B1B30;
-    --color-secundario: #6A0D5D;
-    --color-terciario: #1A5F7A;
-    --color-fondo: #f4f4f4;
-    --color-texto: #333;
-    --color-texto-claro: #555;
-    --color-borde: #e0e0e0;
-    --color-error: #f44336;
-    --color-exito: #4CAF50;
-    --sombra-suave: 0 6px 12px rgba(0, 0, 0, 0.08);
-}
-
-/* Mejoras en las publicaciones */
-.publicaciones-usuario {
     padding: 2rem;
-    margin-top: 2rem;
 }
 
+/* Estilo de cada publicación */
 .publicacion-item {
     background-color: white;
     border-radius: 10px;
@@ -323,13 +18,18 @@ body {
     transform: translateY(-2px);
 }
 
-.publicacion-item img {
-    max-width: 100%;
-    height: auto;
+/* Imagen de la publicación */
+.publicacion-imagen img {
+    width: 100%;
+    max-width: 500px;
+    max-height: 300px;
+    object-fit: cover;
     border-radius: 8px;
     margin: 1rem 0;
+    display: block;
 }
 
+/* Acciones de cada publicación */
 .acciones-publicacion {
     display: flex;
     gap: 1rem;
@@ -361,45 +61,72 @@ body {
     transform: translateY(-1px);
 }
 
-/* Mejora en la responsividad */
-@media screen and (max-width: 576px) {
-    .perfil-container {
-        width: 100%;
-        margin: 0;
-        border-radius: 0;
-    }
-
-    .foto-portada {
-        height: 180px;
-    }
-
-    .foto-perfil img {
-        width: 150px;
-        height: 150px;
-    }
-
-    .titulo-perfil {
-        font-size: 1.8rem;
-    }
-
-    .publicacion-imagen img {
-        width: 100%;
-    max-width: 500px;
-    max-height: 300px;
-    object-fit: cover;
-    border-radius: var(--border-radius);
-    margin: 0 auto 15px;
-    display: block;
-    }
+/* Sección de comentarios */
+.comments-list {
+    display: none;
+    margin-top: 15px;
 }
 
-/* Para las imágenes de las publicaciones */
-.publicacion-imagen img {
+.comment-item {
+    background-color: #f9f9f9;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 8px;
+}
+
+.comment-form {
+    display: none;
+    margin-top: 15px;
+}
+
+.comment-form textarea {
     width: 100%;
-    max-width: 500px;
-    max-height: 300px;
-    object-fit: cover;
-    border-radius: var(--border-radius);
-    margin: 0 auto 15px;
-    display: block;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    border: 1px solid var(--color-borde);
+}
+
+.comment-form button {
+    padding: 8px 15px;
+    background-color: var(--color-principal);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.comment-form button:hover {
+    background-color: var(--color-secundario);
+}
+
+/* Botón de "Me gusta" */
+.btn-like {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+    color: var(--color-principal);
+}
+
+.btn-like.liked {
+    color: var(--color-exito);
+}
+
+.btn-like i {
+    margin-right: 5px;
+}
+
+@media screen and (max-width: 576px) {
+    .publicacion-imagen img {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+    }
+
+    .publicacion-item {
+        padding: 1rem;
+    }
 }
