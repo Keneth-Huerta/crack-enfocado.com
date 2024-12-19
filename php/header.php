@@ -40,6 +40,13 @@ if (isset($_SESSION['usuario_id'])) {
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
+                <!-- Formulario de búsqueda -->
+                <li class="nav-item">
+                    <form class="d-flex" action="busqueda.php" method="GET">
+                        <input class="form-control me-2" type="search" name="search" placeholder="search" aria-label="search">
+                        <button class="btn btn-outline-light" type="submit"><i class="bi bi-search"></i> Buscar</button>
+                    </form>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="ventas.php">Ventas</a>
                 </li>
