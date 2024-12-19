@@ -160,7 +160,7 @@
             const likeButton = document.querySelector(`.btn-like[data-id="${publicacion_id}"]`);
             const likeCount = document.getElementById(`like-count-${publicacion_id}`);
 
-            // Prevenir múltiples clicks mientras se procesa
+            // Prevenir múltiples clics mientras se procesa
             if (likeStates.get(publicacion_id)) return;
             likeStates.set(publicacion_id, true);
 
@@ -196,6 +196,7 @@
                 }, 300);
             }
         }
+
 
         // Función para inicializar los botones de like
         function initializeLikeButtons() {
