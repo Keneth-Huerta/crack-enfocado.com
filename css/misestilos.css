@@ -1,8 +1,11 @@
 /* Colores basados en la identidad del IPN con paleta extendida */
 :root {
-    --color-principal: #9B1B30; /* Rojo característico */
-    --color-secundario: #6A0D5D; /* Violeta */
-    --color-terciario: #1A5F7A; /* Azul profundo para contraste */
+    --color-principal: #9B1B30;
+    /* Rojo característico */
+    --color-secundario: #6A0D5D;
+    /* Violeta */
+    --color-terciario: #1A5F7A;
+    /* Azul profundo para contraste */
     --color-fondo: #f4f4f4;
     --color-texto: #333;
     --color-texto-claro: #555;
@@ -11,7 +14,9 @@
 }
 
 /* Estilos de reset y base */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -214,13 +219,22 @@ body {
 
 /* Animaciones sutiles */
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .perfil-container {
     animation: fadeIn 0.5s ease-out;
-}.publicaciones-usuario {
+}
+
+.publicaciones-usuario {
     margin-top: 20px;
 }
 
@@ -244,11 +258,13 @@ body {
 .publicacion-item small {
     color: #888;
 }
+
 .acciones-publicacion {
     margin-top: 10px;
 }
 
-.btn-editar, .btn-eliminar {
+.btn-editar,
+.btn-eliminar {
     padding: 5px 15px;
     margin-right: 10px;
     text-decoration: none;
@@ -273,6 +289,7 @@ body {
 .btn-eliminar:hover {
     background-color: #e53935;
 }
+
 /* Variables de color actualizadas */
 :root {
     --color-principal: #9B1B30;
@@ -319,7 +336,8 @@ body {
     margin-top: 1.5rem;
 }
 
-.btn-editar, .btn-eliminar {
+.btn-editar,
+.btn-eliminar {
     padding: 0.5rem 1rem;
     border-radius: 6px;
     font-weight: 500;
@@ -337,7 +355,8 @@ body {
     color: white;
 }
 
-.btn-editar:hover, .btn-eliminar:hover {
+.btn-editar:hover,
+.btn-eliminar:hover {
     opacity: 0.9;
     transform: translateY(-1px);
 }
@@ -349,17 +368,31 @@ body {
         margin: 0;
         border-radius: 0;
     }
-    
+
     .foto-portada {
         height: 180px;
     }
-    
+
     .foto-perfil img {
         width: 150px;
         height: 150px;
     }
-    
+
     .titulo-perfil {
         font-size: 1.8rem;
     }
+}
+
+/* Para las imágenes de las publicaciones */
+.publicacion-imagen img {
+    width: 100%;
+    /* Se ajusta al ancho del contenedor */
+    max-width: 600px;
+    /* Establece un tamaño máximo para las imágenes */
+    height: auto;
+    /* Mantiene la relación de aspecto */
+    object-fit: cover;
+    /* Si prefieres que se recorte para cubrir el contenedor */
+    margin: 10px 0;
+    /* Un poco de espacio alrededor */
 }
