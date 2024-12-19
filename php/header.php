@@ -18,49 +18,38 @@ if (isset($_SESSION['usuario_id'])) {
     mysqli_stmt_close($stmt);
 
     // Definir la ruta de la foto de perfil
-    $foto_perfil = $perfil['foto_perfil'] ?? '../media/user.png'; // Si no tiene foto, usa la predeterminada
+    $foto_perfil = $perfil['foto_perfil'] ?? 'default-profile.jpg'; // Si no tiene foto, usa la predeterminada
 } else {
-    $foto_perfil = '../media/user.png'; // Si no está logueado, usa la predeterminada
+    $foto_perfil = 'default-profile.jpg'; // Si no está logueado, usa la predeterminada
 }
 ?>
 
 <!-- Bootstrap CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<!-- Font Awesome para iconos -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-<!-- Incluir solo el archivo CSS de tu proyecto -->
-<link rel="stylesheet" href="../css/publicaciones.css">
-
+<!-- Custom CSS -->
+<link rel="stylesheet" href="../CSS/estilosprin.css">
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #952F57;">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/index.php">
+        <a class="navbar-brand" href="/index.html">
             <img src="../media/logoweb.svg" alt="Logo" class="img-fluid" style="max-height: 50px;">
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <!-- Formulario de búsqueda -->
                 <li class="nav-item">
-                    <form class="d-flex" action="busqueda.php" method="GET">
-                        <input class="form-control me-2" type="search" name="search" placeholder="search" aria-label="search">
-                        <button class="btn btn-outline-light" type="submit"><i class="bi bi-search"></i> Buscar</button>
-                    </form>
+                    <a class="nav-link" href="ventas.php">Ventas</a>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link" href="perfil.php">
-                        <img src="<?php echo htmlspecialchars($foto_perfil); ?>" alt="Foto de perfil" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
+                        <img src="<?php echo htmlspecialchars($foto_perfil); ?>" alt="Foto de perfil" style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;">
                     </a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
-
-<!-- Script de Bootstrap (lo movemos aquí para asegurar que cargue al final) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
