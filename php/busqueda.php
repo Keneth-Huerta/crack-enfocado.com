@@ -66,7 +66,7 @@ if ($searchTerm != '') {
             <ul class="list-group">
                 <?php while ($usuario = mysqli_fetch_assoc($resultado_usuarios)): ?>
                     <li class="list-group-item d-flex align-items-center">
-                    <img src="<?php echo htmlspecialchars($perfil['foto_perfil'] ?? '../media/user.png.jpg'); ?>" alt="Foto de perfil" class="rounded-circle" width="50px" height="50px">
+                    <img src="<?php echo htmlspecialchars($usuario['foto_perfil'] ?? '../media/user.png.jpg'); ?>" alt="Foto de perfil" class="rounded-circle" width="50px" height="50px">
 
                         <div class="ms-3">
                             <strong><?php echo htmlspecialchars($usuario['nombre'] . ' ' . $usuario['apellido']); ?></strong><br>
