@@ -47,7 +47,7 @@ if (isset($_SESSION['usuario_id'])) {
                 <!-- Formulario de búsqueda -->
                 <li class="nav-item">
                     <form class="d-flex" action="busqueda.php" method="GET">
-                        <input class="form-control me-2" type="search" name="query" placeholder="Buscar" aria-label="Buscar">
+                        <input class="form-control me-2" type="search" name="search" placeholder="search" aria-label="search">
                         <button class="btn btn-outline-light" type="submit"><i class="bi bi-search"></i> Buscar</button>
                     </form>
                 </li>
