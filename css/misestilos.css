@@ -380,12 +380,22 @@ body {
 
     .titulo-perfil {
         font-size: 1.8rem;
+    }.publicacion-imagen img {
+        width: 70vw;
+        /* Se ajusta al ancho del contenedor */
+       
+        height: auto;
+        /* Mantiene la relación de aspecto */
+        object-fit: cover;
+        /* Si prefieres que se recorte para cubrir el contenedor */
+        margin: 10px 0;
+        /* Un poco de espacio alrededor */
     }
 }
 
 /* Para las imágenes de las publicaciones */
 .publicacion-imagen img {
-    width: 100%;
+    width: 40vw;
     /* Se ajusta al ancho del contenedor */
     max-width: 600px;
     /* Establece un tamaño máximo para las imágenes */
