@@ -133,7 +133,7 @@ $foto_portada = $perfil['foto_portada'] ?? '../media/user_icon_001.jpg';
 
         <!-- Mostrar publicaciones del usuario -->
         <div class="publicaciones-usuario">
-            <h2>Mis Publicaciones</h2>
+            <h2>Publicaciones</h2>
             <?php if ($publicaciones_result && mysqli_num_rows($publicaciones_result) > 0): ?>
                 <div class="lista-publicaciones">
                     <?php while ($publicacion = mysqli_fetch_assoc($publicaciones_result)): ?>
