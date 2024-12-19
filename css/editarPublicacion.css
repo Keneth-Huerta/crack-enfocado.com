@@ -193,3 +193,15 @@ button:disabled {
 .acciones a:hover {
     background-color: #ddd;
 }
+.acciones {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+button {
+    /* Remove width: 100%; */
+    padding: 10px 20px; 
+    /* Adjust padding as needed */
+}
