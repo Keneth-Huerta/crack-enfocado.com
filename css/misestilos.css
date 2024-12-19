@@ -273,3 +273,93 @@ body {
 .btn-eliminar:hover {
     background-color: #e53935;
 }
+/* Variables de color actualizadas */
+:root {
+    --color-principal: #9B1B30;
+    --color-secundario: #6A0D5D;
+    --color-terciario: #1A5F7A;
+    --color-fondo: #f4f4f4;
+    --color-texto: #333;
+    --color-texto-claro: #555;
+    --color-borde: #e0e0e0;
+    --color-error: #f44336;
+    --color-exito: #4CAF50;
+    --sombra-suave: 0 6px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Mejoras en las publicaciones */
+.publicaciones-usuario {
+    padding: 2rem;
+    margin-top: 2rem;
+}
+
+.publicacion-item {
+    background-color: white;
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--sombra-suave);
+    transition: transform 0.2s ease;
+}
+
+.publicacion-item:hover {
+    transform: translateY(-2px);
+}
+
+.publicacion-item img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 1rem 0;
+}
+
+.acciones-publicacion {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.btn-editar, .btn-eliminar {
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btn-editar {
+    background-color: var(--color-exito);
+    color: white;
+}
+
+.btn-eliminar {
+    background-color: var(--color-error);
+    color: white;
+}
+
+.btn-editar:hover, .btn-eliminar:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+/* Mejora en la responsividad */
+@media screen and (max-width: 576px) {
+    .perfil-container {
+        width: 100%;
+        margin: 0;
+        border-radius: 0;
+    }
+    
+    .foto-portada {
+        height: 180px;
+    }
+    
+    .foto-perfil img {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .titulo-perfil {
+        font-size: 1.8rem;
+    }
+}
