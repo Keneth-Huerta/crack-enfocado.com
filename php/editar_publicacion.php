@@ -82,25 +82,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <?php include('header.php'); ?>
 
-    <div class="container">
-        <h1>Editar Publicación</h1>
+    <div class="container-edit-publication">
+        <h1 class="form-title">Editar Publicación</h1>
 
         <?php if (isset($error)): ?>
-            <div class="error">
+            <div class="error-message">
                 <p><?php echo htmlspecialchars($error); ?></p>
             </div>
         <?php endif; ?>
 
-        <form action="editar_publicacion.php?id=<?php echo $publicacion_id; ?>" method="POST" class="form" enctype="multipart/form-data">
-            <label for="contenido">Contenido:</label>
-            <textarea id="contenido" name="contenido" rows="5" required><?php echo htmlspecialchars($publicacion['contenido']); ?></textarea>
+        <form action="editar_publicacion.php?id=<?php echo $publicacion_id; ?>" method="POST" class="form-container" enctype="multipart/form-data">
+            <label for="contenido" class="form-label">Contenido:</label>
+            <textarea id="contenido" name="contenido" rows="5" class="form-textarea" required><?php echo htmlspecialchars($publicacion['contenido']); ?></textarea>
 
-            <label for="imagen">Imagen:</label>
-            <input type="file" id="imagen" name="imagen" accept="image/*">
+            <label for="imagen" class="form-label">Imagen:</label>
+            <input type="file" id="imagen" name="imagen" accept="image/*" class="form-input-file">
 
-            <div class="acciones">
-                <button type="submit" class="btn-editar">Guardar cambios</button>
-                <a href="perfil.php" class="btn-cancelar">Cancelar</a>
+            <div class="action-buttons">
+                <button type="submit" class="btn-save">Guardar cambios</button>
+                <a href="perfil.php" class="btn-cancel">Cancelar</a>
             </div>
         </form>
     </div>
