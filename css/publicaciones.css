@@ -1,11 +1,5 @@
-/* Estilos base */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    line-height: 1.5;
+/* Variables globales */
+:root {
     --primary-color: #7d1b1b;
     --text-color: #333;
     --bg-color: #f0f2f5;
@@ -14,7 +8,17 @@ body {
     --spacing: 20px;
 }
 
-.navb {
+/* Estilos base */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.5;
+}
+
+.navbar {
     background-color: var(--primary-color);
     color: white;
     padding: var(--spacing);
