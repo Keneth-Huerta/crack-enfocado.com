@@ -386,7 +386,9 @@ body {
 /* Para las imágenes de las publicaciones */
 .publicacion-imagen img {
     width: 100%;
-
+    /* Se ajusta al ancho del contenedor */
+    max-width: 600px;
+    /* Establece un tamaño máximo para las imágenes */
     height: auto;
     /* Mantiene la relación de aspecto */
     object-fit: cover;
