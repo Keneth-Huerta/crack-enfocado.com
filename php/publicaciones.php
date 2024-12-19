@@ -167,10 +167,15 @@
                     likeButton.classList.remove('liked');
                 }
 
-                // Actualizar contador
+                // Actualizar contador de likes
                 if (newCount) {
                     likeCount.textContent = newCount;
                 }
+
+                // Alternar el color del icono también
+                const icon = likeButton.querySelector('i');
+                icon.classList.toggle('fa-heart', status === 'liked');
+                icon.classList.toggle('fa-heart-o', status === 'unliked');
 
             } catch (error) {
                 console.error('Error al procesar el like:', error);

@@ -204,4 +204,22 @@ button:hover {
 
 .btn-like.liked .fa-heart {
     color: #ff4444;
+}/* Icono de "Me gusta" */
+.btn-like .fa-heart {
+    color: #666;
+    transition: all 0.3s ease;
+}
+
+.btn-like.liked .fa-heart {
+    color: #ff4444; /* Rojo cuando está activo */
+}
+
+/* Icono de corazón vacío (cuando no le ha dado like) */
+.btn-like .fa-heart-o {
+    color: #666;
+    transition: all 0.3s ease;
+}
+
+.btn-like.liked .fa-heart-o {
+    color: transparent; /* Elimina el color del icono vacío cuando le da like */
 }
