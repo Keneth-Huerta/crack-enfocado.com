@@ -31,7 +31,7 @@ if (isset($_SESSION['usuario_id'])) {
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <!-- Incluir solo el archivo CSS de tu proyecto -->
-<link rel="stylesheet" href="../CSS/estilosprin.css">
+<link rel="stylesheet" href="../css/publicaciones.css">
 
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #952F57;">

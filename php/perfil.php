@@ -159,11 +159,6 @@ try {
                                    onclick="return confirm('¿Estás seguro de que deseas eliminar esta publicación?')">
                                     <i class="fas fa-trash-alt"></i> Eliminar
                                 </a>
-
-                                <!-- Enlace a perfil del usuario de la publicación -->
-                                <a href="perfil.php?usuario_id=<?php echo $publicacion['usuario_id']; ?>" class="btn-ver-perfil">
-                                    <i class="fas fa-user"></i> Ver perfil
-                                </a>
                             </div>
                         </div>
                     <?php endwhile; ?>
