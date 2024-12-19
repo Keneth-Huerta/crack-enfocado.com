@@ -49,9 +49,8 @@ h1 {
 /* Input fields and textarea */
 input[type="file"],
 textarea,
-button {
-    width: 100%;
-    padding: 10px;
+button { 
+    padding: 10px; 
     margin: 10px 0 20px 0;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -193,6 +192,7 @@ button:disabled {
 .acciones a:hover {
     background-color: #ddd;
 }
+
 .acciones {
     display: flex;
     justify-content: space-between;
@@ -201,7 +201,5 @@ button:disabled {
 }
 
 button {
-    /* Remove width: 100%; */
     padding: 10px 20px; 
-    /* Adjust padding as needed */
 }
