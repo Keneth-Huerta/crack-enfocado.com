@@ -15,7 +15,63 @@
 
 <body>
     <?php include('header.php'); ?>
-    
+
+    <div class="container mt-4">
+        <!-- Carrusel de Publicaciones Recientes -->
+        <h2>Publicaciones Recientes</h2>
+        <div id="publicacionesCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <?php
+                require_once 'conexion.php';
+
+                // Obtener las últimas 5 publicaciones
+                $query = "SELECT * FROM publicaciones ORDER BY fecha_publicada DESC LIMIT 5";
+                $resultado = mysqli_query($enlace, $query);
+
+                if ($resultado && mysqli_num_rows($resultado) > 0) {
+                    $first = true;
+                    while ($publicacion = mysqli_fetch_assoc($resultado)) {
+                        $activeClass = $first ? "active" : "";
+                        $first = false;
+                ?>
+                        <div class="carousel-item <?php echo $activeClass; ?>">
+                            <div class="row">
+                                <div class="col-12 col-md-4">
+                                    <?php if (!empty($publicacion['imagen'])): ?>
+                                        <img src="<?php echo htmlspecialchars($publicacion['imagen']); ?>" class="d-block w-100" alt="Publicación">
+                                    <?php else: ?>
+                                        <img src="https://via.placeholder.com/300" class="d-block w-100" alt="Publicación">
+                                    <?php endif; ?>
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <h5><?php echo nl2br(htmlspecialchars($publicacion['contenido'])); ?></h5>
+                                    <p><small>Publicado el <?php echo date("d/m/Y H:i", strtotime($publicacion['fecha_publicada'])); ?></small></p>
+                                </div>
+                            </div>
+                        </div>
+                <?php
+                    }
+                } else {
+                    echo "<p>No hay publicaciones recientes.</p>";
+                }
+                ?>
+            </div>
+
+            <!-- Controles del Carrusel -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#publicacionesCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#publicacionesCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Siguiente</span>
+            </button>
+        </div>
+
+        <!-- Enlace a la página de todas las publicaciones -->
+        <div class="text-center mt-4">
+            <a href="publicaciones.php" class="btn btn-primary">Ver todas las publicaciones</a>
+        </div>
 
         <div class="row mt-4">
             <div class="col-12 col-md-4 mb-2">
@@ -31,7 +87,7 @@
                     class="btn btn-secondary w-100" target="_blank">SAES</a>
             </div>
         </div>
-    </main>
+    </div>
 
     <!-- Footer -->
     <footer class="container-fluid bg-light mt-4 py-3">
@@ -45,7 +101,6 @@
             <p>Contacto: <a href="mailto:info@cecyt3.ipn.mx">info@cecyt3.ipn.mx</a></p>
         </div>
     </footer>
-    </div>
 
     <!-- Bootstrap JS and Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
