@@ -6,9 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CECyT 3 - Página Principal</title>
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="../CSS/estilosprin.css">
-
     <!-- Estilos adicionales para mejorar la apariencia del carrusel -->
     <style>
         /* Ajuste de las imágenes dentro del carrusel */
@@ -23,6 +20,7 @@
         .carousel-control-next-icon {
             background-color: black; /* Cambia las flechas a color negro */
             border-radius: 50%; /* Hace las flechas redondas */
+            padding: 3px;
         }
 
         .carousel-control-prev-icon:hover,

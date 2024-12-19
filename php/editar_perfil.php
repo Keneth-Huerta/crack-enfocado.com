@@ -27,13 +27,13 @@ mysqli_stmt_close($stmt);
 if ($perfil === null) {
     // Si no existe el perfil, inicializamos los valores en blanco
     $perfil = [
-        'nombre' => '',
-        'apellido' => '',
-        'carrera' => '',
-        'semestre' => '',
-        'foto_perfil' => '',
-        'foto_portada' => '',
-        'informacion_extra' => ''
+        'nombre' => null,
+        'apellido' => null,
+        'carrera' => null,
+        'semestre' => null,
+        'foto_perfil' => null,
+        'foto_portada' => null,
+        'informacion_extra' => null
     ];
 }
 
@@ -83,9 +83,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     exit();
 }
 ?>
-
-
-
 
 <!DOCTYPE html>
 <html lang="es">
