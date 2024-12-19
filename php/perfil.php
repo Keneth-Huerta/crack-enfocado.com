@@ -54,6 +54,8 @@ $carrera = $perfil['carrera'] ?? 'Carrera no disponible';
 $semestre = $perfil['semestre'] ?? 'Semestre no disponible';
 $informacion_extra = $perfil['informacion_extra'] ?? 'No disponible';
 $foto_perfil = $perfil['foto_perfil'] ?? '../media/user.png';
+echo $perfil['foto_perfil'];
+echo $perfil['usuario_id'];
 $foto_portada = $perfil['foto_portada'] ?? '../media/user_icon_001.jpg';
 
 // Obtener publicaciones del usuario con manejo de errores
