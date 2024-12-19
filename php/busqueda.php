@@ -36,6 +36,7 @@ if ($searchTerm != '') {
 <html lang="es">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resultados de búsqueda</title>
@@ -47,7 +48,7 @@ if ($searchTerm != '') {
 </head>
 
 <body>
-
+    <?php include('header.php'); ?>
     <div class="container mt-4">
         <h2>Resultados de búsqueda</h2>
 
