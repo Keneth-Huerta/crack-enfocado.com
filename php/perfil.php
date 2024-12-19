@@ -47,7 +47,7 @@ try {
 }
 
 // Valores predeterminados seguros
-$username=$perfil['username'] ?? 'Usuario no disponible';
+$username = $perfil['username'] ?? 'Usuario no disponible';
 $nombre = $perfil['nombre'] ?? 'Nombre no disponible';
 $apellido = $perfil['apellido'] ?? 'Apellido no disponible';
 $carrera = $perfil['carrera'] ?? 'Carrera no disponible';
@@ -118,16 +118,19 @@ try {
                 <p><strong>Información Extra:</strong> <?php echo nl2br(htmlspecialchars($informacion_extra)); ?></p>
             </div>
         </div>
-
-        <div class="acciones">
+        <?
+        if ($usuario_id == $_SESSION['usuario_id']) {
+            echo '<div class="acciones">
             <a href="editar_perfil.php" class="btn-editar">
                 <i class="fas fa-edit"></i> Editar perfil
             </a>
             <a href="logout.php" class="btn-cerrar-sesion">
                 <i class="fas fa-sign-out-alt"></i> Cerrar sesión
             </a>
-        </div>
+        </div>';
+        }
 
+        ?>
         <!-- Mostrar publicaciones del usuario -->
         <div class="publicaciones-usuario">
             <h2>Mis Publicaciones</h2>
