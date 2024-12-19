@@ -51,7 +51,7 @@ $foto_portada = $perfil['foto_portada'] ?? '../media/default-cover.jpg';
 
 // Obtener publicaciones del usuario con manejo de errores
 try {
-    $publicaciones_query = "SELECT id_publicacion, contenido, imagen, fecha_publicada 
+    $publicaciones_query = "SELECT id_publicacion, contenido, imagen, fecha_publicada, usuario_id 
                             FROM publicaciones 
                             WHERE usuario_id = ? 
                             ORDER BY fecha_publicada DESC";
@@ -143,8 +143,7 @@ try {
                                 <?php if (!empty($publicacion['imagen'])): ?>
                                     <div class="publicacion-imagen">
                                         <img src="<?php echo htmlspecialchars($publicacion['imagen']); ?>"
-                                            alt="Imagen de publicación"
-                                            >
+                                             alt="Imagen de publicación">
                                     </div>
                                 <?php endif; ?>
                             </div>
@@ -152,13 +151,18 @@ try {
                             <!-- Botones de acción -->
                             <div class="acciones-publicacion">
                                 <a href="editar_publicacion.php?id=<?php echo $publicacion['id_publicacion']; ?>"
-                                    class="btn-editar">
+                                   class="btn-editar">
                                     <i class="fas fa-edit"></i> Editar
                                 </a>
                                 <a href="eliminar_publicacion.php?id=<?php echo $publicacion['id_publicacion']; ?>"
-                                    class="btn-eliminar"
-                                    onclick="return confirm('¿Estás seguro de que deseas eliminar esta publicación?')">
+                                   class="btn-eliminar"
+                                   onclick="return confirm('¿Estás seguro de que deseas eliminar esta publicación?')">
                                     <i class="fas fa-trash-alt"></i> Eliminar
+                                </a>
+
+                                <!-- Enlace a perfil del usuario de la publicación -->
+                                <a href="perfil.php?usuario_id=<?php echo $publicacion['usuario_id']; ?>" class="btn-ver-perfil">
+                                    <i class="fas fa-user"></i> Ver perfil
                                 </a>
                             </div>
                         </div>
