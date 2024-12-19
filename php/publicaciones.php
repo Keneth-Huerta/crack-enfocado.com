@@ -7,6 +7,15 @@
     <link rel="stylesheet" href="../css/publicaciones.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- CDN de Font Awesome -->
     <title>Publicaciones</title>
+
+    <style>
+        /* Estilo para ocultar el formulario de comentario */
+        .comment-form {
+            display: none;
+            margin-top: 10px;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -83,9 +92,9 @@
                 echo '</button>';
                 echo '</form>';
 
-                // Botones de acción
-                echo '<button>Comentar</button>';
-                echo '<button>Compartir</button>';
+                // Botón de "Comentar"
+                echo '<button type="button" onclick="toggleCommentForm(' . $publicacion['id_publicacion'] . ')">Comentar</button>';
+
                 echo '</div>';
 
                 // Mostrar comentarios
@@ -109,12 +118,14 @@
                     echo '</div>';
                 }
 
-                // Formulario para agregar un comentario
+                // Formulario para agregar un comentario (inicialmente oculto)
+                echo '<div id="comment-form-' . $publicacion['id_publicacion'] . '" class="comment-form">';
                 echo '<form action="agregar_comentario.php" method="POST">';
                 echo '<input type="hidden" name="publicacion_id" value="' . $publicacion['id_publicacion'] . '">';
                 echo '<textarea name="contenido_comentario" placeholder="Escribe un comentario..." required></textarea>';
                 echo '<button type="submit">Comentar</button>';
                 echo '</form>';
+                echo '</div>'; // Cierre del div de formulario de comentarios
 
                 echo '</div>'; // Cierre de comentarios
                 echo '</div>'; // Cierre de post-item
@@ -123,6 +134,19 @@
         </div>
 
     </div>
+
+    <script>
+        // Función para mostrar/ocultar el formulario de comentarios
+        function toggleCommentForm(publicacion_id) {
+            var form = document.getElementById('comment-form-' + publicacion_id);
+            // Si el formulario está oculto, lo mostramos; si está visible, lo ocultamos
+            if (form.style.display === "none" || form.style.display === "") {
+                form.style.display = "block";
+            } else {
+                form.style.display = "none";
+            }
+        }
+    </script>
 
 </body>
 
