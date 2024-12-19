@@ -157,45 +157,49 @@
 
         // Función mejorada para manejar likes
         async function toggleLike(publicacion_id) {
-            const likeButton = document.querySelector(`.btn-like[data-id="${publicacion_id}"]`);
-            const likeCount = document.getElementById(`like-count-${publicacion_id}`);
+    const likeButton = document.querySelector(`.btn-like[data-id="${publicacion_id}"]`);
+    const likeCount = document.getElementById(`like-count-${publicacion_id}`);
 
-            // Prevenir múltiples clics mientras se procesa
-            if (likeStates.get(publicacion_id)) return;
-            likeStates.set(publicacion_id, true);
+    // Prevenir múltiples clics mientras se procesa
+    if (likeStates.get(publicacion_id)) return;
+    likeStates.set(publicacion_id, true);
 
-            try {
-                // Añadir clase de animación
-                likeButton.classList.add('clicked');
+    try {
+        // Añadir clase de animación
+        likeButton.classList.add('clicked');
 
-                const formData = new FormData();
-                formData.append('id_publicacion', publicacion_id);
+        const formData = new FormData();
+        formData.append('id_publicacion', publicacion_id);
 
-                const response = await fetch('dar_like.php', {
-                    method: 'POST',
-                    body: formData
-                });
+        const response = await fetch('dar_like.php', {
+            method: 'POST',
+            body: formData
+        });
 
-                const data = await response.text();
+        const data = await response.text();
 
-                // Actualizar el contador y el estado visual
-                if (data.includes('Like agregado!')) {
-                    likeCount.textContent = parseInt(likeCount.textContent) + 1;
-                    likeButton.classList.add('liked');
-                } else if (data.includes('Like eliminado!')) {
-                    likeCount.textContent = parseInt(likeCount.textContent) - 1;
-                    likeButton.classList.remove('liked');
-                }
-            } catch (error) {
-                console.error('Error al procesar el like:', error);
-            } finally {
-                // Limpiar el estado después de un breve delay
-                setTimeout(() => {
-                    likeButton.classList.remove('clicked');
-                    likeStates.set(publicacion_id, false);
-                }, 300);
-            }
+        // Desglosar la respuesta
+        const [message, newLikeCount] = data.split('|');
+        
+        if (message.includes('Like agregado!')) {
+            likeButton.classList.add('liked');
+        } else if (message.includes('Like eliminado!')) {
+            likeButton.classList.remove('liked');
         }
+
+        // Actualizar el contador con el valor que se devuelve del servidor
+        likeCount.textContent = newLikeCount;
+    } catch (error) {
+        console.error('Error al procesar el like:', error);
+    } finally {
+        // Limpiar el estado después de un breve delay
+        setTimeout(() => {
+            likeButton.classList.remove('clicked');
+            likeStates.set(publicacion_id, false);
+        }, 300);
+    }
+}
+
 
 
         // Función para inicializar los botones de like

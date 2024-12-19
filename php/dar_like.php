@@ -31,7 +31,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt_update->bind_param("i", $id_publicacion);
         $stmt_update->execute();
 
-        echo "Like agregado!";
+        // Obtener el nuevo número de "Me gusta"
+        $stmt_count = $enlace->prepare("SELECT cantidad_megusta FROM publicaciones WHERE id_publicacion = ?");
+        $stmt_count->bind_param("i", $id_publicacion);
+        $stmt_count->execute();
+        $result = $stmt_count->get_result();
+        $row = $result->fetch_assoc();
+
+        echo "Like agregado!|{$row['cantidad_megusta']}";
     } else {
         // Si ya ha dado "Me gusta", lo quitamos
         $stmt_delete = $enlace->prepare("DELETE FROM likes WHERE usuario_id = ? AND publicacion_id = ?");
@@ -43,7 +50,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt_update->bind_param("i", $id_publicacion);
         $stmt_update->execute();
 
-        echo "Like eliminado!";
+        // Obtener el nuevo número de "Me gusta"
+        $stmt_count = $enlace->prepare("SELECT cantidad_megusta FROM publicaciones WHERE id_publicacion = ?");
+        $stmt_count->bind_param("i", $id_publicacion);
+        $stmt_count->execute();
+        $result = $stmt_count->get_result();
+        $row = $result->fetch_assoc();
+
+        echo "Like eliminado!|{$row['cantidad_megusta']}";
     }
 }
 ?>
