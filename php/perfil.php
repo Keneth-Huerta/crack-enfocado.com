@@ -20,19 +20,18 @@ if (!isset($_SESSION['usuario_id'])) {
 if (isset($_GET['usuario_id'])) {
     $usuario_ids = (int) $_GET['usuario_id'];
 } else {
-    // Si no se pasa el ID de usuario, redirigir al perfil del usuario actual
     $usuario_ids = $_SESSION['usuario_id'];
 }
 $perfil = [];
 $publicaciones = [];
 
-
 // Obtener publicaciones del usuario con manejo de errores
 try {
-    $publicaciones_query = "SELECT id_publicacion, contenido, imagen, fecha_publicada, usuario_id 
-                            FROM publicaciones 
-                            WHERE usuario_id = ? 
-                            ORDER BY fecha_publicada DESC";
+    $publicaciones_query = "SELECT p.*, perf.foto_perfil, perf.nombre 
+                           FROM publicaciones p
+                           JOIN perfiles perf ON p.usuario_id = perf.usuario_id 
+                           WHERE p.usuario_id = ? 
+                           ORDER BY p.fecha_publicada DESC";
 
     if ($stmt_publicaciones = mysqli_prepare($enlace, $publicaciones_query)) {
         mysqli_stmt_bind_param($stmt_publicaciones, "i", $usuario_ids);
@@ -79,7 +78,6 @@ $semestre = $perfil['semestre'] ?? 'Semestre no disponible';
 $informacion_extra = $perfil['informacion_extra'] ?? 'No disponible';
 $foto_perfils = $perfil['foto_perfil'] ?? '../media/user.png';
 $foto_portada = $perfil['foto_portada'] ?? '../media/user_icon_001.jpg';
-
 ?>
 
 <!DOCTYPE html>
@@ -91,8 +89,18 @@ $foto_portada = $perfil['foto_portada'] ?? '../media/user_icon_001.jpg';
     <title>Mi Perfil - <?php echo htmlspecialchars($username); ?></title>
     <link rel="stylesheet" href="../css/misestilos.css">
     <link rel="stylesheet" href="../css/publicaciones.css">
-    <!-- Font Awesome para iconos -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        .comment-form {
+            display: none;
+            margin-top: 10px;
+        }
+        .comments-list {
+            display: none;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 
 <body>
@@ -119,9 +127,8 @@ $foto_portada = $perfil['foto_portada'] ?? '../media/user_icon_001.jpg';
                 <p><strong>Información Extra:</strong> <?php echo nl2br(htmlspecialchars($informacion_extra)); ?></p>
             </div>
         </div>
-        <?php if ($usuario_ids == $_SESSION['usuario_id']): ?>
 
-            <link rel="stylesheet" href="../css/misestilos.css">
+        <?php if ($usuario_ids == $_SESSION['usuario_id']): ?>
             <div class="acciones">
                 <a href="editar_perfil.php" class="btn-editar">
                     <i class="fas fa-edit"></i> Editar perfil
@@ -133,80 +140,84 @@ $foto_portada = $perfil['foto_portada'] ?? '../media/user_icon_001.jpg';
         <?php endif; ?>
 
         <!-- Mostrar publicaciones del usuario -->
-        <div class="publicaciones-usuario">
+        <div class="publicaciones">
             <h2>Mis Publicaciones</h2>
             <?php if ($publicaciones_result && mysqli_num_rows($publicaciones_result) > 0): ?>
+                <?php while ($publicacion = mysqli_fetch_assoc($publicaciones_result)): ?>
+                    <div class="post-item">
+                        <!-- Encabezado de la publicación -->
+                        <div class="post-header">
+                            <div class="post-avatar">
+                                <a href="perfil.php?usuario_id=<?php echo $publicacion['usuario_id']; ?>">
+                                    <img src="<?php echo htmlspecialchars($publicacion['foto_perfil'] ?? '../media/user.png'); ?>" 
+                                         alt="Foto de perfil" 
+                                         style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+                                </a>
+                            </div>
+                            <div class="post-username"><?php echo htmlspecialchars($publicacion['nombre'] ?? 'Usuario Anónimo'); ?></div>
+                        </div>
 
-<div class="lista-publicaciones">
-    <?php while ($publicacion = mysqli_fetch_assoc($publicaciones_result)): ?>
-        <div class="post-item">
-            <!-- Encabezado de la publicación -->
-            <div class="post-header">
-                <img src="<?php echo htmlspecialchars($foto_perfils); ?>" alt="Foto de perfil" class="foto-perfil-publicacion">
-                <div class="post-usuario"><?php echo htmlspecialchars($nombre); ?></div>
-                <div class="post-fecha"><?php echo htmlspecialchars($publicacion['fecha_publicada']); ?></div>
-            </div>
+                        <!-- Contenido de la publicación -->
+                        <div class="post-content"><?php echo htmlspecialchars($publicacion['contenido'] ?? 'Sin contenido'); ?></div>
 
-            <!-- Contenido de la publicación -->
-            <div class="post-contenido"><?php echo nl2br(htmlspecialchars($publicacion['contenido'])); ?></div>
+                        <!-- Imagen de la publicación -->
+                        <?php if (!empty($publicacion['imagen'])): ?>
+                            <img src="<?php echo htmlspecialchars($publicacion['imagen']); ?>" alt="Imagen de publicación">
+                        <?php endif; ?>
 
-            <!-- Imagen de la publicación -->
-            <?php if (!empty($publicacion['imagen'])): ?>
-                <img src="<?php echo htmlspecialchars($publicacion['imagen']); ?>" alt="Imagen de la publicación" class="post-imagen">
-            <?php endif; ?>
+                        <!-- Botones de interacción -->
+                        <?php
+                        $stmt_likes = $enlace->prepare("SELECT * FROM likes WHERE usuario_id = ? AND publicacion_id = ?");
+                        $stmt_likes->bind_param("ii", $_SESSION['usuario_id'], $publicacion['id_publicacion']);
+                        $stmt_likes->execute();
+                        $like_check = $stmt_likes->get_result();
+                        $liked_class = (mysqli_num_rows($like_check) > 0) ? 'liked' : '';
+                        ?>
+                        
+                        <button type="button" class="btn-like <?php echo $liked_class; ?>" 
+                                data-id="<?php echo $publicacion['id_publicacion']; ?>" 
+                                onclick="toggleLike(<?php echo $publicacion['id_publicacion']; ?>)">
+                            <i class="fas fa-heart"></i> Me gusta 
+                            (<span id="like-count-<?php echo $publicacion['id_publicacion']; ?>">
+                                <?php echo $publicacion['cantidad_megusta']; ?>
+                            </span>)
+                        </button>
 
-            <!-- Sección de botones: Me gusta y comentar -->
-            <div class="post-botones">
-                <!-- Botón de "Me gusta" -->
-                <?php
-                $stmt_likes = $enlace->prepare("SELECT * FROM likes WHERE usuario_id = ? AND publicacion_id = ?");
-                $stmt_likes->bind_param("ii", $_SESSION['usuario_id'], $publicacion['id_publicacion']);
-                $stmt_likes->execute();
-                $like_check = $stmt_likes->get_result();
-                $liked_class = (mysqli_num_rows($like_check) > 0) ? 'liked' : '';
-                ?>
-                <button class="btn-like <?php echo $liked_class; ?>" data-id="<?php echo $publicacion['id_publicacion']; ?>" onclick="toggleLike(<?php echo $publicacion['id_publicacion']; ?>)">
-                    <i class="fas fa-heart"></i> Me gusta (<span id="like-count-<?php echo $publicacion['id_publicacion']; ?>"><?php echo $publicacion['cantidad_megusta']; ?></span>)
-                </button>
+                        <button type="button" onclick="toggleCommentSection(<?php echo $publicacion['id_publicacion']; ?>)">
+                            Comentar
+                        </button>
 
-                <!-- Botón de "Comentar" -->
-                <button type="button" onclick="toggleCommentSection(<?php echo $publicacion['id_publicacion']; ?>)">Comentar</button>
-            </div>
+                        <!-- Sección de comentarios -->
+                        <div id="comments-section-<?php echo $publicacion['id_publicacion']; ?>" class="comments-list">
+                            <?php
+                            $stmt_comentarios = $enlace->prepare("SELECT comentarios.*, perfiles.nombre AS usuario_nombre 
+                                                               FROM comentarios 
+                                                               JOIN perfiles ON comentarios.usuario_id = perfiles.usuario_id 
+                                                               WHERE comentarios.publicacion_id = ? 
+                                                               ORDER BY comentarios.fecha_comentario ASC");
+                            $stmt_comentarios->bind_param("i", $publicacion['id_publicacion']);
+                            $stmt_comentarios->execute();
+                            $comentarios = $stmt_comentarios->get_result();
+                            ?>
 
-            <!-- Sección de comentarios -->
-            <div id="comments-section-<?php echo $publicacion['id_publicacion']; ?>" class="comments-list">
-                <?php
-                $stmt_comentarios = $enlace->prepare("SELECT comentarios.*, perfiles.nombre AS usuario_nombre 
-                                                      FROM comentarios 
-                                                      JOIN perfiles ON comentarios.usuario_id = perfiles.usuario_id 
-                                                      WHERE comentarios.publicacion_id = ? 
-                                                      ORDER BY comentarios.fecha_comentario ASC");
-                $stmt_comentarios->bind_param("i", $publicacion['id_publicacion']);
-                $stmt_comentarios->execute();
-                $comentarios = $stmt_comentarios->get_result();
+                            <?php while ($comentario = $comentarios->fetch_assoc()): ?>
+                                <div class="comment-item">
+                                    <strong><?php echo htmlspecialchars($comentario['usuario_nombre']); ?>:</strong>
+                                    <p><?php echo htmlspecialchars($comentario['contenido']); ?></p>
+                                </div>
+                            <?php endwhile; ?>
 
-                while ($comentario = $comentarios->fetch_assoc()):
-                ?>
-                    <div class="comment-item">
-                        <strong><?php echo htmlspecialchars($comentario['usuario_nombre']); ?>:</strong>
-                        <p><?php echo htmlspecialchars($comentario['contenido']); ?></p>
+                            <!-- Formulario para agregar comentarios -->
+                            <div id="comment-form-<?php echo $publicacion['id_publicacion']; ?>" class="comment-form">
+                                <form action="agregar_comentario.php" method="POST">
+                                    <input type="hidden" name="publicacion_id" value="<?php echo $publicacion['id_publicacion']; ?>">
+                                    <textarea name="contenido_comentario" placeholder="Escribe un comentario..." required></textarea>
+                                    <button type="submit">Comentar</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 <?php endwhile; ?>
-
-                <!-- Formulario para agregar un comentario -->
-                <div id="comment-form-<?php echo $publicacion['id_publicacion']; ?>" class="comment-form">
-                    <form action="agregar_comentario.php" method="POST">
-                        <input type="hidden" name="publicacion_id" value="<?php echo $publicacion['id_publicacion']; ?>">
-                        <textarea name="contenido_comentario" placeholder="Escribe un comentario..." required></textarea>
-                        <button type="submit">Comentar</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    <?php endwhile; ?>
-</div>
-
-                
             <?php else: ?>
                 <div class="sin-publicaciones">
                     <p><i class="far fa-newspaper"></i> Aún no has realizado ninguna publicación.</p>
@@ -219,30 +230,121 @@ $foto_portada = $perfil['foto_portada'] ?? '../media/user_icon_001.jpg';
     </div>
 
     <script>
-        // Script para lazy loading de imágenes
-        document.addEventListener('DOMContentLoaded', function() {
-            var lazyImages = [].slice.call(document.querySelectorAll("img[loading='lazy']"));
+        // Debounce function para prevenir múltiples clicks rápidos
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
 
-            if ("IntersectionObserver" in window) {
-                let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
-                    entries.forEach(function(entry) {
-                        if (entry.isIntersecting) {
-                            let lazyImage = entry.target;
-                            lazyImage.src = lazyImage.dataset.src;
-                            lazyImage.removeAttribute('loading');
-                            lazyImageObserver.unobserve(lazyImage);
-                        }
-                    });
+        // Control de estado para los likes
+        const likeStates = new Map();
+
+        // Función mejorada para manejar likes
+        async function toggleLike(publicacion_id) {
+            const likeButton = document.querySelector(`.btn-like[data-id="${publicacion_id}"]`);
+            const likeCount = document.getElementById(`like-count-${publicacion_id}`);
+
+            // Prevenir múltiples clicks mientras se procesa
+            if (likeStates.get(publicacion_id)) return;
+            likeStates.set(publicacion_id, true);
+
+            try {
+                // Añadir clase de animación
+                likeButton.classList.add('clicked');
+
+                const formData = new FormData();
+                formData.append('id_publicacion', publicacion_id);
+
+                const response = await fetch('dar_like.php', {
+                    method: 'POST',
+                    body: formData
                 });
 
-                lazyImages.forEach(function(lazyImage) {
-                    lazyImageObserver.observe(lazyImage);
-                });
+                const data = await response.text();
+
+                // Actualizar el contador y el estado visual
+                if (data.includes('Like agregado!')) {
+                    likeCount.textContent = parseInt(likeCount.textContent) + 1;
+                    likeButton.classList.add('liked');
+                } else if (data.includes('Like eliminado!')) {
+                    likeCount.textContent = parseInt(likeCount.textContent) - 1;
+                    likeButton.classList.remove('liked');
+                }
+            } catch (error) {
+                console.error('Error al procesar el like:', error);
+            } finally {
+                // Limpiar el estado después de un breve delay
+                setTimeout(() => {
+                    likeButton.classList.remove('clicked');
+                    likeStates.set(publicacion_id, false);
+                }, 300);
             }
-        });
+        }
+
+        // Inicializar los botones de like cuando el DOM esté listo
+        function initializeLikeButtons() {
+            const buttons = document.querySelectorAll('.btn-like');
+
+            buttons.forEach(button => {
+                const debouncedToggleLike = debounce((id) => toggleLike(id), 300);
+
+                button.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    const id = button.dataset.id;
+                    if (!likeStates.get(id)) {
+                        button.classList.add('clicked');
+                    }
+                });
+
+                button.addEventListener('touchend', (e) => {
+                    e.preventDefault();
+                    const id = button.dataset.id;
+                    if (!likeStates.get(id)) {
+                        debouncedToggleLike(id);
+                    }
+                });
+
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const id = button.dataset.id;
+                    if (!likeStates.get(id)) {
+                        debouncedToggleLike(id);
+                    }
+                });
+
+                likeStates.set(button.dataset.id, false);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', initializeLikeButtons);
+
+        // Función para actualizar botones después de cambios dinámicos
+        function updateLikeButtons() {
+            initializeLikeButtons();
+        }
+
+        // Función para mostrar/ocultar comentarios
+        function toggleCommentSection(publicacion_id) {
+            var commentsSection = document.getElementById('comments-section-' + publicacion_id);
+            var commentForm = document.getElementById('comment-form-' + publicacion_id);
+
+            if (commentsSection.style.display === "none" || commentsSection.style.display === "") {
+                commentsSection.style.display = "block";
+                commentForm.style.display = "block";
+            } else {
+                commentsSection.style.display = "none";
+                commentForm.style.display = "none";
+            }
+        }
     </script>
 </body>
-
 </html>
 
 <?php
