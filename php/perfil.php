@@ -110,12 +110,13 @@ $publicaciones_result = mysqli_stmt_get_result($stmt_publicaciones);
                             <?php if (!empty($publicacion['imagen'])): ?>
                                 <img src="<?php echo htmlspecialchars($publicacion['imagen']); ?>" alt="Imagen de publicación">
                             <?php endif; ?>
-                            
+
                             <!-- Botones de edición y eliminación -->
                             <div class="acciones-publicacion">
                                 <a href="editar_publicacion.php?id=<?php echo $publicacion['id']; ?>" class="btn-editar">Editar</a>
                                 <a href="eliminar_publicacion.php?id=<?php echo $publicacion['id']; ?>" class="btn-eliminar" onclick="return confirm('¿Estás seguro de que deseas eliminar esta publicación?')">Eliminar</a>
                             </div>
+
                         </div>
                     <?php endwhile; ?>
                 </div>
