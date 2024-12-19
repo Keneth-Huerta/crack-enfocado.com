@@ -19,7 +19,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     $query = "SELECT * FROM publicaciones WHERE id_publicacion = ? AND usuario_id = ?";
     if ($stmt = mysqli_prepare($enlace, $query)) {
         mysqli_stmt_bind_param($stmt, "ii", $publicacion_id, $usuario_id);
-        
+
         if (mysqli_stmt_execute($stmt)) {
             $resultado = mysqli_stmt_get_result($stmt);
             if (mysqli_num_rows($resultado) > 0) {
@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $update_query = "UPDATE publicaciones SET contenido = ?, imagen = ? WHERE id_publicacion = ? AND usuario_id = ?";
         if ($update_stmt = mysqli_prepare($enlace, $update_query)) {
             mysqli_stmt_bind_param($update_stmt, "ssii", $nuevo_contenido, $imagen_subida, $publicacion_id, $usuario_id);
-            
+
             if (mysqli_stmt_execute($update_stmt)) {
                 // Redirigir al perfil después de la edición
                 header("Location: perfil.php?mensaje=Publicación actualizada con éxito");
@@ -71,12 +71,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Publicación</title>
     <link rel="stylesheet" href="../css/editarPublicacion.css">
 </head>
+
 <body>
     <?php include('header.php'); ?>
 
@@ -102,5 +104,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </form>
     </div>
+
+    <!-- Bootstrap JS (incluye Popper.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
