@@ -14,6 +14,12 @@
             display: none;
             margin-top: 10px;
         }
+        
+        /* Estilo para ocultar la lista de comentarios */
+        .comments-list {
+            display: none;
+            margin-top: 10px;
+        }
     </style>
 
 </head>
@@ -93,12 +99,12 @@
                 echo '</form>';
 
                 // Botón de "Comentar"
-                echo '<button type="button" onclick="toggleCommentForm(' . $publicacion['id_publicacion'] . ')">Comentar</button>';
+                echo '<button type="button" onclick="toggleCommentSection(' . $publicacion['id_publicacion'] . ')">Comentar</button>';
 
                 echo '</div>';
 
                 // Mostrar comentarios
-                echo '<div class="comments-section">';
+                echo '<div id="comments-section-' . $publicacion['id_publicacion'] . '" class="comments-list">';
 
                 // Obtener los comentarios de esta publicación
                 $stmt_comentarios = $enlace->prepare("SELECT comentarios.*, perfiles.nombre AS usuario_nombre 
@@ -136,14 +142,18 @@
     </div>
 
     <script>
-        // Función para mostrar/ocultar el formulario de comentarios
-        function toggleCommentForm(publicacion_id) {
-            var form = document.getElementById('comment-form-' + publicacion_id);
-            // Si el formulario está oculto, lo mostramos; si está visible, lo ocultamos
-            if (form.style.display === "none" || form.style.display === "") {
-                form.style.display = "block";
+        // Función para mostrar/ocultar los comentarios y el formulario de comentarios
+        function toggleCommentSection(publicacion_id) {
+            var commentsSection = document.getElementById('comments-section-' + publicacion_id);
+            var commentForm = document.getElementById('comment-form-' + publicacion_id);
+
+            // Si los comentarios están ocultos, mostrar la lista y el formulario; si están visibles, ocultarlos
+            if (commentsSection.style.display === "none" || commentsSection.style.display === "") {
+                commentsSection.style.display = "block"; // Mostrar comentarios
+                commentForm.style.display = "block"; // Mostrar formulario de comentario
             } else {
-                form.style.display = "none";
+                commentsSection.style.display = "none"; // Ocultar comentarios
+                commentForm.style.display = "none"; // Ocultar formulario de comentario
             }
         }
     </script>
