@@ -139,92 +139,95 @@
 
 
     <script>
-        // Control de estado para los likes
-        const likeStates = new Map();
+        // Sistema simple de estado para likes
+const likeInProgress = new Set();
 
-        // Función principal para manejar likes
-        async function toggleLike(publicacion_id) {
-            const likeButton = document.querySelector(`.btn-like[data-id="${publicacion_id}"]`);
-            const likeCount = document.getElementById(`like-count-${publicacion_id}`);
+async function toggleLike(publicacion_id) {
+    // Prevenir múltiples clicks simultáneos
+    if (likeInProgress.has(publicacion_id)) {
+        return;
+    }
 
-            // Prevenir múltiples clics mientras se procesa
-            if (likeStates.get(publicacion_id)) return;
-            likeStates.set(publicacion_id, true);
+    const likeButton = document.querySelector(`.btn-like[data-id="${publicacion_id}"]`);
+    const likeCount = document.getElementById(`like-count-${publicacion_id}`);
 
-            try {
-                // Añadir clase de animación
-                likeButton.classList.add('clicked');
+    try {
+        // Marcar como en progreso
+        likeInProgress.add(publicacion_id);
 
-                const formData = new FormData();
-                formData.append('id_publicacion', publicacion_id);
+        // Preparar y enviar la petición
+        const formData = new FormData();
+        formData.append('id_publicacion', publicacion_id);
 
-                const response = await fetch('dar_like.php', {
-                    method: 'POST',
-                    body: formData
-                });
+        const response = await fetch('dar_like.php', {
+            method: 'POST',
+            body: formData
+        });
 
-                const data = await response.text();
-                const [message, newLikeCount] = data.split('|');
+        const data = await response.text();
+        const [message, newLikeCount] = data.split('|');
 
-                if (message.includes('Like agregado!')) {
-                    likeButton.classList.add('liked');
-                } else if (message.includes('Like eliminado!')) {
-                    likeButton.classList.remove('liked');
-                }
-
-                likeCount.textContent = newLikeCount;
-            } catch (error) {
-                console.error('Error al procesar el like:', error);
-            } finally {
-                setTimeout(() => {
-                    likeButton.classList.remove('clicked');
-                    likeStates.set(publicacion_id, false);
-                }, 300);
-            }
+        // Actualizar la UI basado en la respuesta
+        if (message.includes('Like agregado!')) {
+            likeButton.classList.add('liked');
+        } else if (message.includes('Like eliminado!')) {
+            likeButton.classList.remove('liked');
         }
 
-        // Función simplificada para inicializar los botones
-        function initializeLikeButtons() {
-            const buttons = document.querySelectorAll('.btn-like');
-
-            buttons.forEach(button => {
-                const id = button.dataset.id;
-
-                // Un solo manejador de eventos para click
-                button.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation(); // Prevenir la propagación del evento
-                    if (!likeStates.get(id)) {
-                        toggleLike(id);
-                    }
-                });
-
-                // Inicializar estado
-                likeStates.set(id, false);
-            });
+        // Actualizar el contador
+        if (newLikeCount) {
+            likeCount.textContent = newLikeCount;
         }
 
-        // Inicializar cuando el DOM esté listo
-        document.addEventListener('DOMContentLoaded', initializeLikeButtons);
+    } catch (error) {
+        console.error('Error al procesar el like:', error);
+    } finally {
+        // Liberar el estado después de un tiempo prudente
+        setTimeout(() => {
+            likeInProgress.delete(publicacion_id);
+        }, 1000); // Tiempo de espera más largo para evitar clicks accidentales
+    }
+}
 
-        // Función para actualizar botones después de cambios dinámicos
-        function updateLikeButtons() {
-            initializeLikeButtons();
-        }
+// Inicialización simple de los botones
+function initializeLikeButtons() {
+    document.querySelectorAll('.btn-like').forEach(button => {
+        // Remover eventos previos si existen
+        button.replaceWith(button.cloneNode(true));
+        
+        // Obtener el botón actualizado
+        const newButton = document.querySelector(`.btn-like[data-id="${button.dataset.id}"]`);
+        
+        // Agregar el nuevo evento
+        newButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            const id = this.dataset.id;
+            toggleLike(id);
+        });
+    });
+}
 
-        // Mantener la función de comentarios sin cambios
-        function toggleCommentSection(publicacion_id) {
-            var commentsSection = document.getElementById('comments-section-' + publicacion_id);
-            var commentForm = document.getElementById('comment-form-' + publicacion_id);
+// Inicializar cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', initializeLikeButtons);
 
-            if (commentsSection.style.display === "none" || commentsSection.style.display === "") {
-                commentsSection.style.display = "block";
-                commentForm.style.display = "block";
-            } else {
-                commentsSection.style.display = "none";
-                commentForm.style.display = "none";
-            }
-        }
+// Función para actualizar botones si se añaden dinámicamente
+function updateLikeButtons() {
+    initializeLikeButtons();
+}
+
+// Mantener la función de comentarios sin cambios
+function toggleCommentSection(publicacion_id) {
+    const commentsSection = document.getElementById('comments-section-' + publicacion_id);
+    const commentForm = document.getElementById('comment-form-' + publicacion_id);
+
+    if (commentsSection.style.display === "none" || commentsSection.style.display === "") {
+        commentsSection.style.display = "block";
+        commentForm.style.display = "block";
+    } else {
+        commentsSection.style.display = "none";
+        commentForm.style.display = "none";
+    }
+}
     </script>
 </body>
 
