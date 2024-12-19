@@ -15,8 +15,8 @@ if (!empty($query)) {
     $resultado_publicaciones = mysqli_stmt_get_result($stmt_publicaciones);
     mysqli_stmt_close($stmt_publicaciones);
 
-    // Buscar en la tabla de usuarios
-    $query_usuarios = "SELECT * FROM usuarios WHERE nombre LIKE ? OR apellido LIKE ? LIMIT 5";
+    // Buscar en la tabla de usuarios (con nombres de columnas corregidos)
+    $query_usuarios = "SELECT * FROM usuarios WHERE usuario_nombre LIKE ? OR usuario_apellido LIKE ? LIMIT 5"; // Asegúrate de que 'usuario_nombre' y 'usuario_apellido' son los nombres correctos
     $stmt_usuarios = mysqli_prepare($enlace, $query_usuarios);
     mysqli_stmt_bind_param($stmt_usuarios, "ss", $search_term, $search_term);
     mysqli_stmt_execute($stmt_usuarios);
@@ -65,7 +65,7 @@ if (!empty($query)) {
                     <?php while ($usuario = mysqli_fetch_assoc($resultado_usuarios)): ?>
                         <li class="list-group-item">
                             <a href="perfil.php?id=<?php echo $usuario['usuario_id']; ?>">
-                                <?php echo htmlspecialchars($usuario['nombre']) . ' ' . htmlspecialchars($usuario['apellido']); ?>
+                                <?php echo htmlspecialchars($usuario['usuario_nombre']) . ' ' . htmlspecialchars($usuario['usuario_apellido']); ?>
                             </a>
                         </li>
                     <?php endwhile; ?>
