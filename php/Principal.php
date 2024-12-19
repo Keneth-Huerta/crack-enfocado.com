@@ -17,8 +17,7 @@
         /* Ajuste de las imágenes dentro del carrusel */
         .carousel-item img {
             width: 100%; /* Asegura que la imagen ocupe todo el ancho del contenedor */
-            height: auto; /* Mantiene la proporción de la imagen */
-            max-height: 400px; /* Limita la altura máxima de la imagen */
+            height: 300px; /* Altura fija para todas las imágenes */
             object-fit: cover; /* Asegura que la imagen cubra el área sin distorsionarse */
         }
 
