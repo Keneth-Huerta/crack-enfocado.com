@@ -181,6 +181,19 @@
                     console.error('Error al procesar el like:', error);
                 });
         }
+
+        // Evento para detectar cuando el usuario toca el botón
+        document.querySelectorAll('.btn-like').forEach(button => {
+            button.addEventListener('touchstart', function() {
+                // Escalar el botón cuando el usuario toca
+                button.style.transform = 'scale(1.2)';
+            });
+
+            button.addEventListener('touchend', function() {
+                // Volver al tamaño normal cuando el usuario suelta el toque
+                button.style.transform = 'scale(1)';
+            });
+        });
     </script>
 
 </body>
