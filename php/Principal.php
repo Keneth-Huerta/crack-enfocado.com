@@ -15,8 +15,6 @@
 
 <body>
     <?php include('header.php'); ?>
-
-    <?php include('publicaciones.php'); ?>
     
 
         <div class="row mt-4">
