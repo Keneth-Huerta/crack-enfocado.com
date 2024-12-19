@@ -29,7 +29,7 @@ if (isset($_SESSION['usuario_id'])) {
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <!-- Incluir solo el archivo CSS de tu proyecto -->
-<link rel="stylesheet" href="../css/publicaciones.css">
+<link rel="stylesheet" href="../CSS/estilosprin.css">
 
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
@@ -63,7 +63,7 @@ if (isset($_SESSION['usuario_id'])) {
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="perfil.php">
-                        <img src="<?php echo htmlspecialchars($foto_perfil); ?>" alt="Foto de perfil" class="rounded-circle" style="width: 50px; height: 50px;">
+                        <img src="<?php echo htmlspecialchars($foto_perfil); ?>" alt="Foto de perfil" class="rounded-circle" style="width: 40px; height: 40px;">
                     </a>
                 </li>
 
