@@ -11,11 +11,63 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="../CSS/estilosprin.css">
+
+    <!-- Estilos adicionales para mejorar la apariencia del carrusel -->
+    <style>
+        /* Ajuste de las imágenes dentro del carrusel */
+        .carousel-item img {
+            width: 100%; /* Asegura que la imagen ocupe todo el ancho del contenedor */
+            height: auto; /* Mantiene la proporción de la imagen */
+            max-height: 400px; /* Limita la altura máxima de la imagen */
+            object-fit: cover; /* Asegura que la imagen cubra el área sin distorsionarse */
+        }
+
+        /* Personalización de las flechas del carrusel */
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            background-color: black; /* Cambia las flechas a color negro */
+            border-radius: 50%; /* Hace las flechas redondas */
+        }
+
+        .carousel-control-prev-icon:hover,
+        .carousel-control-next-icon:hover {
+            background-color: #333; /* Cambia el color al pasar el ratón por encima */
+        }
+
+        /* Estilo adicional para el contenido del carrusel */
+        .carousel-item h5 {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .carousel-item p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .carousel-item .row {
+            padding: 10px;
+        }
+
+        /* Botón para ver todas las publicaciones */
+        .btn-ver-todas {
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            padding: 10px 20px;
+            text-decoration: none;
+        }
+
+        .btn-ver-todas:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 
 <body>
     <?php include('header.php'); ?>
-
+    
     <div class="container mt-4">
         <!-- Carrusel de Publicaciones Recientes -->
         <h2>Publicaciones Recientes</h2>
@@ -70,7 +122,7 @@
 
         <!-- Enlace a la página de todas las publicaciones -->
         <div class="text-center mt-4">
-            <a href="publicaciones.php" class="btn btn-primary">Ver todas las publicaciones</a>
+            <a href="publicaciones.php" class="btn-ver-todas">Ver todas las publicaciones</a>
         </div>
 
         <div class="row mt-4">
