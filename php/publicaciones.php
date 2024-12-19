@@ -14,7 +14,7 @@
             display: none;
             margin-top: 10px;
         }
-        
+
         /* Estilo para ocultar la lista de comentarios */
         .comments-list {
             display: none;
@@ -91,9 +91,10 @@
                 $liked_class = (mysqli_num_rows($like_check) > 0) ? 'liked' : '';
 
                 // Botón para dar like (AJAX)
-                echo '<button type="button" class="btn-like ' . $liked_class . '" onclick="toggleLike(' . $publicacion['id_publicacion'] . ')">';
+                echo '<button type="button" class="btn-like ' . $liked_class . '" data-id="' . $publicacion['id_publicacion'] . '" onclick="toggleLike(' . $publicacion['id_publicacion'] . ')">';
                 echo '<i class="fas fa-heart"></i> Me gusta (<span id="like-count-' . $publicacion['id_publicacion'] . '">' . $publicacion['cantidad_megusta'] . '</span>)';
                 echo '</button>';
+
 
                 // Botón de "Comentar"
                 echo '<button type="button" onclick="toggleCommentSection(' . $publicacion['id_publicacion'] . ')">Comentar</button>';
@@ -156,29 +157,29 @@
 
         // Función para manejar el like con AJAX
         function toggleLike(publicacion_id) {
-            var likeButton = document.querySelector('.btn-like');
+            var likeButton = document.querySelector('.btn-like[data-id="' + publicacion_id + '"]');
             var likeCount = document.getElementById('like-count-' + publicacion_id);
 
             var formData = new FormData();
             formData.append('id_publicacion', publicacion_id);
 
             fetch('dar_like.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.text())
-            .then(data => {
-                if (data.includes('Like agregado!')) {
-                    likeCount.textContent = parseInt(likeCount.textContent) + 1;
-                    likeButton.classList.add('liked');
-                } else if (data.includes('Like eliminado!')) {
-                    likeCount.textContent = parseInt(likeCount.textContent) - 1;
-                    likeButton.classList.remove('liked');
-                }
-            })
-            .catch(error => {
-                console.error('Error al procesar el like:', error);
-            });
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(data => {
+                    if (data.includes('Like agregado!')) {
+                        likeCount.textContent = parseInt(likeCount.textContent) + 1;
+                        likeButton.classList.add('liked');
+                    } else if (data.includes('Like eliminado!')) {
+                        likeCount.textContent = parseInt(likeCount.textContent) - 1;
+                        likeButton.classList.remove('liked');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al procesar el like:', error);
+                });
         }
     </script>
 
