@@ -43,9 +43,9 @@ while ($publicacion = $publicaciones->fetch_assoc()) {
     echo '<div class="comments-section">';
 
     // Obtener los comentarios de esta publicación
-    $stmt_comentarios = $enlace->prepare("SELECT comentarios.*, usuarios.nombre AS usuario_nombre 
+    $stmt_comentarios = $enlace->prepare("SELECT comentarios.*, perfiles.nombre AS usuario_nombre 
                                           FROM comentarios 
-                                          JOIN usuarios ON comentarios.usuario_id = usuarios.id_usuario 
+                                          JOIN usuarios ON comentarios.usuario_id = perfiles.id_usuario 
                                           WHERE comentarios.publicacion_id = ? 
                                           ORDER BY comentarios.fecha_comentario ASC");
     $stmt_comentarios->bind_param("i", $publicacion['id_publicacion']);
