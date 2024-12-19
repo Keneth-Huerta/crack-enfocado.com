@@ -25,7 +25,7 @@
 </head>
 
 <body>
-<?php include('header.php'); ?>
+    <?php include('header.php'); ?>
     <div class="navbar">Publicaciones</div>
 
     <div class="container">
@@ -171,10 +171,10 @@
                 .then(data => {
                     if (data.includes('Like agregado!')) {
                         likeCount.textContent = parseInt(likeCount.textContent) + 1;
-                        likeButton.classList.add('liked');
+                        likeButton.classList.add('liked'); // Clase 'liked' añadida para cambio de color y tamaño
                     } else if (data.includes('Like eliminado!')) {
                         likeCount.textContent = parseInt(likeCount.textContent) - 1;
-                        likeButton.classList.remove('liked');
+                        likeButton.classList.remove('liked'); // Clase 'liked' eliminada
                     }
                 })
                 .catch(error => {
