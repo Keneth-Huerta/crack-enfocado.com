@@ -28,7 +28,7 @@ $publicaciones = [];
 
 // Obtener perfil con manejo de errores mejorado
 try {
-    $query = "SELECT * FROM perfiles WHERE usuario_id = ?";
+    $query = "SELECT * FROM perfiles JOIN usuarios on perfiles.usuario_id=usuarios.id WHERE usuario_id = ?";
     if ($stmt = mysqli_prepare($enlace, $query)) {
         mysqli_stmt_bind_param($stmt, "i", $usuario_id);
 
@@ -47,6 +47,7 @@ try {
 }
 
 // Valores predeterminados seguros
+$username=$perfil['username'] ?? 'Usuario no disponible';
 $nombre = $perfil['nombre'] ?? 'Nombre no disponible';
 $apellido = $perfil['apellido'] ?? 'Apellido no disponible';
 $carrera = $perfil['carrera'] ?? 'Carrera no disponible';
@@ -85,7 +86,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Perfil - <?php echo htmlspecialchars($nombre); ?></title>
+    <title>Mi Perfil - <?php echo htmlspecialchars($username); ?></title>
     <link rel="stylesheet" href="../css/misestilos.css">
     <!-- Font Awesome para iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -100,7 +101,7 @@ try {
             <img src="<?php echo htmlspecialchars($foto_portada); ?>" alt="Foto de portada">
         </div>
 
-        <h1 class="titulo-perfil">Bienvenido, <?php echo htmlspecialchars($nombre); ?></h1>
+        <h1 class="titulo-perfil">Bienvenido, <?php echo htmlspecialchars($username); ?></h1>
 
         <div class="perfil-info">
             <!-- Foto de perfil -->
