@@ -200,4 +200,32 @@ button:hover {
         font-size: 14px;
         padding: 8px 15px;
     }
+}.btn-like {
+    background-color: #ffffff;
+    color: #666666;
+    border: 1px solid #dddddd;
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.2s;
+}
+
+.btn-like i {
+    font-size: 16px;
+}
+
+.btn-like.liked {
+    background-color: #e8f5e9;
+    color: #4CAF50;
+    border-color: #4CAF50;
+}
+
+.btn-like:not(.liked):hover {
+    background-color: #ffe5e5;
+    color: #ff4444;
+    border-color: #ff4444;
 }
