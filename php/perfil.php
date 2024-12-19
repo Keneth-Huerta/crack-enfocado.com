@@ -118,9 +118,8 @@ try {
                 <p><strong>Información Extra:</strong> <?php echo nl2br(htmlspecialchars($informacion_extra)); ?></p>
             </div>
         </div>
-        <?php if ($usuario_id == $_SESSION['usuario_id']): ?>
-            if ($usuario_id == $_SESSION['usuario_id']) {
-            echo '
+        <?php if ($perfil['usuario_id'] == $_SESSION['usuario_id']): ?>
+
             <link rel="stylesheet" href="../css/misestilos.css">
             <div class="acciones">
                 <a href="editar_perfil.php" class="btn-editar">
@@ -162,7 +161,7 @@ try {
                             </div>
 
                             <!-- Botones de acción -->
-                            <?php if ($usuario_id == $_SESSION['usuario_id']): ?>
+                            <?php if ($perfil['usuario_id'] == $_SESSION['usuario_id']): ?>
                                 <div class="acciones-publicacion">
                                     <a href="editar_publicacion.php?id=<?php echo $publicacion['id_publicacion']; ?>"
                                         class="btn-editar">
