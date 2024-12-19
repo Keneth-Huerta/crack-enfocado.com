@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/publicaciones.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- CDN de Font Awesome -->
     <title>Publicaciones</title>
 </head>
-
 <body>
 
     <div class="navbar">Publicaciones</div>
@@ -39,23 +38,20 @@
         <div class="publicaciones">
             <?php
             // Consulta para obtener las publicaciones con los datos del usuario
-            $stmt = $pdo->query("SELECT publicaciones.*, perfiles.foto_perfil, perfiles.nombre FROM publicaciones 
+            $stmt = $enlace->query("SELECT publicaciones.*, perfiles.foto_perfil, perfiles.nombre FROM publicaciones 
                                  JOIN perfiles ON publicaciones.usuario_id = perfiles.usuario_id
                                  ORDER BY publicaciones.fecha_publicada DESC");
 
             // Bucle while para mostrar publicaciones
-            while ($publicacion = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            while ($publicacion = $stmt->fetch_assoc()) {
                 echo '<div class="post-item">';
 
                 // Contenido del encabezado (usuario y avatar)
                 echo '<div class="post-header">';
-
-                // Mostrar la imagen de perfil del usuario
                 $foto_perfil = $publicacion['foto_perfil'] ? htmlspecialchars($publicacion['foto_perfil']) : 'default-profile.jpg';
                 echo '<div class="post-avatar">';
                 echo '<img src="' . $foto_perfil . '" alt="Foto de perfil" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">';
                 echo '</div>';
-
                 echo '<div class="post-username">' . htmlspecialchars($publicacion['nombre'] ?? 'Usuario Anónimo') . '</div>';
                 echo '</div>';
 
@@ -67,26 +63,23 @@
                     echo '<img src="' . htmlspecialchars($publicacion['imagen']) . '" alt="Imagen de publicación">';
                 }
 
-                // Mostrar la cantidad de "me gusta"
-                echo '<div class="post-likes">';
-                echo '<span>' . htmlspecialchars($publicacion['cantidad_megusta']) . ' Me gusta</span>';
-                echo '</div>';
-
-                // Botón para dar "me gusta"
-                if (isset($_SESSION['usuario_id'])) {
-                    // Dentro del bucle que muestra las publicaciones
-                    echo '<form action="dar_like.php" method="post">';
-                    echo '<input type="hidden" name="id_publicacion" value="' . $publicacion['id_publicacion'] . '">';
-                    echo '<button type="submit">Me gusta (' . $publicacion['cantidad_megusta'] . ')</button>';
-                    echo '</form>';
-                }
+                // Verificar si el usuario ya dio "Me gusta"
+                $stmt_likes = $enlace->prepare("SELECT * FROM likes WHERE usuario_id = ? AND id_publicacion = ?");
+                $stmt_likes->bind_param("ii", $_SESSION['usuario_id'], $publicacion['id_publicacion']);
+                $stmt_likes->execute();
+                $like_check = $stmt_likes->get_result();
+                $liked_class = (mysqli_num_rows($like_check) > 0) ? 'liked' : '';
 
                 // Acciones (botones)
-                echo '<div class="post-actions">';
+                echo '<form action="dar_like.php" method="post">';
+                echo '<input type="hidden" name="id_publicacion" value="' . $publicacion['id_publicacion'] . '">';
+                echo '<button type="submit" class="btn-like ' . $liked_class . '">';
+                echo '<i class="fas fa-heart"></i> Me gusta (' . $publicacion['cantidad_megusta'] . ')';
+                echo '</button>';
+                echo '</form>';
+
                 echo '<button>Comentar</button>';
                 echo '<button>Compartir</button>';
-                echo '</div>';
-
                 echo '</div>';
             }
             ?>
@@ -94,5 +87,4 @@
 
     </div>
 </body>
-
 </html>

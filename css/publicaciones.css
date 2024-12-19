@@ -136,3 +136,39 @@ body {
     text-decoration: underline;
 }
 
+/* Estilo básico para el botón */
+.btn-like {
+    background-color: #ff5c5c; /* Rojo claro */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 25px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Efecto hover */
+.btn-like:hover {
+    background-color: #ff3838; /* Rojo oscuro */
+    transform: scale(1.1);
+}
+
+/* Efecto cuando el usuario da like */
+.btn-like.liked {
+    background-color: #4CAF50; /* Verde */
+}
+
+.btn-like i {
+    margin-right: 10px; /* Espacio entre el icono y el texto */
+}
+
+/* Estilo para los botones en dispositivos pequeños */
+@media (max-width: 600px) {
+    .btn-like {
+        font-size: 14px;
+        padding: 8px 15px;
+    }
+}
