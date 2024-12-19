@@ -5,27 +5,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CECyT 3 - Página Principal</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Estilos adicionales para mejorar la apariencia del carrusel -->
     <style>
         /* Ajuste de las imágenes dentro del carrusel */
         .carousel-item img {
-            width: 100%; /* Asegura que la imagen ocupe todo el ancho del contenedor */
-            height: 300px; /* Altura fija para todas las imágenes */
-            object-fit: cover; /* Asegura que la imagen cubra el área sin distorsionarse */
+            width: 100%;
+            /* Asegura que la imagen ocupe todo el ancho del contenedor */
+            height: 300px;
+            /* Altura fija para todas las imágenes */
+            object-fit: cover;
+            /* Asegura que la imagen cubra el área sin distorsionarse */
         }
 
         /* Personalización de las flechas del carrusel */
         .carousel-control-prev-icon,
         .carousel-control-next-icon {
-            background-color: black; /* Cambia las flechas a color negro */
-            border-radius: 50%; /* Hace las flechas redondas */
+            background-color: black;
+            /* Cambia las flechas a color negro */
+            border-radius: 50%;
+            /* Hace las flechas redondas */
             padding: 3px;
         }
 
         .carousel-control-prev-icon:hover,
         .carousel-control-next-icon:hover {
-            background-color: #333; /* Cambia el color al pasar el ratón por encima */
+            background-color: #333;
+            /* Cambia el color al pasar el ratón por encima */
         }
 
         /* Estilo adicional para el contenido del carrusel */
@@ -62,14 +70,14 @@
 
 <body>
     <?php include('header.php'); ?>
-    
+
     <div class="container mt-4">
         <!-- Carrusel de Publicaciones Recientes -->
         <h2>Publicaciones Recientes</h2>
         <div id="publicacionesCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <?php
-                
+
                 if (session_status() == PHP_SESSION_NONE) {
                     session_start();
                 }
@@ -153,7 +161,9 @@
         </div>
     </footer>
 
-    
+
+<!-- Bootstrap JS (incluye Popper.js) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
