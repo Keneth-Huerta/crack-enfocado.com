@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <?php include('header.php'); ?>
 
-    <div class="editar-publicacion">
+    <div class="container">
         <h1>Editar Publicación</h1>
 
         <?php if (isset($error)): ?>
