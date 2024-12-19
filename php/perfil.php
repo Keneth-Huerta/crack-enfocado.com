@@ -144,7 +144,7 @@ try {
                                     <div class="publicacion-imagen">
                                         <img src="<?php echo htmlspecialchars($publicacion['imagen']); ?>"
                                             alt="Imagen de publicación"
-                                            loading="lazy">
+                                            >
                                     </div>
                                 <?php endif; ?>
                             </div>
