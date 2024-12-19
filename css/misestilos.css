@@ -220,4 +220,56 @@ body {
 
 .perfil-container {
     animation: fadeIn 0.5s ease-out;
+}.publicaciones-usuario {
+    margin-top: 20px;
+}
+
+.lista-publicaciones {
+    margin-top: 10px;
+}
+
+.publicacion-item {
+    background-color: #f4f4f4;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+}
+
+.publicacion-item img {
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+}
+
+.publicacion-item small {
+    color: #888;
+}
+.acciones-publicacion {
+    margin-top: 10px;
+}
+
+.btn-editar, .btn-eliminar {
+    padding: 5px 15px;
+    margin-right: 10px;
+    text-decoration: none;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.btn-editar {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.btn-editar:hover {
+    background-color: #45a049;
+}
+
+.btn-eliminar {
+    background-color: #f44336;
+    color: white;
+}
+
+.btn-eliminar:hover {
+    background-color: #e53935;
 }

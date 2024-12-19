@@ -103,11 +103,19 @@ $publicaciones_result = mysqli_stmt_get_result($stmt_publicaciones);
                 <div class="lista-publicaciones">
                     <?php while ($publicacion = mysqli_fetch_assoc($publicaciones_result)): ?>
                         <div class="publicacion-item">
+                            <!-- Fecha de la publicación -->
+                            <p><strong>Publicado el:</strong> <?php echo htmlspecialchars($publicacion['fecha_publicada']); ?></p>
+                            <!-- Contenido de la publicación -->
                             <p><?php echo nl2br(htmlspecialchars($publicacion['contenido'])); ?></p>
                             <?php if (!empty($publicacion['imagen'])): ?>
                                 <img src="<?php echo htmlspecialchars($publicacion['imagen']); ?>" alt="Imagen de publicación">
                             <?php endif; ?>
-                            <p><small>Publicado el: <?php echo htmlspecialchars($publicacion['fecha_publicada']); ?></small></p>
+                            
+                            <!-- Botones de edición y eliminación -->
+                            <div class="acciones-publicacion">
+                                <a href="editar_publicacion.php?id=<?php echo $publicacion['id']; ?>" class="btn-editar">Editar</a>
+                                <a href="eliminar_publicacion.php?id=<?php echo $publicacion['id']; ?>" class="btn-eliminar" onclick="return confirm('¿Estás seguro de que deseas eliminar esta publicación?')">Eliminar</a>
+                            </div>
                         </div>
                     <?php endwhile; ?>
                 </div>
@@ -116,6 +124,7 @@ $publicaciones_result = mysqli_stmt_get_result($stmt_publicaciones);
             <?php endif; ?>
         </div>
     </div>
+
 </body>
 
 </html>
