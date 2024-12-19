@@ -43,9 +43,7 @@ if (isset($_SESSION['usuario_id'])) {
                 <li class="nav-item">
                     <a class="nav-link" href="ventas.php">Ventas</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/ayuda-estudiantil">Ayuda Estudiantil</a>
-                </li>
+
                 <li class="nav-item">
                     <a class="nav-link" href="perfil.php">
                         <img src="<?php echo htmlspecialchars($foto_perfil); ?>" alt="Foto de perfil" style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;">
