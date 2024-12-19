@@ -26,6 +26,30 @@ if (isset($_GET['usuario_id'])) {
 $perfil = [];
 $publicaciones = [];
 
+
+// Obtener publicaciones del usuario con manejo de errores
+try {
+    $publicaciones_query = "SELECT id_publicacion, contenido, imagen, fecha_publicada, usuario_id 
+                            FROM publicaciones 
+                            WHERE usuario_id = ? 
+                            ORDER BY fecha_publicada DESC";
+
+    if ($stmt_publicaciones = mysqli_prepare($enlace, $publicaciones_query)) {
+        mysqli_stmt_bind_param($stmt_publicaciones, "i", $usuario_id);
+
+        if (!mysqli_stmt_execute($stmt_publicaciones)) {
+            throw new Exception("Error al obtener publicaciones: " . mysqli_error($enlace));
+        }
+
+        $publicaciones_result = mysqli_stmt_get_result($stmt_publicaciones);
+    } else {
+        throw new Exception("Error en la preparación de la consulta de publicaciones");
+    }
+} catch (Exception $e) {
+    error_log($e->getMessage());
+    $publicaciones_result = false;
+}
+
 // Obtener perfil con manejo de errores mejorado
 try {
     $query = "SELECT * FROM perfiles JOIN usuarios on perfiles.usuario_id = usuarios.id WHERE usuario_id = ?";
@@ -58,28 +82,6 @@ echo $perfil['foto_perfil'];
 echo $perfil['usuario_id'];
 $foto_portada = $perfil['foto_portada'] ?? '../media/user_icon_001.jpg';
 
-// Obtener publicaciones del usuario con manejo de errores
-try {
-    $publicaciones_query = "SELECT id_publicacion, contenido, imagen, fecha_publicada, usuario_id 
-                            FROM publicaciones 
-                            WHERE usuario_id = ? 
-                            ORDER BY fecha_publicada DESC";
-
-    if ($stmt_publicaciones = mysqli_prepare($enlace, $publicaciones_query)) {
-        mysqli_stmt_bind_param($stmt_publicaciones, "i", $usuario_id);
-
-        if (!mysqli_stmt_execute($stmt_publicaciones)) {
-            throw new Exception("Error al obtener publicaciones: " . mysqli_error($enlace));
-        }
-
-        $publicaciones_result = mysqli_stmt_get_result($stmt_publicaciones);
-    } else {
-        throw new Exception("Error en la preparación de la consulta de publicaciones");
-    }
-} catch (Exception $e) {
-    error_log($e->getMessage());
-    $publicaciones_result = false;
-}
 ?>
 
 <!DOCTYPE html>
@@ -118,7 +120,8 @@ try {
                 <p><strong>Información Extra:</strong> <?php echo nl2br(htmlspecialchars($informacion_extra)); ?></p>
             </div>
         </div>
-        <?php if ($usuario_id == $_SESSION['usuario_id']): echo $usuario_id;echo $_SESSION['usuario_id']; ?>
+        <?php if ($usuario_id == $_SESSION['usuario_id']): echo $usuario_id;
+            echo $_SESSION['usuario_id']; ?>
 
             <link rel="stylesheet" href="../css/misestilos.css">
             <div class="acciones">
