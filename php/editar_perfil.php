@@ -27,17 +27,36 @@ mysqli_stmt_close($stmt);
 if ($perfil === null) {
     // Si no existe el perfil, inicializamos los valores en blanco
     $perfil = [
-        'nombre' => null,
-        'apellido' => null,
-        'carrera' => null,
-        'semestre' => null,
-        'foto_perfil' => null,
-        'foto_portada' => null,
-        'informacion_extra' => null
+        'usuario_id' => $usuario_id, // Agregamos el usuario_id
+        'nombre' => '',
+        'apellido' => '',
+        'carrera' => '',
+        'semestre' => '',
+        'foto_perfil' => '',
+        'foto_portada' => '',
+        'informacion_extra' => '',
+        'telefono' => ''
     ];
 }
 
 // Procesar los cambios del formulario
+// Corrección en la verificación del perfil existente
+if ($perfil === null) {
+    // Si no existe el perfil, inicializamos los valores en blanco
+    $perfil = [
+        'usuario_id' => $usuario_id, // Agregamos el usuario_id
+        'nombre' => '',
+        'apellido' => '',
+        'carrera' => '',
+        'semestre' => '',
+        'foto_perfil' => '',
+        'foto_portada' => '',
+        'informacion_extra' => '',
+        'telefono' => ''
+    ];
+}
+
+// En la parte del procesamiento del formulario POST
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nombre = $_POST['nombre'];
     $apellido = $_POST['apellido'];
@@ -46,65 +65,94 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $informacion_extra = $_POST['informacion_extra'];
     $telefono = $_POST['telefono'];
 
-    // Subir las nuevas fotos si se han proporcionado
-    $foto_perfil = $_FILES['foto_perfil']['name'] ? '../media/uploads/' . basename($_FILES['foto_perfil']['name']) : $perfil['foto_perfil'];
-    $foto_portada = $_FILES['foto_portada']['name'] ? '../media/uploads/' . basename($_FILES['foto_portada']['name']) : $perfil['foto_portada'];
+    // Manejo de las fotos
+    $foto_perfil = $perfil['foto_perfil']; // Valor por defecto
+    $foto_portada = $perfil['foto_portada']; // Valor por defecto
 
-    // Guardar las nuevas imágenes si se han cargado
-    if ($_FILES['foto_perfil']['name']) {
+    // Procesar foto de perfil si se subió una nueva
+    if (!empty($_FILES['foto_perfil']['name'])) {
+        $foto_perfil = '../media/uploads/' . basename($_FILES['foto_perfil']['name']);
         move_uploaded_file($_FILES['foto_perfil']['tmp_name'], $foto_perfil);
     }
-    if ($_FILES['foto_portada']['name']) {
+
+    // Procesar foto de portada si se subió una nueva
+    if (!empty($_FILES['foto_portada']['name'])) {
+        $foto_portada = '../media/uploads/' . basename($_FILES['foto_portada']['name']);
         move_uploaded_file($_FILES['foto_portada']['tmp_name'], $foto_portada);
     }
 
-    // Si el perfil ya existe, actualizamos
-    if ($perfil['usuario_id'] != '') {
-        $update_query = "UPDATE perfiles SET nombre = ?, apellido = ?, carrera = ?, semestre = ?, 
-                     foto_perfil = ?, foto_portada = ?, informacion_extra = ?, telefono = ? 
-                     WHERE usuario_id = ?";
-        $stmt = mysqli_prepare($enlace, $update_query);
-        mysqli_stmt_bind_param(
-            $stmt,
-            "sssissssi",
-            $nombre,
-            $apellido,
-            $carrera,
-            $semestre,
-            $foto_perfil,
-            $foto_portada,
-            $informacion_extra,
-            $telefono,
-            $usuario_id
-        );
-        mysqli_stmt_execute($stmt);
-        mysqli_stmt_close($stmt);
-    } else {
-        // Insertar un nuevo perfil si no existe
-        $insert_query = "INSERT INTO perfiles (usuario_id, nombre, apellido, carrera, semestre, 
-                     foto_perfil, foto_portada, informacion_extra, telefono) 
-                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        $stmt = mysqli_prepare($enlace, $insert_query);
-        mysqli_stmt_bind_param(
-            $stmt,
-            "isssssss",
-            $usuario_id,
-            $nombre,
-            $apellido,
-            $carrera,
-            $semestre,
-            $foto_perfil,
-            $foto_portada,
-            $informacion_extra,
-            $telefono
-        );
-        mysqli_stmt_execute($stmt);
-        mysqli_stmt_close($stmt);
-    }
+    try {
+        // Verificar si el perfil existe
+        $check_query = "SELECT usuario_id FROM perfiles WHERE usuario_id = ?";
+        $check_stmt = mysqli_prepare($enlace, $check_query);
+        mysqli_stmt_bind_param($check_stmt, "i", $usuario_id);
+        mysqli_stmt_execute($check_stmt);
+        $check_result = mysqli_stmt_get_result($check_stmt);
+        $exists = mysqli_fetch_assoc($check_result);
+        mysqli_stmt_close($check_stmt);
 
-    // Redirigir al perfil después de guardar cambios
-    header("Location: perfil.php");
-    exit();
+        if ($exists) {
+            // Actualizar perfil existente
+            $update_query = "UPDATE perfiles SET 
+                           nombre = ?, 
+                           apellido = ?, 
+                           carrera = ?, 
+                           semestre = ?, 
+                           foto_perfil = ?, 
+                           foto_portada = ?, 
+                           informacion_extra = ?,
+                           telefono = ? 
+                           WHERE usuario_id = ?";
+            
+            $stmt = mysqli_prepare($enlace, $update_query);
+            mysqli_stmt_bind_param(
+                $stmt,
+                "sssissssi",
+                $nombre,
+                $apellido,
+                $carrera,
+                $semestre,
+                $foto_perfil,
+                $foto_portada,
+                $informacion_extra,
+                $telefono,
+                $usuario_id
+            );
+        } else {
+            // Insertar nuevo perfil
+            $insert_query = "INSERT INTO perfiles 
+                           (usuario_id, nombre, apellido, carrera, semestre, 
+                            foto_perfil, foto_portada, informacion_extra, telefono) 
+                           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            
+            $stmt = mysqli_prepare($enlace, $insert_query);
+            mysqli_stmt_bind_param(
+                $stmt,
+                "ississsss",
+                $usuario_id,
+                $nombre,
+                $apellido,
+                $carrera,
+                $semestre,
+                $foto_perfil,
+                $foto_portada,
+                $informacion_extra,
+                $telefono
+            );
+        }
+
+        if (!mysqli_stmt_execute($stmt)) {
+            throw new Exception("Error al guardar los cambios: " . mysqli_error($enlace));
+        }
+        mysqli_stmt_close($stmt);
+
+        // Redirigir al perfil después de guardar cambios
+        header("Location: perfil.php");
+        exit();
+    } catch (Exception $e) {
+        echo "Error: " . $e->getMessage();
+        exit();
+    }
 }
 ?>
 
