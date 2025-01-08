@@ -259,77 +259,77 @@ $current_page = basename($_SERVER['PHP_SELF']);
                         <i class="bi bi-shop"></i> Ventas
                     </a>
                 </li>
-
+                <!--
                 <?php if (isset($_SESSION['usuario_id'])): ?>
-                    <!-- Notificaciones -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-bell"></i>
-                            <?php if (count($notificaciones) > 0): ?>
-                                <span class="notification-badge"><?php echo count($notificaciones); ?></span>
-                            <?php endif; ?>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end">
-                            <?php if (empty($notificaciones)): ?>
-                                <div class="dropdown-item text-muted">No hay notificaciones nuevas</div>
-                            <?php else: ?>
-                                <?php foreach ($notificaciones as $notif): ?>
-                                    <form method="POST" class="notification-form">
-                                        <input type="hidden" name="notification_id" value="<?php echo $notif['id']; ?>">
-                                        <input type="hidden" name="mark_read" value="1">
-                                        <button type="submit" class="dropdown-item notification-item">
-                                            <small class="text-muted"><?php echo date('d/m/Y H:i', strtotime($notif['fecha'])); ?></small>
-                                            <div><?php echo htmlspecialchars($notif['mensaje']); ?></div>
-                                        </button>
-                                    </form>
+                     Notificaciones 
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-bell"></i>
+                        <?php if (count($notificaciones) > 0): ?>
+                            <span class="notification-badge"><?php echo count($notificaciones); ?></span>
+                        <?php endif; ?>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end">
+                        <?php if (empty($notificaciones)): ?>
+                            <div class="dropdown-item text-muted">No hay notificaciones nuevas</div>
+                        <?php else: ?>
+                            <?php foreach ($notificaciones as $notif): ?>
+                                <form method="POST" class="notification-form">
+                                    <input type="hidden" name="notification_id" value="<?php echo $notif['id']; ?>">
+                                    <input type="hidden" name="mark_read" value="1">
+                                    <button type="submit" class="dropdown-item notification-item">
+                                        <small class="text-muted"><?php echo date('d/m/Y H:i', strtotime($notif['fecha'])); ?></small>
+                                        <div><?php echo htmlspecialchars($notif['mensaje']); ?></div>
+                                    </button>
+                                </form>
 
-                                <?php endforeach; ?>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item text-center" href="/php/notificaciones.php">Ver todas</a>
-                            <?php endif; ?>
-                        </div>
-                    </li>
+                            <?php endforeach; ?>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item text-center" href="/php/notificaciones.php">Ver todas</a>
+                        <?php endif; ?>
+                    </div>
+                </li>-->
 
-                    <!-- Perfil -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <!-- Perfil -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="<?php echo htmlspecialchars($foto_perfil); ?>"
+                            alt="Perfil"
+                            class="rounded-circle"
+                            style="width: 40px; height: 40px; object-fit: cover;">
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end profile-dropdown">
+                        <div class="profile-header">
                             <img src="<?php echo htmlspecialchars($foto_perfil); ?>"
                                 alt="Perfil"
-                                class="rounded-circle"
-                                style="width: 40px; height: 40px; object-fit: cover;">
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end profile-dropdown">
-                            <div class="profile-header">
-                                <img src="<?php echo htmlspecialchars($foto_perfil); ?>"
-                                    alt="Perfil"
-                                    class="rounded-circle me-2"
-                                    style="width: 50px; height: 50px; object-fit: cover;">
-                                <div>
-                                    <h6 class="mb-0"><?php echo $nombre_usuario; ?></h6>
-                                    <small class="text-muted"><?php echo htmlspecialchars($perfil['correo']); ?></small>
-                                </div>
+                                class="rounded-circle me-2"
+                                style="width: 50px; height: 50px; object-fit: cover;">
+                            <div>
+                                <h6 class="mb-0"><?php echo $nombre_usuario; ?></h6>
+                                <small class="text-muted"><?php echo htmlspecialchars($perfil['correo']); ?></small>
                             </div>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="/php/perfil.php">
-                                <i class="bi bi-person me-2"></i> Mi Perfil
-                            </a>
-                            <a class="dropdown-item" href="/php/editar_perfil.php">
-                                <i class="bi bi-gear me-2"></i> Configuración
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item text-danger" href="/php/logout.php">
-                                <i class="bi bi-box-arrow-right me-2"></i> Cerrar Sesión
-                            </a>
                         </div>
-                    </li>
-                <?php else: ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/index.php">Iniciar Sesión</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/crearCuenta.html">Registrarse</a>
-                    </li>
-                <?php endif; ?>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/php/perfil.php">
+                            <i class="bi bi-person me-2"></i> Mi Perfil
+                        </a>
+                        <a class="dropdown-item" href="/php/editar_perfil.php">
+                            <i class="bi bi-gear me-2"></i> Configuración
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item text-danger" href="/php/logout.php">
+                            <i class="bi bi-box-arrow-right me-2"></i> Cerrar Sesión
+                        </a>
+                    </div>
+                </li>
+            <?php else: ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="/index.php">Iniciar Sesión</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/crearCuenta.html">Registrarse</a>
+                </li>
+            <?php endif; ?>
             </ul>
         </div>
     </div>
