@@ -28,21 +28,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $precio = floatval($_POST['precio']);
     $descripcion = htmlspecialchars($_POST['descripcion']);
 
-    // Cargar imagen como BLOB
+    // Cargar imagen correctamente
     if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
         $imagen = file_get_contents($_FILES['imagen']['tmp_name']);
     } else {
         $imagen = null;
     }
 
-    // Insertar los datos incluyendo la imagen como BLOB
+    // Insertar los datos incluyendo la imagen como BLOB usando tipo string
     $stmt = $enlace->prepare("INSERT INTO productos (producto, precio, descripcion, imagen, usuario_id) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("sdssb", $producto, $precio, $descripcion, $imagen, $perfil_id);
+    $stmt->bind_param("sdssi", $producto, $precio, $descripcion, $imagen, $perfil_id);
 
     if ($stmt->execute()) {
         echo "<p>Venta agregada con éxito.</p>";
     } else {
-        echo "<p>Error al agregar la venta: " . $stmt->error . "</p>";
+        echo "<p>Error al agregar la venta: " . htmlspecialchars($stmt->error) . "</p>";
     }
     $stmt->close();
 }
@@ -138,7 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <?php
             // Mostrar productos con las imágenes almacenadas en BLOB
             $sql = "SELECT p.*, pr.foto_perfil FROM productos p 
-                    JOIN perfiles pr ON p.usuario_id = pr.id";
+                    JOIN perfiles pr ON p.usuario_id = pr.usuario_id";
             $result = mysqli_query($enlace, $sql);
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
@@ -147,7 +147,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     echo '<div class="user-profile"><img src="data:image/jpeg;base64,' . base64_encode($row['foto_perfil']) . '" alt="Foto de perfil"></div>';
 
                     // Mostrar la imagen del producto almacenada como BLOB
-                    echo '<img src="data:image/jpeg;base64,' . base64_encode($row['imagen']) . '" alt="Imagen del producto">';
+                    if ($row['imagen']) {
+                        echo '<img src="data:image/jpeg;base64,' . base64_encode($row['imagen']) . '" alt="Imagen del producto">';
+                    } else {
+                        echo '<img src="default.jpg" alt="Imagen no disponible">';
+                    }
 
                     echo "<h3>" . htmlspecialchars($row['producto']) . "</h3>";
                     echo "<p><strong>Precio:</strong> $" . htmlspecialchars($row['precio']) . "</p>";
