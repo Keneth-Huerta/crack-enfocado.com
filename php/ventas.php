@@ -432,8 +432,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <div class="producto-item">
                         <!-- Información del usuario -->
                         <div class="user-profile">
-                            <img src="<?php echo !empty($row['foto_perfil']) ? htmlspecialchars($row['foto_perfil']) : '../media/user.png'; ?>"
-                                alt="Foto de perfil">
+                            <a href="perfil.php?usuario_id=<?php echo $row['usuario_id']; ?>">
+                                <img src="<?php echo !empty($row['foto_perfil']) ? htmlspecialchars($row['foto_perfil']) : '../media/user.png'; ?>"
+                                    alt="Foto de perfil">
+                            </a>
                             <p><?php echo htmlspecialchars($row['nombre'] . ' ' . $row['apellido']); ?></p>
                         </div>
 
