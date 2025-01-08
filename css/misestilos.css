@@ -511,4 +511,187 @@ body {
     display: flex;
     gap: 10px;
     margin-top: 15px;
+}/* Estilos para la pestaña de productos en el perfil */
+.tab-pane {
+    padding: 20px 0;
+}
+
+.productos-usuario {
+    padding: 20px;
+}
+
+.productos-usuario h2 {
+    color: var(--color-principal);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.sin-productos {
+    text-align: center;
+    padding: 30px;
+    background: #f9f9f9;
+    border-radius: 12px;
+    margin: 20px 0;
+}
+
+.sin-productos p {
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.sin-productos .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background-color: var(--color-principal);
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.lista-productos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 10px;
+}
+
+.producto-item {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.producto-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.producto-imagen {
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+    position: relative;
+}
+
+.producto-imagen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.producto-item:hover .producto-imagen img {
+    transform: scale(1.05);
+}
+
+.producto-detalles {
+    padding: 20px;
+}
+
+.producto-detalles h3 {
+    color: var(--color-texto);
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.precio {
+    font-size: 1.4em;
+    color: var(--color-principal);
+    font-weight: bold;
+    margin: 10px 0;
+    display: block;
+}
+
+.descripcion {
+    color: var(--color-texto-claro);
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.acciones-producto {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.acciones-producto .btn {
+    flex: 1;
+    padding: 8px 15px;
+    font-size: 0.9em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.acciones-producto .btn-primary {
+    background-color: var(--color-principal);
+    border: none;
+}
+
+.acciones-producto .btn-danger {
+    background-color: var(--color-error);
+    border: none;
+}
+
+.acciones-producto .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos para los tabs */
+.nav-tabs {
+    border-bottom: 2px solid var(--color-borde);
+    margin-bottom: 20px;
+}
+
+.nav-tabs .nav-link {
+    color: var(--color-texto-claro);
+    border: none;
+    padding: 12px 20px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.nav-tabs .nav-link.active {
+    color: var(--color-principal);
+    border-bottom: 3px solid var(--color-principal);
+    background: transparent;
+}
+
+.nav-tabs .nav-link:hover {
+    border-color: transparent;
+    color: var(--color-principal);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .lista-productos {
+        grid-template-columns: 1fr;
+    }
+
+    .producto-imagen {
+        height: 200px;
+    }
+
+    .producto-detalles {
+        padding: 15px;
+    }
+
+    .acciones-producto {
+        flex-direction: column;
+    }
+
+    .nav-tabs .nav-link {
+        padding: 8px 15px;
+        font-size: 0.9em;
+    }
 }
