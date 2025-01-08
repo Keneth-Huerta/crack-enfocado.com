@@ -217,20 +217,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
     }
 
 
-    .comment-form {
-        display: none;
-        margin-top: 10px;
-    }
-
-    .comments-list {
-        display: none;
-        margin-top: 10px;
-    }
-
-
-    .container {
-        margin-top: 70px;
-    }
 </style>
 
 <!-- Navbar -->
