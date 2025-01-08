@@ -264,7 +264,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 <?php if (isset($_SESSION['usuario_id'])): ?>
                     <!-- Notificaciones -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link" href="#" data-bs-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
                             <i class="bi bi-bell"></i>
                             <?php if (count($notificaciones) > 0): ?>
                                 <span class="notification-badge"><?php echo count($notificaciones); ?></span>
@@ -292,7 +292,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
                     <!-- Perfil -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link" href="#" data-bs-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
                             <img src="<?php echo htmlspecialchars($foto_perfil); ?>"
                                 alt="Perfil"
                                 class="rounded-circle"
