@@ -1,6 +1,7 @@
+<?php
 // Conexión a la base de datos
 if (session_status() == PHP_SESSION_NONE) {
-session_start();
+    session_start();
 }
 $servidor = "localhost";
 $usuarioBD = "u288355303_Keneth";
@@ -9,39 +10,38 @@ $baseDeDatos = "u288355303_Usuarios";
 
 $enlace = mysqli_connect($servidor, $usuarioBD, $claveBD, $baseDeDatos);
 if (!$enlace) {
-die("Conexión fallida: " . mysqli_connect_error());
+    die("Conexión fallida: " . mysqli_connect_error());
 }
 
 // Procesar formulario de ventas
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-$producto = htmlspecialchars($_POST['producto']);
-$precio = floatval($_POST['precio']);
-$descripcion = htmlspecialchars($_POST['descripcion']);
-$usuario_id = $_SESSION['usuario_id']; // Usar el ID del usuario en sesión
+    $producto = htmlspecialchars($_POST['producto']);
+    $precio = floatval($_POST['precio']);
+    $descripcion = htmlspecialchars($_POST['descripcion']);
+    $usuario_id = $_SESSION['usuario_id']; // Usar el ID del usuario en sesión
 
-// Manejo de la imagen
-if(isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
-$imagen = file_get_contents($_FILES['imagen']['tmp_name']);
+    // Manejo de la imagen
+    if(isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
+        $imagen = file_get_contents($_FILES['imagen']['tmp_name']);
+        
+        $stmt = $enlace->prepare("INSERT INTO productos (producto, precio, descripcion, imagen, usuario_id) VALUES (?, ?, ?, ?, ?)");
+        $stmt->bind_param("sdsbi", $producto, $precio, $descripcion, $imagen, $usuario_id);
+    } else {
+        $stmt = $enlace->prepare("INSERT INTO productos (producto, precio, descripcion, usuario_id) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("sdsi", $producto, $precio, $descripcion, $usuario_id);
+    }
 
-$stmt = $enlace->prepare("INSERT INTO productos (producto, precio, descripcion, imagen, usuario_id) VALUES (?, ?, ?, ?, ?)");
-$stmt->bind_param("sdsbi", $producto, $precio, $descripcion, $imagen, $usuario_id);
-} else {
-$stmt = $enlace->prepare("INSERT INTO productos (producto, precio, descripcion, usuario_id) VALUES (?, ?, ?, ?)");
-$stmt->bind_param("sdsi", $producto, $precio, $descripcion, $usuario_id);
-}
-
-if ($stmt->execute()) {
-echo "<div class='alert alert-success'>Venta agregada con éxito.</div>";
-} else {
-echo "<div class='alert alert-danger'>Error al agregar la venta: " . $stmt->error . "</div>";
-}
-$stmt->close();
+    if ($stmt->execute()) {
+        echo "<div class='alert alert-success'>Venta agregada con éxito.</div>";
+    } else {
+        echo "<div class='alert alert-danger'>Error al agregar la venta: " . $stmt->error . "</div>";
+    }
+    $stmt->close();
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -89,7 +89,7 @@ $stmt->close();
                     FROM productos p 
                     JOIN perfiles pr ON p.usuario_id = pr.usuario_id";
             $result = mysqli_query($enlace, $sql);
-
+            
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
                     echo '<div class="product-card">';
@@ -100,17 +100,17 @@ $stmt->close();
                     }
                     echo '<p>' . htmlspecialchars($row['nombre'] . ' ' . $row['apellido']) . '</p>';
                     echo '</div>';
-
+                    
                     // Mostrar imagen del producto
                     if (!empty($row['imagen'])) {
                         echo '<img src="data:image/jpeg;base64,' . base64_encode($row['imagen']) . '" 
                               alt="Imagen del producto" class="product-image">';
                     }
-
+                    
                     echo "<h3>" . htmlspecialchars($row['producto']) . "</h3>";
                     echo "<p><strong>Precio:</strong> $" . number_format($row['precio'], 2) . "</p>";
                     echo "<p><strong>Descripción:</strong> " . htmlspecialchars($row['descripcion']) . "</p>";
-
+                    
                     // Agregar botones de edición si el usuario es el propietario
                     if (isset($_SESSION['usuario_id']) && $_SESSION['usuario_id'] == $row['usuario_id']) {
                         echo '<div class="actions">';
@@ -120,7 +120,7 @@ $stmt->close();
                               onclick="return confirm(\'¿Estás seguro de que deseas eliminar este producto?\')">Eliminar</a>';
                         echo '</div>';
                     }
-
+                    
                     echo '</div>';
                 }
             } else {
@@ -133,5 +133,4 @@ $stmt->close();
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>
