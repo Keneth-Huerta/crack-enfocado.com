@@ -51,7 +51,11 @@
         <div id="publicacionesCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <?php
-                session_start();
+                // Iniciar sesión
+                if (session_status() == PHP_SESSION_NONE) {
+                    session_start();
+                }
+
                 require_once 'conexion.php';
 
                 $stmt = $enlace->prepare("SELECT imagen, contenido, fecha_publicada FROM publicaciones ORDER BY fecha_publicada DESC LIMIT 5");

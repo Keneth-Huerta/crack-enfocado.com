@@ -18,9 +18,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $producto = htmlspecialchars($_POST['producto']);
     $precio = floatval($_POST['precio']);
     $descripcion = htmlspecialchars($_POST['descripcion']);
+    $imagen = htmlspecialchars($_POST['imagen']);
 
-    $stmt = $enlace->prepare("INSERT INTO productos (producto, precio, descripcion) VALUES (?, ?, ?)");
-    $stmt->bind_param("sds", $producto, $precio, $descripcion);
+    $stmt = $enlace->prepare("INSERT INTO productos (producto, precio, descripcion, imagen) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("sdss", $producto, $precio, $descripcion, $imagen);
 
     if ($stmt->execute()) {
         echo "<p>Venta agregada con éxito.</p>";
@@ -74,6 +75,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
+        .product-card img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+
         .product-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
@@ -96,6 +102,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <label for="descripcion">Descripción:</label>
             <textarea id="descripcion" name="descripcion" required class="form-control"></textarea><br>
 
+            <label for="imagen">URL de la Imagen:</label>
+            <input type="url" id="imagen" name="imagen" required class="form-control"><br>
+
             <button type="submit" class="btn btn-primary">Agregar Venta</button>
         </form>
     </div>
@@ -111,6 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
                     echo '<div class="product-card">';
+                    echo '<img src="' . htmlspecialchars($row['imagen']) . '" alt="Imagen del producto">';
                     echo "<h3>" . htmlspecialchars($row['producto']) . "</h3>";
                     echo "<p><strong>Precio:</strong> $" . htmlspecialchars($row['precio']) . "</p>";
                     echo "<p><strong>Descripción:</strong> " . htmlspecialchars($row['descripcion']) . "</p>";
