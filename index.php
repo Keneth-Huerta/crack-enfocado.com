@@ -1,26 +1,4 @@
-/**
- * This is the main entry point for the CECyT 3 Academic Social Network website.
- * 
- * The HTML structure includes:
- * - Meta tags for SEO, Open Graph, Twitter, WhatsApp, iOS, and Android.
- * - Favicon and icons.
- * - CSS styles for the website, including Bootstrap and FontAwesome.
- * - Custom styles for the navbar, hero section, feature cards, buttons, and footer.
- * 
- * The body of the HTML includes:
- * - A responsive navbar with links to "Iniciar Sesión" and "Crear Cuenta".
- * - A hero section with a background image, title, and buttons for account creation and login.
- * - A features section highlighting the main features of the website: Academic Profiles, Material Sales, and Direct Communication.
- * - A "How to Use" section explaining the steps to use the website: Register, Complete Profile, Publish, and Connect.
- * - A footer with copyright information.
- * 
- * External resources:
- * - Bootstrap CSS and JS from CDN.
- * - FontAwesome CSS from CDN.
- * 
- * PHP functionality:
- * - Starts a session at the beginning of the script.
- */
+
 <?php
 session_start();
 
