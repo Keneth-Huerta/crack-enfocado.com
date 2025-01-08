@@ -40,6 +40,7 @@ mysqli_close($enlace);
 
 <head>
     <meta charset="UTF-8">
+    <link rel="shortcut icon" href="/media/logoweb.svg" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agregar Producto</title>
     <style>
