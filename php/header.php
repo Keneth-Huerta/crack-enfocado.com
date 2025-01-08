@@ -270,23 +270,30 @@ $current_page = basename($_SERVER['PHP_SELF']);
                                 <span class="notification-badge"><?php echo count($notificaciones); ?></span>
                             <?php endif; ?>
                         </a>
-                        <ul class="dropdown-menu">
+                        <div class="dropdown-menu dropdown-menu-end">
                             <?php if (empty($notificaciones)): ?>
-                                <li class="dropdown-item text-muted">No hay notificaciones nuevas</li>
+                                <div class="dropdown-item text-muted">No hay notificaciones nuevas</div>
                             <?php else: ?>
                                 <?php foreach ($notificaciones as $notif): ?>
-                                    <li><a class="dropdown-item" href="<?php echo $notif['enlace']; ?>">
-                                            <?php echo htmlspecialchars($notif['mensaje']); ?>
-                                        </a></li>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
-                        </ul>
-                    </li>
+                                    <form method="POST" action="/php/marcar_notificacion.php" class="notification-form">
+                                        <input type="hidden" name="notification_id" value="<?php echo $notif['id']; ?>">
+                                        <input type="hidden" name="mark_read" value="1">
+                                        <button type="submit" class="dropdown-item notification-item">
+                                            <small class="text-muted"><?php echo date('d/m/Y H:i', strtotime($notif['fecha'])); ?></small>
+                                            <div><?php echo htmlspecialchars($notif['mensaje']); ?></div>
+                                        </button>
+                                    </form>
 
+                                <?php endforeach; ?>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item text-center" href="/php/notificaciones.php">Ver todas</a>
+                            <?php endif; ?>
+                        </div>
+                    </li>
 
                     <!-- Perfil -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <img src="<?php echo htmlspecialchars($foto_perfil); ?>"
                                 alt="Perfil"
                                 class="rounded-circle"
