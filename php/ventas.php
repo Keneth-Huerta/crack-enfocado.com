@@ -419,11 +419,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         <div class="sales-cards">
             <?php
-            $sql = "SELECT p.*, u.username, pr.foto_perfil, pr.nombre, pr.apellido 
-            FROM productos p 
-            JOIN perfiles pr ON p.usuario_id = pr.usuario_id 
-            JOIN usuarios u ON p.usuario_id = u.id
-            ORDER BY p.idProducto DESC";
+            $sql = "SELECT p.*, u.username, pr.foto_perfil, pr.nombre, pr.apellido, pr.telefono 
+        FROM productos p 
+        JOIN perfiles pr ON p.usuario_id = pr.usuario_id 
+        JOIN usuarios u ON p.usuario_id = u.id
+        ORDER BY p.idProducto DESC";
             $result = mysqli_query($enlace, $sql);
 
             if (mysqli_num_rows($result) > 0) {
@@ -470,26 +470,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <?php else: ?>
                                     <!-- Botón de contacto para otros usuarios -->
                                     <?php
-                                    // Modificar la consulta SQL para incluir el teléfono
-                                    $sql_usuario = "SELECT telefono FROM perfiles WHERE usuario_id = ?";
-                                    $stmt = mysqli_prepare($enlace, $sql_usuario);
-                                    mysqli_stmt_bind_param($stmt, "i", $row['usuario_id']);
-                                    mysqli_stmt_execute($stmt);
-                                    $resultado = mysqli_stmt_get_result($stmt);
-                                    $datos_usuario = mysqli_fetch_assoc($resultado);
-                                    $telefono = $datos_usuario['telefono'] ?? '';
-
-                                    if (!empty($telefono)) {
+                                    if (!empty($row['telefono'])) {
                                         $mensaje = "Hola, me interesa tu producto: " . $row['producto'] . " por $" . $row['precio'];
                                         $mensaje_codificado = urlencode($mensaje);
-                                        $whatsapp_link = "https://wa.me/{$telefono}?text={$mensaje_codificado}";
+                                        $whatsapp_link = "https://wa.me/{$row['telefono']}?text={$mensaje_codificado}";
                                     ?>
                                         <div class="acciones-producto">
                                             <a href="<?php echo $whatsapp_link; ?>"
                                                 target="_blank"
-                                                class="btn btn-success btn-sm">
-                                                <i class="fab fa-whatsapp"></i> Contactar por WhatsApp
+                                                class="btn btn-success w-100">
+                                                <i class="fab fa-whatsapp me-2"></i> Contactar por WhatsApp
                                             </a>
+                                        </div>
+                                    <?php } else { ?>
+                                        <div class="acciones-producto">
+                                            <button class="btn btn-secondary w-100" disabled>
+                                                <i class="fas fa-phone-slash me-2"></i> Teléfono no disponible
+                                            </button>
                                         </div>
                                     <?php } ?>
                                 <?php endif; ?>
