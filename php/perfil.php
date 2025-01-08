@@ -109,6 +109,7 @@ $foto_portada = $perfil['foto_portada'] ?? '../media/user_icon_001.jpg';
     <title>Mi Perfil - <?php echo htmlspecialchars($username); ?></title>
     <link rel="stylesheet" href="../css/misestilos.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <!-- Font Awesome para iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -173,7 +174,48 @@ $foto_portada = $perfil['foto_portada'] ?? '../media/user_icon_001.jpg';
                     <div class="publicaciones-usuario">
                         <h2>Publicaciones</h2>
                         <?php if ($publicaciones_result && mysqli_num_rows($publicaciones_result) > 0): ?>
-                            <!-- Código existente de publicaciones -->
+                            <div class="lista-publicaciones">
+                                <?php while ($publicacion = mysqli_fetch_assoc($publicaciones_result)): ?>
+                                    <div class="publicacion-item">
+                                        <!-- Fecha y estadísticas -->
+                                        <div class="publicacion-meta">
+                                            <p class="fecha">
+                                                <i class="far fa-clock"></i>
+                                                <?php
+                                                $fecha = new DateTime($publicacion['fecha_publicada']);
+                                                echo $fecha->format('d/m/Y H:i');
+                                                ?>
+                                            </p>
+                                        </div>
+
+                                        <!-- Contenido de la publicación -->
+                                        <div class="publicacion-contenido">
+                                            <p><?php echo nl2br(htmlspecialchars($publicacion['contenido'])); ?></p>
+                                            <?php if (!empty($publicacion['imagen'])): ?>
+                                                <div class="publicacion-imagen">
+                                                    <img src="<?php echo htmlspecialchars($publicacion['imagen']); ?>"
+                                                        alt="Imagen de publicación">
+                                                </div>
+                                            <?php endif; ?>
+                                        </div>
+
+                                        <!-- Botones de acción -->
+                                        <?php if ($usuario_ids == $_SESSION['usuario_id']): ?>
+                                            <div class="acciones-publicacion">
+                                                <a href="editar_publicacion.php?id=<?php echo $publicacion['id_publicacion']; ?>"
+                                                    class="btn-editar">
+                                                    <i class="fas fa-edit"></i> Editar
+                                                </a>
+                                                <a href="eliminar_publicacion.php?id=<?php echo $publicacion['id_publicacion']; ?>"
+                                                    class="btn-eliminar"
+                                                    onclick="return confirm('¿Estás seguro de que deseas eliminar esta publicación?')">
+                                                    <i class="fas fa-trash-alt"></i> Eliminar
+                                                </a>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+                                <?php endwhile; ?>
+                            </div>
                         <?php else: ?>
                             <div class="sin-publicaciones">
                                 <p><i class="far fa-newspaper"></i> Aún no has realizado ninguna publicación.</p>
