@@ -90,9 +90,24 @@ require_once 'conexion.php';
             transform: translateY(-5px);
         }
 
-        .product-image {
-            height: 200px;
+        /* Contenedor para mantener relación de aspecto consistente */
+        .image-container {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%;
+            /* Relación de aspecto 16:9 */
+            overflow: hidden;
+        }
+
+        .product-image,
+        .publicacion-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
+            object-position: center;
         }
 
         .product-details {
@@ -196,11 +211,13 @@ require_once 'conexion.php';
                         <div class="carousel-item <?php echo $activeClass; ?>">
                             <div class="row g-0">
                                 <div class="col-12 col-md-4">
-                                    <?php if (!empty($publicacion['imagen'])): ?>
-                                        <img src="<?php echo htmlspecialchars($publicacion['imagen']); ?>" class="img-fluid" alt="Publicación">
-                                    <?php else: ?>
-                                        <img src="media/publicacion_default.jpg" class="img-fluid" alt="Imagen no disponible">
-                                    <?php endif; ?>
+                                    <div class="image-container">
+                                        <?php if (!empty($publicacion['imagen'])): ?>
+                                            <img src="<?php echo htmlspecialchars($publicacion['imagen']); ?>" class="publicacion-image" alt="Publicación">
+                                        <?php else: ?>
+                                            <img src="media/publicacion_default.jpg" class="publicacion-image" alt="Imagen no disponible">
+                                        <?php endif; ?>
+                                    </div>
                                 </div>
                                 <div class="col-12 col-md-8">
                                     <div class="carousel-content">
@@ -256,16 +273,18 @@ require_once 'conexion.php';
                 ?>
                         <div class="carousel-item <?php echo $activeClass; ?>">
                             <div class="">
-                                <?php for ($j = $i; $j < min($i+1, count($productos)); $j++) { ?>
+                                <?php for ($j = $i; $j < min($i + 1, count($productos)); $j++) { ?>
                                     <div class="">
                                         <div class="product-card">
-                                            <?php if (!empty($productos[$j]['imagen'])): ?>
-                                                <img src="data:image/jpeg;base64,<?php echo base64_encode($productos[$j]['imagen']); ?>"
-                                                    class="w-100 product-image" alt="Producto">
-                                            <?php else: ?>
-                                                <img src="media/producto_default.jpg"
-                                                    class="w-100 product-image" alt="Imagen no disponible">
-                                            <?php endif; ?>
+                                            <div class="image-container">
+                                                <?php if (!empty($productos[$j]['imagen'])): ?>
+                                                    <img src="data:image/jpeg;base64,<?php echo base64_encode($productos[$j]['imagen']); ?>"
+                                                        class="product-image" alt="Producto">
+                                                <?php else: ?>
+                                                    <img src="media/producto_default.jpg"
+                                                        class="product-image" alt="Imagen no disponible">
+                                                <?php endif; ?>
+                                            </div>
                                             <div class="product-details">
                                                 <h5><?php echo htmlspecialchars($productos[$j]['producto']); ?></h5>
                                                 <p class="price">$<?php echo number_format($productos[$j]['precio'], 2); ?></p>
