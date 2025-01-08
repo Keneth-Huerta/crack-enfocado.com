@@ -1,7 +1,8 @@
 /**
  * Editar perfil de usuario.
  *
- * Este script permite a los usuarios<?php
+ * Este script permite a los usuarios
+ <?php
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
