@@ -5,7 +5,7 @@ require_once 'conexion.php';
 if (isset($_GET['id'])) {
     $publicacionId = $_GET['id'];
 
-    $stmt = $enlace->prepare("SELECT * FROM publicaciones WHERE id = ?");
+    $stmt = $enlace->prepare("SELECT * FROM publicaciones WHERE id_publicacion = ?");
     $stmt->bind_param("i", $publicacionId);
     $stmt->execute();
     $resultado = $stmt->get_result();
