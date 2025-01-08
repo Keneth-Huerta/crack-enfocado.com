@@ -1,6 +1,6 @@
 <?php
 session_start();
-// Si ya hay una sesión iniciada, redirigir a la página principal
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
