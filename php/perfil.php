@@ -243,21 +243,20 @@ $foto_portada = $perfil['foto_portada'] ?? '../media/user_icon_001.jpg';
                                                 <img src="../media/producto_default.jpg" alt="Imagen no disponible">
                                             <?php endif; ?>
                                         </div>
-                                        <!-- En la sección de detalles del producto -->
                                         <div class="producto-detalles">
                                             <h3><?php echo htmlspecialchars($producto['producto']); ?></h3>
                                             <p class="precio">$<?php echo number_format($producto['precio'], 2); ?></p>
                                             <p class="descripcion"><?php echo htmlspecialchars($producto['descripcion']); ?></p>
 
                                             <?php if (isset($_SESSION['usuario_id'])): ?>
-                                                <?php if ($_SESSION['usuario_id'] == $row['usuario_id']): ?>
+                                                <?php if ($_SESSION['usuario_id'] == $producto['usuario_id']): ?>
                                                     <!-- Botones de editar y eliminar para el propietario -->
                                                     <div class="acciones-producto">
-                                                        <a href="editar_producto.php?id=<?php echo $row['idProducto']; ?>"
+                                                        <a href="editar_producto.php?id=<?php echo $producto['idProducto']; ?>"
                                                             class="btn btn-primary btn-sm">
                                                             <i class="fas fa-edit"></i> Editar
                                                         </a>
-                                                        <a href="eliminar_producto.php?id=<?php echo $row['idProducto']; ?>"
+                                                        <a href="eliminar_producto.php?id=<?php echo $producto['idProducto']; ?>"
                                                             class="btn btn-danger btn-sm"
                                                             onclick="return confirm('¿Estás seguro de eliminar este producto?')">
                                                             <i class="fas fa-trash-alt"></i> Eliminar
@@ -266,8 +265,8 @@ $foto_portada = $perfil['foto_portada'] ?? '../media/user_icon_001.jpg';
                                                 <?php else: ?>
                                                     <!-- Botón de contacto para otros usuarios -->
                                                     <?php
-                                                    $telefono = $row['telefono'];
-                                                    $mensaje = "Hola, me interesa tu producto: " . $row['producto'] . " por $" . $row['precio'];
+                                                    $telefono = $perfil['telefono'];
+                                                    $mensaje = "Hola, me interesa tu producto: " . $producto['producto'] . " por $" . $producto['precio'];
                                                     $mensaje_codificado = urlencode($mensaje);
                                                     $whatsapp_link = "https://wa.me/{$telefono}?text={$mensaje_codificado}";
                                                     ?>
