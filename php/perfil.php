@@ -1,5 +1,4 @@
 <?php
-// Iniciar sesión de forma segura
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
@@ -11,48 +10,76 @@ if (!$enlace) {
     die("Error de conexión: " . mysqli_connect_error());
 }
 
-// Verificar sesión activa
+// Verificar sesión
 if (!isset($_SESSION['usuario_id'])) {
     header("Location: login.php");
     exit();
 }
 
-// Obtener el ID del usuario
-$usuario_ids = isset($_GET['usuario_id']) && !empty($_GET['usuario_id']) ? (int) $_GET['usuario_id'] : $_SESSION['usuario_id'];
+// Obtener el ID del usuario desde la URL
+if (isset($_GET['usuario_id'])) {
+    $usuario_ids = (int) $_GET['usuario_id'];
+} else {
+    // Si no se pasa el ID de usuario, redirigir al perfil del usuario actual
+    $usuario_ids = $_SESSION['usuario_id'];
+}
+$perfil = [];
+$publicaciones = [];
 
-// Consultar el perfil del usuario con la tabla y columnas que describiste
-$query = "
-    SELECT perfiles.nombre, perfiles.apellido, perfiles.carrera, perfiles.semestre, 
-           perfiles.foto_perfil, perfiles.foto_portada, perfiles.informacion_extra, 
-           usuarios.username, usuarios.correo, usuarios.boleta, usuarios.fecha_registro
-    FROM perfiles
-    JOIN usuarios ON perfiles.usuario_id = usuarios.id
-    WHERE perfiles.usuario_id = ?";
 
-$stmt = mysqli_prepare($enlace, $query);
-mysqli_stmt_bind_param($stmt, "i", $usuario_ids);
-mysqli_stmt_execute($stmt);
-$resultado = mysqli_stmt_get_result($stmt);
-$perfil = mysqli_fetch_assoc($resultado);
+// Obtener publicaciones del usuario con manejo de errores
+try {
+    $publicaciones_query = "SELECT id_publicacion, contenido, imagen, fecha_publicada, usuario_id 
+                            FROM publicaciones 
+                            WHERE usuario_id = ? 
+                            ORDER BY fecha_publicada DESC";
 
-// Validar si el perfil fue encontrado
-if (!$perfil) {
-    die("El perfil no fue encontrado o no existe.");
+    if ($stmt_publicaciones = mysqli_prepare($enlace, $publicaciones_query)) {
+        mysqli_stmt_bind_param($stmt_publicaciones, "i", $usuario_ids);
+
+        if (!mysqli_stmt_execute($stmt_publicaciones)) {
+            throw new Exception("Error al obtener publicaciones: " . mysqli_error($enlace));
+        }
+
+        $publicaciones_result = mysqli_stmt_get_result($stmt_publicaciones);
+    } else {
+        throw new Exception("Error en la preparación de la consulta de publicaciones");
+    }
+} catch (Exception $e) {
+    error_log($e->getMessage());
+    $publicaciones_result = false;
 }
 
-// Consultar publicaciones del usuario
-$publicaciones_query = "SELECT * FROM publicaciones WHERE usuario_id = ? ORDER BY fecha_publicada DESC";
-$stmt_pub = mysqli_prepare($enlace, $publicaciones_query);
-mysqli_stmt_bind_param($stmt_pub, "i", $usuario_ids);
-mysqli_stmt_execute($stmt_pub);
-$publicaciones_result = mysqli_stmt_get_result($stmt_pub);
+// Obtener perfil con manejo de errores mejorado
+try {
+    $query = "SELECT * FROM perfiles JOIN usuarios on perfiles.usuario_id = usuarios.id WHERE usuario_id = ?";
+    if ($stmt = mysqli_prepare($enlace, $query)) {
+        mysqli_stmt_bind_param($stmt, "i", $usuario_ids);
 
-// Consultar ventas del usuario con la columna `id` corregida
-$ventas_query = "SELECT * FROM productos WHERE usuario_id = ? ORDER BY idProducto DESC";
-$stmt_ventas = mysqli_prepare($enlace, $ventas_query);
-mysqli_stmt_bind_param($stmt_ventas, "i", $usuario_ids);
-mysqli_stmt_execute($stmt_ventas);
-$ventas_result = mysqli_stmt_get_result($stmt_ventas);
+        if (mysqli_stmt_execute($stmt)) {
+            $resultado = mysqli_stmt_get_result($stmt);
+            $perfil = mysqli_fetch_assoc($resultado);
+        } else {
+            throw new Exception("Error al ejecutar la consulta: " . mysqli_error($enlace));
+        }
+        mysqli_stmt_close($stmt);
+    } else {
+        throw new Exception("Error en la preparación de la consulta: " . mysqli_error($enlace));
+    }
+} catch (Exception $e) {
+    error_log($e->getMessage());
+}
+
+// Valores predeterminados seguros
+$username = $perfil['username'] ?? 'Usuario no disponible';
+$nombre = $perfil['nombre'] ?? 'Nombre no disponible';
+$apellido = $perfil['apellido'] ?? 'Apellido no disponible';
+$carrera = $perfil['carrera'] ?? 'Carrera no disponible';
+$semestre = $perfil['semestre'] ?? 'Semestre no disponible';
+$informacion_extra = $perfil['informacion_extra'] ?? 'No disponible';
+$foto_perfils = $perfil['foto_perfil'] ?? '../media/user.png';
+$foto_portada = $perfil['foto_portada'] ?? '../media/user_icon_001.jpg';
+
 ?>
 
 <!DOCTYPE html>
@@ -61,78 +88,139 @@ $ventas_result = mysqli_stmt_get_result($stmt_ventas);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil de <?php echo htmlspecialchars($perfil['nombre'] ?? 'Usuario Desconocido') . ' ' . htmlspecialchars($perfil['apellido'] ?? ''); ?></title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Mi Perfil - <?php echo htmlspecialchars($username); ?></title>
+    <link rel="stylesheet" href="../css/misestilos.css">
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body>
     <?php include('header.php'); ?>
 
-    <div class="container mt-4">
-        <h1>Perfil de <?php echo htmlspecialchars($perfil['nombre'] ?? 'Usuario Desconocido') . ' ' . htmlspecialchars($perfil['apellido'] ?? ''); ?></h1>
+    <div class="perfil-container">
+        <!-- Foto de portada -->
+        <div class="foto-portada">
+            <img src="<?php echo htmlspecialchars($foto_portada); ?>" alt="Foto de portada">
+        </div>
 
-        <!-- Foto de perfil -->
-        <img src="<?php echo htmlspecialchars($perfil['foto_perfil'] ?? 'default.png'); ?>" alt="Foto de perfil" class="rounded-circle" width="150">
+        <h1 class="titulo-perfil"><?php echo htmlspecialchars($username); ?></h1>
 
-        <!-- Información del perfil -->
-        <p><strong>Correo:</strong> <?php echo htmlspecialchars($perfil['correo']); ?></p>
-        <p><strong>Boleta:</strong> <?php echo htmlspecialchars($perfil['boleta']); ?></p>
-        <p><strong>Carrera:</strong> <?php echo htmlspecialchars($perfil['carrera']); ?></p>
-        <p><strong>Semestre:</strong> <?php echo htmlspecialchars($perfil['semestre']); ?></p>
-        <p><strong>Fecha de Registro:</strong> <?php echo htmlspecialchars($perfil['fecha_registro']); ?></p>
+        <div class="perfil-info">
+            <!-- Foto de perfil -->
+            <div class="foto-perfil">
+                <img src="<?php echo htmlspecialchars($foto_perfils); ?>" alt="Foto de perfil">
+            </div>
 
-        <ul class="nav nav-tabs mt-4" id="perfilTabs" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="publicaciones-tab" data-bs-toggle="tab" data-bs-target="#publicaciones" type="button" role="tab">Publicaciones</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="ventas-tab" data-bs-toggle="tab" data-bs-target="#ventas" type="button" role="tab">Ventas</button>
-            </li>
-        </ul>
+            <div class="informacion">
+                <p><strong>Nombre Completo:</strong> <?php echo htmlspecialchars($nombre . ' ' . $apellido); ?></p>
+                <p><strong>Carrera:</strong> <?php echo htmlspecialchars($carrera); ?></p>
+                <p><strong>Semestre:</strong> <?php echo htmlspecialchars($semestre); ?></p>
+                <p><strong>Información Extra:</strong> <?php echo nl2br(htmlspecialchars($informacion_extra)); ?></p>
+            </div>
+        </div>
+        <?php if ($usuario_ids == $_SESSION['usuario_id']): ?>
 
-        <div class="tab-content mt-4" id="perfilTabsContent">
-            <!-- Pestaña de publicaciones -->
-            <div class="tab-pane fade show active" id="publicaciones" role="tabpanel">
-                <?php if (mysqli_num_rows($publicaciones_result) > 0): ?>
-                    <?php while ($publicacion = mysqli_fetch_assoc($publicaciones_result)) { ?>
-                        <div class="card mb-3">
-                            <div class="card-body">
+            <link rel="stylesheet" href="../css/misestilos.css">
+            <div class="acciones">
+                <a href="editar_perfil.php" class="btn-editar">
+                    <i class="fas fa-edit"></i> Editar perfil
+                </a>
+                <a href="logout.php" class="btn-cerrar-sesion">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+                </a>
+            </div>
+        <?php endif; ?>
+
+        <!-- Mostrar publicaciones del usuario -->
+        <div class="publicaciones-usuario">
+            <h2>Publicaciones</h2>
+            <?php if ($publicaciones_result && mysqli_num_rows($publicaciones_result) > 0): ?>
+                <div class="lista-publicaciones">
+                    <?php while ($publicacion = mysqli_fetch_assoc($publicaciones_result)): ?>
+                        <div class="publicacion-item">
+                            <!-- Fecha y estadísticas -->
+                            <div class="publicacion-meta">
+                                <p class="fecha">
+                                    <i class="far fa-clock"></i>
+                                    <?php
+                                    $fecha = new DateTime($publicacion['fecha_publicada']);
+                                    echo $fecha->format('d/m/Y H:i');
+                                    ?>
+                                </p>
+                            </div>
+
+                            <!-- Contenido de la publicación -->
+                            <div class="publicacion-contenido">
                                 <p><?php echo nl2br(htmlspecialchars($publicacion['contenido'])); ?></p>
+                                <?php if (!empty($publicacion['imagen'])): ?>
+                                    <div class="publicacion-imagen">
+                                        <img src="<?php echo htmlspecialchars($publicacion['imagen']); ?>"
+                                            alt="Imagen de publicación">
+                                    </div>
+                                <?php endif; ?>
                             </div>
-                        </div>
-                    <?php } ?>
-                <?php else: ?>
-                    <p>No se encontraron publicaciones.</p>
-                <?php endif; ?>
-            </div>
 
-            <!-- Pestaña de ventas -->
-            <div class="tab-pane fade" id="ventas" role="tabpanel">
-                <?php if (mysqli_num_rows($ventas_result) > 0): ?>
-                    <?php while ($venta = mysqli_fetch_assoc($ventas_result)) { ?>
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <p><strong>Producto:</strong> <?php echo htmlspecialchars($venta['producto']); ?></p>
-                                <p><strong>Precio:</strong> $<?php echo htmlspecialchars($venta['precio']); ?></p>
-                            </div>
+                            <!-- Botones de acción -->
+                            <?php if ($usuario_ids == $_SESSION['usuario_id']): ?>
+                                <div class="acciones-publicacion">
+                                    <a href="editar_publicacion.php?id=<?php echo $publicacion['id_publicacion']; ?>"
+                                        class="btn-editar">
+                                        <i class="fas fa-edit"></i> Editar
+                                    </a>
+                                    <a href="eliminar_publicacion.php?id=<?php echo $publicacion['id_publicacion']; ?>"
+                                        class="btn-eliminar"
+                                        onclick="return confirm('¿Estás seguro de que deseas eliminar esta publicación?')">
+                                        <i class="fas fa-trash-alt"></i> Eliminar
+                                    </a>
+                                </div>
+                            <?php endif; ?>
                         </div>
-                    <?php } ?>
-                <?php else: ?>
-                    <p>No se encontraron ventas.</p>
-                <?php endif; ?>
-            </div>
+                    <?php endwhile; ?>
+                </div>
+            <?php else: ?>
+                <div class="sin-publicaciones">
+                    <p><i class="far fa-newspaper"></i> Aún no has realizado ninguna publicación.</p>
+                    <a href="publicaciones.php" class="btn-nueva-publicacion">
+                        <i class="fas fa-plus"></i> Crear primera publicación
+                    </a>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 
+    <script>
+        // Script para lazy loading de imágenes
+        document.addEventListener('DOMContentLoaded', function() {
+            var lazyImages = [].slice.call(document.querySelectorAll("img[loading='lazy']"));
+
+            if ("IntersectionObserver" in window) {
+                let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            let lazyImage = entry.target;
+                            lazyImage.src = lazyImage.dataset.src;
+                            lazyImage.removeAttribute('loading');
+                            lazyImageObserver.unobserve(lazyImage);
+                        }
+                    });
+                });
+
+                lazyImages.forEach(function(lazyImage) {
+                    lazyImageObserver.observe(lazyImage);
+                });
+            }
+        });
+    </script>
+
+    <!-- Bootstrap JS (incluye Popper.js) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
 
 <?php
-// Cerrar conexiones solo si están abiertas
-if ($stmt) mysqli_stmt_close($stmt);
-if ($stmt_pub) mysqli_stmt_close($stmt_pub);
-if ($stmt_ventas) mysqli_stmt_close($stmt_ventas);
+if (isset($stmt_publicaciones)) {
+    mysqli_stmt_close($stmt_publicaciones);
+}
 mysqli_close($enlace);
 ?>
