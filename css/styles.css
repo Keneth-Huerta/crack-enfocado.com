@@ -1,4 +1,39 @@
 /* Color principal del IPN: Rojo y Blanco */
+
+/* Variables de colores definidos en :root */
+
+/* General
+    - body: Establece la fuente, color de fondo, color de texto, márgenes y relleno */
+
+/* Encabezado de la página
+    - header: Establece el color de fondo, color de texto, relleno y alineación del texto
+    - header h1: Establece el tamaño de fuente y márgenes */
+
+/* Contenedor principal del perfil
+    - perfil-container: Define el ancho máximo, márgenes, color de fondo, bordes redondeados, sombra y desbordamiento */
+
+/* Imagen de portada
+    - perfil-portada: Define la posición, ancho y alto
+    - perfil-portada img: Define el ajuste del objeto para la imagen */
+
+/* Contenedor de la información del perfil
+    - perfil-info: Define el diseño de flexbox, relleno y color de fondo
+    - perfil-img-container: Define el tamaño, bordes redondeados, desbordamiento, márgenes y borde
+    - perfil-img: Define el ajuste del objeto para la imagen
+    - perfil-details: Define el crecimiento flexible
+    - perfil-details h1: Establece el tamaño de fuente y color
+    - perfil-details p: Establece el tamaño de fuente y márgenes */
+
+/* Botones de acción
+    - perfil-actions: Define la alineación del texto y márgenes
+    - perfil-actions .btn: Define el color de fondo, color de texto, relleno, borde, bordes redondeados, decoración del texto, peso de la fuente y márgenes
+    - perfil-actions .btn:hover: Define el color de fondo y el cursor */
+
+/* Sección de actividades
+    - perfil-actividades: Define el relleno, color de fondo y borde superior
+    - perfil-actividades h2: Establece el tamaño de fuente y color
+    - perfil-actividades ul: Elimina el estilo de lista y relleno
+    - perfil-actividades li: Establece el tamaño de fuente y márgenes */
 :root {
     --color-primario: #9C1C31; /* Rojo IPN */
     --color-secundario: #FFFFFF; /* Blanco */

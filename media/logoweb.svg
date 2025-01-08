@@ -1,3 +1,16 @@
+<!--
+
+This SVG file was created using Krita and adheres to the SVG 1.0 specification.
+It defines a canvas with a width and height of 1122.48pt and a viewBox of 0 0 1122.48 1122.48.
+
+Namespaces:
+- xmlns: The default namespace for SVG elements.
+- xmlns:xlink: Namespace for XLink, used for linking within SVG files.
+- xmlns:krita: Krita-specific namespace.
+- xmlns:sodipodi: Sodipodi-specific namespace.
+
+The <defs> section contains a mask definition with the id "clipmask0". This mask is defined with objectBoundingBox units and userSpaceOnUse content units. The mask includes a <rect> element with specific transformations and styling attributes.
+-->
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
 <!-- Created using Krita: https://krita.org -->

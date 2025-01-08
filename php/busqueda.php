@@ -1,3 +1,26 @@
+/**
+ * SearchSystem class handles the search functionality for users, posts, and products.
+ * 
+ * @property mysqli $enlace The database connection link.
+ * @property string $searchTerm The search term used for querying the database.
+ * @property array $results The results of the search queries.
+ * 
+ * @method __construct(mysqli $enlace, string $searchTerm) Initializes the search system with a database connection and search term.
+ * @method void searchUsers() Executes a search query for users based on the search term.
+ * @method void searchPosts() Executes a search query for posts based on the search term.
+ * @method void searchProducts() Executes a search query for products based on the search term.
+ * @method array getResults() Returns the results of the search queries.
+ * 
+ * Usage:
+ * $searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
+ * $search = new SearchSystem($enlace, $searchTerm);
+ * if ($searchTerm != '') {
+ *     $search->searchUsers();
+ *     $search->searchPosts();
+ *     $search->searchProducts();
+ * }
+ * $resultados = $search->getResults();
+ */
 <?php
 require_once 'conexion.php';
 
