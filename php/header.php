@@ -215,8 +215,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
     .search-form .form-control:focus+.bi-search {
         color: #6c757d;
     }
-
-
 </style>
 
 <!-- Navbar -->
@@ -277,7 +275,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                                 <div class="dropdown-item text-muted">No hay notificaciones nuevas</div>
                             <?php else: ?>
                                 <?php foreach ($notificaciones as $notif): ?>
-                                    <form method="POST" class="notification-form">
+                                    <form method="POST" action="/php/marcar_notificacion.php" class="notification-form">
                                         <input type="hidden" name="notification_id" value="<?php echo $notif['id']; ?>">
                                         <input type="hidden" name="mark_read" value="1">
                                         <button type="submit" class="dropdown-item notification-item">
@@ -285,6 +283,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                                             <div><?php echo htmlspecialchars($notif['mensaje']); ?></div>
                                         </button>
                                     </form>
+
                                 <?php endforeach; ?>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item text-center" href="/php/notificaciones.php">Ver todas</a>
@@ -358,5 +357,12 @@ $current_page = basename($_SERVER['PHP_SELF']);
         searchInput.addEventListener('blur', () => {
             searchIcon.style.color = 'rgba(255, 255, 255, 0.7)';
         });
+
+        var dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'))
+        var dropdownList = dropdownElementList.map(function(dropdownToggleEl) {
+            return new bootstrap.Dropdown(dropdownToggleEl);
+        });
+
+
     });
 </script>
