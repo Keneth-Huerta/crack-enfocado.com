@@ -229,7 +229,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
-
         <!-- Contenido del navbar -->
         <div class="collapse navbar-collapse" id="navbarNav">
             <!-- Búsqueda -->
