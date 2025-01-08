@@ -9,12 +9,21 @@ function handleDatabaseError($error)
     error_log("Error de base de datos: " . $error);
     return null;
 }
+// Mejorada la función para obtener el path correcto de la foto de perfil
+function getProfilePhotoPath($profilePhoto)
+{
+    if (empty($profilePhoto)) {
+        return '/media/default-profile.jpg';
+    }
 
-// Función para obtener información del perfil
+    // Asegurarse de que la ruta comience con /
+    return strpos($profilePhoto, '/') === 0 ? $profilePhoto : '/' . $profilePhoto;
+}
+// Función mejorada para obtener información del perfil
 function getUserProfile($enlace, $usuario_id)
 {
     try {
-        $query = "SELECT p.*, u.username, u.email 
+        $query = "SELECT p.*, u.username, u.email, u.foto_perfil 
                  FROM perfiles p 
                  JOIN usuarios u ON p.usuario_id = u.id 
                  WHERE p.usuario_id = ?";
@@ -33,6 +42,10 @@ function getUserProfile($enlace, $usuario_id)
         $perfil = mysqli_fetch_assoc($resultado);
         mysqli_stmt_close($stmt);
 
+        if ($perfil) {
+            $perfil['foto_perfil'] = getProfilePhotoPath($perfil['foto_perfil']);
+        }
+
         return $perfil;
     } catch (Exception $e) {
         handleDatabaseError($e->getMessage());
@@ -40,11 +53,23 @@ function getUserProfile($enlace, $usuario_id)
     }
 }
 
-// Obtener notificaciones del usuario
+// Función mejorada para obtener notificaciones
 function getUserNotifications($enlace, $usuario_id)
 {
     try {
-        $query = "SELECT * FROM notificaciones WHERE usuario_id = ? AND leida = 0 ORDER BY fecha DESC LIMIT 5";
+        $query = "SELECT n.*, 
+                        CASE 
+                            WHEN n.tipo = 'venta' THEN CONCAT('/ventas/detalle.php?id=', n.referencia_id)
+                            WHEN n.tipo = 'mensaje' THEN CONCAT('/mensajes/ver.php?id=', n.referencia_id)
+                            WHEN n.tipo = 'perfil' THEN CONCAT('/perfil/ver.php?id=', n.referencia_id)
+                            ELSE '#'
+                        END as enlace
+                 FROM notificaciones n 
+                 WHERE n.usuario_id = ? 
+                 AND n.leida = 0 
+                 ORDER BY n.fecha DESC 
+                 LIMIT 5";
+
         $stmt = mysqli_prepare($enlace, $query);
         mysqli_stmt_bind_param($stmt, "i", $usuario_id);
         mysqli_stmt_execute($stmt);
@@ -55,6 +80,34 @@ function getUserNotifications($enlace, $usuario_id)
         return [];
     }
 }
+// Función para marcar notificaciones como leídas
+function markNotificationAsRead($enlace, $notificacion_id)
+{
+    try {
+        $query = "UPDATE notificaciones SET leida = 1 WHERE id = ? AND usuario_id = ?";
+        $stmt = mysqli_prepare($enlace, $query);
+        mysqli_stmt_bind_param($stmt, "ii", $notificacion_id, $_SESSION['usuario_id']);
+        return mysqli_stmt_execute($stmt);
+    } catch (Exception $e) {
+        handleDatabaseError($e->getMessage());
+        return false;
+    }
+}
+// Función para crear una nueva notificación
+function createNotification($enlace, $usuario_id, $tipo, $mensaje, $referencia_id = null)
+{
+    try {
+        $query = "INSERT INTO notificaciones (usuario_id, tipo, mensaje, referencia_id, fecha) 
+                 VALUES (?, ?, ?, ?, NOW())";
+        $stmt = mysqli_prepare($enlace, $query);
+        mysqli_stmt_bind_param($stmt, "issi", $usuario_id, $tipo, $mensaje, $referencia_id);
+        return mysqli_stmt_execute($stmt);
+    } catch (Exception $e) {
+        handleDatabaseError($e->getMessage());
+        return false;
+    }
+}
+
 
 require_once 'conexion.php';
 
@@ -68,14 +121,20 @@ $nombre_usuario = '';
 if (isset($_SESSION['usuario_id'])) {
     $perfil = getUserProfile($enlace, $_SESSION['usuario_id']);
     if ($perfil) {
-        $foto_perfil = !empty($perfil['foto_perfil']) ? htmlspecialchars($perfil['foto_perfil']) : '../media/default-profile.jpg';
+        $foto_perfil = $perfil['foto_perfil'];
         $nombre_usuario = htmlspecialchars($perfil['nombre'] . ' ' . $perfil['apellido']);
         $notificaciones = getUserNotifications($enlace, $_SESSION['usuario_id']);
     }
 }
-
 // Detectar la página actual para resaltar el ítem del menú
 $current_page = basename($_SERVER['PHP_SELF']);
+
+// Marcar notificación como leída si se hace clic en ella
+if (isset($_POST['mark_read']) && isset($_POST['notification_id'])) {
+    markNotificationAsRead($enlace, $_POST['notification_id']);
+    header('Location: ' . $_SERVER['HTTP_REFERER']);
+    exit;
+}
 ?>
 
 <!--- CSS --->
@@ -233,40 +292,36 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
                 <?php if (isset($_SESSION['usuario_id'])): ?>
                     <!-- Notificaciones -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link" href="#" data-bs-toggle="dropdown">
-                            <i class="bi bi-bell"></i>
-                            <?php if (count($notificaciones) > 0): ?>
-                                <span class="notification-badge"><?php echo count($notificaciones); ?></span>
-                            <?php endif; ?>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end">
-                            <?php if (empty($notificaciones)): ?>
-                                <div class="dropdown-item text-muted">No hay notificaciones nuevas</div>
-                            <?php else: ?>
-                                <?php foreach ($notificaciones as $notif): ?>
-                                    <a class="dropdown-item notification-item" href="<?php echo htmlspecialchars($notif['enlace']); ?>">
+                    <div class="dropdown-menu dropdown-menu-end">
+                        <?php if (empty($notificaciones)): ?>
+                            <div class="dropdown-item text-muted">No hay notificaciones nuevas</div>
+                        <?php else: ?>
+                            <?php foreach ($notificaciones as $notif): ?>
+                                <form method="POST" class="notification-form">
+                                    <input type="hidden" name="notification_id" value="<?php echo $notif['id']; ?>">
+                                    <input type="hidden" name="mark_read" value="1">
+                                    <button type="submit" class="dropdown-item notification-item">
                                         <small class="text-muted"><?php echo date('d/m/Y H:i', strtotime($notif['fecha'])); ?></small>
                                         <div><?php echo htmlspecialchars($notif['mensaje']); ?></div>
-                                    </a>
-                                <?php endforeach; ?>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item text-center" href="notificaciones.php">Ver todas</a>
-                            <?php endif; ?>
-                        </div>
-                    </li>
+                                    </button>
+                                </form>
+                            <?php endforeach; ?>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item text-center" href="notificaciones.php">Ver todas</a>
+                        <?php endif; ?>
+                    </div>
 
                     <!-- Perfil -->
                     <li class="nav-item dropdown">
                         <a class="nav-link" href="#" data-bs-toggle="dropdown">
-                            <img src="<?php echo $foto_perfil; ?>"
+                            <img src="<?php echo htmlspecialchars($foto_perfil); ?>"
                                 alt="Perfil"
                                 class="rounded-circle"
                                 style="width: 40px; height: 40px; object-fit: cover;">
                         </a>
                         <div class="dropdown-menu dropdown-menu-end profile-dropdown">
                             <div class="profile-header">
-                                <img src="<?php echo $foto_perfil; ?>"
+                                <img src="<?php echo htmlspecialchars($foto_perfil); ?>"
                                     alt="Perfil"
                                     class="rounded-circle me-2"
                                     style="width: 50px; height: 50px; object-fit: cover;">
@@ -276,14 +331,14 @@ $current_page = basename($_SERVER['PHP_SELF']);
                                 </div>
                             </div>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="perfil.php">
+                            <a class="dropdown-item" href="/perfil/ver.php?id=<?php echo $_SESSION['usuario_id']; ?>">
                                 <i class="bi bi-person me-2"></i> Mi Perfil
                             </a>
-                            <a class="dropdown-item" href="configuracion.php">
+                            <a class="dropdown-item" href="/configuracion/perfil.php">
                                 <i class="bi bi-gear me-2"></i> Configuración
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item text-danger" href="logout.php">
+                            <a class="dropdown-item text-danger" href="/logout.php">
                                 <i class="bi bi-box-arrow-right me-2"></i> Cerrar Sesión
                             </a>
                         </div>
