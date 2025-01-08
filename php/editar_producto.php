@@ -50,11 +50,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nuevo_producto = htmlspecialchars($_POST['producto']);
     $nuevo_precio = floatval($_POST['precio']);
     $nueva_descripcion = htmlspecialchars($_POST['descripcion']);
-    
+    $actualizar_imagen = false;
+
     if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
         $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
         $file_type = $_FILES['imagen']['type'];
-        
+
         if (!in_array($file_type, $allowed_types)) {
             $mensaje = '<div class="alert alert-danger">Solo se permiten imágenes JPG, PNG y GIF.</div>';
         } 
@@ -62,12 +63,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $mensaje = '<div class="alert alert-danger">La imagen no debe exceder 5MB.</div>';
         } 
         else {
-            $nueva_imagen = file_get_contents($_FILES['imagen']['tmp_name']);
+            $actualizar_imagen = true;
+            $nueva_imagen = addslashes(file_get_contents($_FILES['imagen']['tmp_name']));
             $query = "UPDATE productos SET producto = ?, precio = ?, descripcion = ?, imagen = ? WHERE idProducto = ? AND usuario_id = ?";
             $stmt = mysqli_prepare($enlace, $query);
-            mysqli_stmt_bind_param($stmt, "sdsbii", $nuevo_producto, $nuevo_precio, $nueva_descripcion, $nueva_imagen, $id_producto, $_SESSION['usuario_id']);
+            mysqli_stmt_send_long_data($stmt, 3, $nueva_imagen);
+            mysqli_stmt_bind_param($stmt, "sdsii", $nuevo_producto, $nuevo_precio, $nueva_descripcion, $id_producto, $_SESSION['usuario_id']);
         }
-    } else {
+    } 
+
+    if (!$actualizar_imagen) {
         $query = "UPDATE productos SET producto = ?, precio = ?, descripcion = ? WHERE idProducto = ? AND usuario_id = ?";
         $stmt = mysqli_prepare($enlace, $query);
         mysqli_stmt_bind_param($stmt, "ssdii", $nuevo_producto, $nuevo_precio, $nueva_descripcion, $id_producto, $_SESSION['usuario_id']);
@@ -75,12 +80,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (!isset($mensaje) && mysqli_stmt_execute($stmt)) {
         $mensaje = '<div class="alert alert-success">Producto actualizado exitosamente.</div>';
-        $producto['producto'] = $nuevo_producto;
-        $producto['precio'] = $nuevo_precio;
-        $producto['descripcion'] = $nueva_descripcion;
-        if (isset($nueva_imagen)) {
-            $producto['imagen'] = $nueva_imagen;
-        }
+        // Refrescar los datos del producto
+        header("Location: " . $_SERVER['PHP_SELF'] . "?id=" . $id_producto);
+        exit();
     } else if (!isset($mensaje)) {
         $mensaje = '<div class="alert alert-danger">Error al actualizar el producto: ' . mysqli_error($enlace) . '</div>';
     }
