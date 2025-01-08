@@ -14,109 +14,162 @@ require_once 'conexion.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CECyT 3 - Página Principal</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1050;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            background-color: #952F57;
-            padding: 0.5rem 1rem;
+        /* Variables de colores IPN */
+        :root {
+            --ipn-vino: #952F57;
+            --ipn-guinda: #741739;
+            --ipn-dorado: #C4983D;
+            --ipn-gris: #58595B;
+            --ipn-blanco: #FFFFFF;
         }
 
+        /* Estilos generales */
         body {
             padding-top: 70px;
+            font-family: 'Roboto', sans-serif;
+            color: var(--ipn-gris);
+        }
+
+        /* Navbar */
+        .navbar {
+            background: linear-gradient(to right, var(--ipn-guinda), var(--ipn-vino));
+            padding: 0.7rem 1rem;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar-brand img {
+            height: 50px;
         }
 
         .nav-link {
-            position: relative;
-            color: white !important;
+            color: var(--ipn-blanco) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--ipn-dorado) !important;
+            border-bottom: 2px solid var(--ipn-dorado);
+        }
+
+        /* Carousel y tarjetas */
+        .carousel {
+            background: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .carousel-item {
+            padding: 1.5rem;
+        }
+
+        .section-title {
+            color: var(--ipn-guinda);
+            font-weight: 600;
+            margin: 2rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--ipn-dorado);
+        }
+
+        .product-card {
+            background: var(--ipn-blanco);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            margin: 1rem;
+            overflow: hidden;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .product-details {
+            padding: 1.5rem;
+        }
+
+        .price {
+            color: var(--ipn-vino);
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        /* Botones */
+        .btn-ver-todas {
+            background-color: var(--ipn-vino);
+            color: var(--ipn-blanco);
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-ver-todas:hover {
+            background-color: var(--ipn-guinda);
+            color: var(--ipn-dorado);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(to right, var(--ipn-guinda), var(--ipn-vino));
+            color: var(--ipn-blanco);
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        footer h4 {
+            color: var(--ipn-dorado);
+            margin-bottom: 1rem;
+        }
+
+        footer a {
+            color: var(--ipn-dorado);
+            text-decoration: none;
             transition: color 0.3s ease;
         }
 
-        .nav-link:hover {
-            color: rgba(255, 255, 255, 0.8) !important;
+        footer a:hover {
+            color: var(--ipn-blanco);
         }
 
-        .nav-link.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background-color: white;
-        }
-
-        .profile-dropdown {
-            min-width: 250px;
-            padding: 1rem;
-        }
-
-        .profile-header {
-            display: flex;
-            align-items: center;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid #eee;
-        }
-
-        .notification-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            padding: 0.25rem 0.5rem;
-            border-radius: 50%;
-            background-color: #dc3545;
-            color: white;
-            font-size: 0.75rem;
-        }
-
-        .notification-item {
-            padding: 0.5rem;
-            border-bottom: 1px solid #eee;
-            transition: background-color 0.3s ease;
-        }
-
-        .notification-item:hover {
-            background-color: #f8f9fa;
-        }
-
-        .search-form {
-            position: relative;
-        }
-
+        /* Formulario de búsqueda */
         .search-form .form-control {
-            border-radius: 20px;
-            padding-left: 2.5rem;
             background-color: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-        }
-
-        .search-form .form-control::placeholder {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .search-form .bi-search {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: rgba(255, 255, 255, 0.7);
+            color: var(--ipn-blanco);
         }
 
         .search-form .form-control:focus {
-            background-color: white;
-            color: #212529;
+            background-color: var(--ipn-blanco);
+            color: var(--ipn-gris);
+            border-color: var(--ipn-dorado);
         }
 
-        .search-form .form-control:focus::placeholder {
-            color: #6c757d;
-        }
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar-brand img {
+                height: 40px;
+            }
 
-        .search-form .form-control:focus+.bi-search {
-            color: #6c757d;
+            .product-card {
+                margin: 0.5rem;
+            }
+
+            .carousel-item {
+                padding: 1rem;
+            }
         }
     </style>
 
