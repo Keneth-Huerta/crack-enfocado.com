@@ -1,7 +1,6 @@
-<?php
 // Conexión a la base de datos
 if (session_status() == PHP_SESSION_NONE) {
-    session_start();
+session_start();
 }
 $servidor = "localhost";
 $usuarioBD = "u288355303_Keneth";
@@ -10,30 +9,33 @@ $baseDeDatos = "u288355303_Usuarios";
 
 $enlace = mysqli_connect($servidor, $usuarioBD, $claveBD, $baseDeDatos);
 if (!$enlace) {
-    die("Conexión fallida: " . mysqli_connect_error());
+die("Conexión fallida: " . mysqli_connect_error());
 }
-
-// Obtener lista de perfiles para el formulario (solo ID y foto de perfil)
-$perfilesQuery = "SELECT id, foto_perfil FROM perfiles";
-$perfilesResult = mysqli_query($enlace, $perfilesQuery);
 
 // Procesar formulario de ventas
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $producto = htmlspecialchars($_POST['producto']);
-    $precio = floatval($_POST['precio']);
-    $descripcion = htmlspecialchars($_POST['descripcion']);
-    $imagen = htmlspecialchars($_POST['imagen']);
-    $perfil_id = intval($_POST['perfil_id']);
+$producto = htmlspecialchars($_POST['producto']);
+$precio = floatval($_POST['precio']);
+$descripcion = htmlspecialchars($_POST['descripcion']);
+$usuario_id = $_SESSION['usuario_id']; // Usar el ID del usuario en sesión
 
-    $stmt = $enlace->prepare("INSERT INTO productos (producto, precio, descripcion, imagen, usuario_id) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("sdssi", $producto, $precio, $descripcion, $imagen, $perfil_id);
+// Manejo de la imagen
+if(isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
+$imagen = file_get_contents($_FILES['imagen']['tmp_name']);
 
-    if ($stmt->execute()) {
-        echo "<p>Venta agregada con éxito.</p>";
-    } else {
-        echo "<p>Error al agregar la venta.</p>";
-    }
-    $stmt->close();
+$stmt = $enlace->prepare("INSERT INTO productos (producto, precio, descripcion, imagen, usuario_id) VALUES (?, ?, ?, ?, ?)");
+$stmt->bind_param("sdsbi", $producto, $precio, $descripcion, $imagen, $usuario_id);
+} else {
+$stmt = $enlace->prepare("INSERT INTO productos (producto, precio, descripcion, usuario_id) VALUES (?, ?, ?, ?)");
+$stmt->bind_param("sdsi", $producto, $precio, $descripcion, $usuario_id);
+}
+
+if ($stmt->execute()) {
+echo "<div class='alert alert-success'>Venta agregada con éxito.</div>";
+} else {
+echo "<div class='alert alert-danger'>Error al agregar la venta: " . $stmt->error . "</div>";
+}
+$stmt->close();
 }
 ?>
 
@@ -46,53 +48,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>Sección de Ventas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-        }
-
-        .form-container,
-        .sales-section {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .sales-cards {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-        }
-
-        .product-card {
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 15px;
-            text-align: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .product-card img {
-            max-width: 100%;
-            border-radius: 8px;
-        }
-
-        .user-profile img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        /* ... Mantener los estilos anteriores ... */
+        .product-image {
+            max-width: 300px;
+            max-height: 300px;
+            object-fit: contain;
         }
     </style>
 </head>
@@ -102,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <div class="form-container">
         <h2>Agregar Nueva Venta</h2>
-        <form action="ventas.php" method="POST">
+        <form action="ventas.php" method="POST" enctype="multipart/form-data">
             <label for="producto">Producto:</label>
             <input type="text" id="producto" name="producto" required class="form-control"><br>
 
@@ -112,15 +72,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <label for="descripcion">Descripción:</label>
             <textarea id="descripcion" name="descripcion" required class="form-control"></textarea><br>
 
-            <label for="imagen">URL de la Imagen:</label>
-            <input type="url" id="imagen" name="imagen" required class="form-control"><br>
-
-            <label for="perfil_id">Selecciona el Perfil:</label>
-            <select id="perfil_id" name="perfil_id" required class="form-control">
-                <?php while ($perfil = mysqli_fetch_assoc($perfilesResult)) {
-                    echo '<option value="' . $perfil['id'] . '">Perfil ID: ' . $perfil['id'] . '</option>';
-                } ?>
-            </select><br>
+            <label for="imagen">Imagen del Producto:</label>
+            <input type="file" id="imagen" name="imagen" accept="image/*" class="form-control"><br>
 
             <button type="submit" class="btn btn-primary">Agregar Venta</button>
         </form>
@@ -132,16 +85,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         <div class="sales-cards">
             <?php
-            $sql = "SELECT p.*, pr.foto_perfil FROM productos p JOIN perfiles pr ON p.usuario_id = pr.id";
+            $sql = "SELECT p.*, pr.foto_perfil, pr.nombre, pr.apellido 
+                    FROM productos p 
+                    JOIN perfiles pr ON p.usuario_id = pr.usuario_id";
             $result = mysqli_query($enlace, $sql);
+
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
                     echo '<div class="product-card">';
-                    echo '<div class="user-profile"><img src="' . htmlspecialchars($row['foto_perfil']) . '" alt="Foto de perfil"></div>';
-                    echo '<img src="' . htmlspecialchars($row['imagen']) . '" alt="Imagen del producto">';
+                    // Mostrar información del usuario
+                    echo '<div class="user-profile">';
+                    if (!empty($row['foto_perfil'])) {
+                        echo '<img src="' . htmlspecialchars($row['foto_perfil']) . '" alt="Foto de perfil">';
+                    }
+                    echo '<p>' . htmlspecialchars($row['nombre'] . ' ' . $row['apellido']) . '</p>';
+                    echo '</div>';
+
+                    // Mostrar imagen del producto
+                    if (!empty($row['imagen'])) {
+                        echo '<img src="data:image/jpeg;base64,' . base64_encode($row['imagen']) . '" 
+                              alt="Imagen del producto" class="product-image">';
+                    }
+
                     echo "<h3>" . htmlspecialchars($row['producto']) . "</h3>";
-                    echo "<p><strong>Precio:</strong> $" . htmlspecialchars($row['precio']) . "</p>";
+                    echo "<p><strong>Precio:</strong> $" . number_format($row['precio'], 2) . "</p>";
                     echo "<p><strong>Descripción:</strong> " . htmlspecialchars($row['descripcion']) . "</p>";
+
+                    // Agregar botones de edición si el usuario es el propietario
+                    if (isset($_SESSION['usuario_id']) && $_SESSION['usuario_id'] == $row['usuario_id']) {
+                        echo '<div class="actions">';
+                        echo '<a href="editar_producto.php?id=' . $row['idProducto'] . '" class="btn btn-primary btn-sm">Editar</a> ';
+                        echo '<a href="eliminar_producto.php?id=' . $row['idProducto'] . '" 
+                              class="btn btn-danger btn-sm" 
+                              onclick="return confirm(\'¿Estás seguro de que deseas eliminar este producto?\')">Eliminar</a>';
+                        echo '</div>';
+                    }
+
                     echo '</div>';
                 }
             } else {
