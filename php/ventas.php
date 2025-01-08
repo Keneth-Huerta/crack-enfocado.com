@@ -209,6 +209,69 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             color: #721c24;
         }
 
+        .producto-imagen {
+            width: 100%;
+            max-height: 300px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            border-radius: 8px;
+        }
+
+        .producto-imagen img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .lista-productos {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .producto-item {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .producto-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .producto-detalles {
+            padding: 15px;
+        }
+
+        .producto-detalles h3 {
+            margin: 0 0 10px 0;
+            color: #333;
+            font-size: 1.2em;
+        }
+
+        .precio {
+            font-size: 1.25em;
+            color: #2ecc71;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .descripcion {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .acciones-producto {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
         @media (max-width: 768px) {
             .sales-cards {
                 grid-template-columns: 1fr;
@@ -223,6 +286,53 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             .product-image {
                 height: 150px;
             }
+        }
+
+        .producto-imagen {
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .producto-imagen img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .user-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            object-fit: cover;
+        }
+
+        .producto-detalles {
+            padding: 15px;
+            background-color: white;
+            border-radius: 8px;
+        }
+
+        .producto-item {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
     </style>
 </head>
@@ -264,48 +374,62 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         <div class="sales-cards">
             <?php
-            $sql = "SELECT p.*, pr.foto_perfil, pr.nombre, pr.apellido 
-                    FROM productos p 
-                    JOIN perfiles pr ON p.usuario_id = pr.usuario_id";
+            $sql = "SELECT p.*, u.username, pr.foto_perfil, pr.nombre, pr.apellido 
+            FROM productos p 
+            JOIN perfiles pr ON p.usuario_id = pr.usuario_id 
+            JOIN usuarios u ON p.usuario_id = u.id
+            ORDER BY p.idProducto DESC";
             $result = mysqli_query($enlace, $sql);
 
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
-                    echo '<div class="product-card">';
-                    // Mostrar información del usuario
-                    echo '<div class="user-profile">';
-                    if (!empty($row['foto_perfil'])) {
-                        echo '<img src="' . htmlspecialchars($row['foto_perfil']) . '" alt="Foto de perfil">';
-                    }
-                    echo '<p>' . htmlspecialchars($row['nombre'] . ' ' . $row['apellido']) . '</p>';
-                    echo '</div>';
+            ?>
+                    <div class="producto-item">
+                        <!-- Información del usuario -->
+                        <div class="user-profile">
+                            <img src="<?php echo !empty($row['foto_perfil']) ? htmlspecialchars($row['foto_perfil']) : '../media/user.png'; ?>"
+                                alt="Foto de perfil">
+                            <p><?php echo htmlspecialchars($row['nombre'] . ' ' . $row['apellido']); ?></p>
+                        </div>
 
-                    // Mostrar imagen del producto
-                    if (!empty($row['imagen'])) {
-                        echo '<img src="data:image/jpeg;base64,' . base64_encode($row['imagen']) . '" 
-                              alt="Imagen del producto" class="product-image">';
-                    }
+                        <!-- Imagen del producto -->
+                        <div class="producto-imagen">
+                            <?php if (!empty($row['imagen'])): ?>
+                                <img src="data:image/jpeg;base64,<?php echo base64_encode($row['imagen']); ?>"
+                                    alt="Imagen del producto">
+                            <?php else: ?>
+                                <img src="../media/producto_default.jpg" alt="Imagen no disponible">
+                            <?php endif; ?>
+                        </div>
 
-                    echo "<h3>" . htmlspecialchars($row['producto']) . "</h3>";
-                    echo "<p><strong>Precio:</strong> $" . number_format($row['precio'], 2) . "</p>";
-                    echo "<p><strong>Descripción:</strong> " . htmlspecialchars($row['descripcion']) . "</p>";
+                        <!-- Detalles del producto -->
+                        <div class="producto-detalles">
+                            <h3><?php echo htmlspecialchars($row['producto']); ?></h3>
+                            <p class="precio">$<?php echo number_format($row['precio'], 2); ?></p>
+                            <p class="descripcion"><?php echo htmlspecialchars($row['descripcion']); ?></p>
 
-                    // Agregar botones de edición si el usuario es el propietario
-                    if (isset($_SESSION['usuario_id']) && $_SESSION['usuario_id'] == $row['usuario_id']) {
-                        echo '<div class="actions">';
-                        echo '<a href="editar_producto.php?id=' . $row['idProducto'] . '" class="btn btn-primary btn-sm">Editar</a> ';
-                        echo '<a href="eliminar_producto.php?id=' . $row['idProducto'] . '" 
-                              class="btn btn-danger btn-sm" 
-                              onclick="return confirm(\'¿Estás seguro de que deseas eliminar este producto?\')">Eliminar</a>';
-                        echo '</div>';
-                    }
-
-                    echo '</div>';
+                            <?php if (isset($_SESSION['usuario_id']) && $_SESSION['usuario_id'] == $row['usuario_id']): ?>
+                                <div class="acciones-producto">
+                                    <a href="editar_producto.php?id=<?php echo $row['idProducto']; ?>"
+                                        class="btn btn-primary btn-sm">
+                                        <i class="fas fa-edit"></i> Editar
+                                    </a>
+                                    <a href="eliminar_producto.php?id=<?php echo $row['idProducto']; ?>"
+                                        class="btn btn-danger btn-sm"
+                                        onclick="return confirm('¿Estás seguro de eliminar este producto?')">
+                                        <i class="fas fa-trash-alt"></i> Eliminar
+                                    </a>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+            <?php
                 }
             } else {
-                echo "<p>No se encontraron productos.</p>";
+                echo '<div class="sin-productos">
+                <p><i class="fas fa-store"></i> No hay productos disponibles.</p>
+              </div>';
             }
-            mysqli_close($enlace);
             ?>
         </div>
     </section>

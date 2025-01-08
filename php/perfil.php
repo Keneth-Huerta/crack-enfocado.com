@@ -235,12 +235,14 @@ $foto_portada = $perfil['foto_portada'] ?? '../media/user_icon_001.jpg';
                             <div class="lista-productos">
                                 <?php while ($producto = mysqli_fetch_assoc($productos_result)): ?>
                                     <div class="producto-item">
-                                        <?php if (!empty($producto['imagen'])): ?>
-                                            <div class="producto-imagen">
+                                        <div class="producto-imagen">
+                                            <?php if (!empty($producto['imagen'])): ?>
                                                 <img src="data:image/jpeg;base64,<?php echo base64_encode($producto['imagen']); ?>"
                                                     alt="Imagen del producto">
-                                            </div>
-                                        <?php endif; ?>
+                                            <?php else: ?>
+                                                <img src="../media/producto_default.jpg" alt="Imagen no disponible">
+                                            <?php endif; ?>
+                                        </div>
                                         <div class="producto-detalles">
                                             <h3><?php echo htmlspecialchars($producto['producto']); ?></h3>
                                             <p class="precio">$<?php echo number_format($producto['precio'], 2); ?></p>
