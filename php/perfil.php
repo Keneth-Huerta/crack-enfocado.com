@@ -158,15 +158,15 @@ $foto_portada = $perfil['foto_portada'] ?? '../media/user_icon_001.jpg';
 
         <!-- Sistema de pestañas -->
         <div class="container mt-4">
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="publicaciones-tab" data-bs-toggle="tab"
+            <ul class="nav nav-tabs" id="myTab" role="tablist" style="color: #000 !important;">
+                <li class="nav-item" role="presentation" style="color: #000 !important;">
+                    <button class="nav-link active" id="publicaciones-tab" data-bs-toggle="tab" style="color: #000 !important;"
                         data-bs-target="#publicaciones" type="button" role="tab">
                         <i class="far fa-newspaper"></i> Publicaciones
                     </button>
                 </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="productos-tab" data-bs-toggle="tab"
+                <li class="nav-item" role="presentation" style="color: #000 !important;">
+                    <button class="nav-link" id="productos-tab" data-bs-toggle="tab" style="color: #000 !important;"
                         data-bs-target="#productos" type="button" role="tab">
                         <i class="fas fa-shopping-cart"></i> Productos en Venta
                     </button>
