@@ -224,7 +224,7 @@ session_start();
     <!-- Footer -->
     <footer class="py-4">
         <div class="container text-center">
-            <p class="mb-0">© 2024 CECyT 9 "Juan de Dios Bátiz" - IPN</p>
+            <p class="mb-0">© 2024 CECyT 3 "Estanislao Ramirez Ruiz" - IPN</p>
         </div>
     </footer>
 
