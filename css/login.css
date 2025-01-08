@@ -1,3 +1,18 @@
+/*
+
+This CSS file styles the login page, providing a responsive and visually appealing design.
+
+Styles:
+- body: Sets the font, background color, and centers the content vertically and horizontally.
+- .form-container: Styles the container for the login form with padding, border radius, shadow, and responsive width.
+- h1: Styles the main heading with font size, color, and margin.
+- .form-group: Adds margin to form groups.
+- input: Styles input fields with padding, border, background color, and focus effects.
+- button: Styles the submit button with padding, background color, font size, border radius, and hover effects.
+- .login-link: Styles the container for the login link with text alignment and margin.
+- .login-link a: Styles the login link with color, text decoration, and hover effects.
+- @media (max-width: 480px): Adjusts padding and font size for smaller screens.
+*/
 /* login.css */
 
 body {

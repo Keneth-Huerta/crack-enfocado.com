@@ -1,3 +1,20 @@
+/**
+ * Establishes a connection to the MySQL database using PDO.
+ *
+ * Configuration:
+ * - Host: localhost
+ * - Database Name: u288355303_Usuarios
+ * - Username: u288355303_Keneth
+ * - Password: 1420Genio.
+ *
+ * Attributes:
+ * - Sets the PDO error mode to exception.
+ *
+ * Error Handling:
+ * - If the connection fails, it catches the PDOException and terminates the script with an error message.
+ *
+ * @throws PDOException if the connection to the database fails.
+ */
 <?php
 $host = 'localhost';
 $dbname = 'u288355303_Usuarios';

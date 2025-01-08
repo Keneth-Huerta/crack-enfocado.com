@@ -1,3 +1,32 @@
+/**
+ *
+ * Este archivo maneja las notificaciones de los usuarios en la aplicación.
+ * 
+ * Funciones:
+ * - handleDatabaseError($error): Maneja errores de base de datos y los registra en el log.
+ * - getAllUserNotifications($enlace, $usuario_id): Obtiene todas las notificaciones de un usuario específico.
+ * - markNotificationAsRead($enlace, $notificacion_id): Marca una notificación como leída.
+ * 
+ * Flujo principal:
+ * - Inicia la sesión si no está iniciada.
+ * - Requiere el archivo de conexión a la base de datos.
+ * - Obtiene el ID del usuario de la sesión.
+ * - Obtiene todas las notificaciones del usuario.
+ * - Marca una notificación como leída si se recibe el parámetro 'mark_read'.
+ * 
+ * HTML:
+ * - Muestra las notificaciones en una lista.
+ * - Permite marcar notificaciones como leídas mediante un formulario.
+ * 
+ * Meta tags:
+ * - Incluye meta tags para SEO y redes sociales.
+ * 
+ * CSS:
+ * - Incluye estilos básicos para la página y las notificaciones.
+ * 
+ * JavaScript:
+ * - Incluye Bootstrap para funcionalidades adicionales.
+ */
 <?php
 if (session_status() == PHP_SESSION_NONE) {
     session_start();

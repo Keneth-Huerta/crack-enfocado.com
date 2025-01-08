@@ -1,3 +1,42 @@
+<!-- 
+  DESCRIPTION: This HTML file represents a user registration page for creating a new account. 
+  It includes a form with fields for username, email, password, and student ID (boleta). 
+  The form uses POST method to submit data to "php/registro.php". 
+  It also includes links to external CSS and JavaScript files for styling and form validation.
+
+  STRUCTURE:
+  - <!DOCTYPE html>: Defines the document type and version of HTML.
+  - <html lang="es">: Root element with language attribute set to Spanish.
+  - <head>: Contains meta information, title, and links to stylesheets.
+    - <meta charset="UTF-8" />: Sets the character encoding.
+    - <meta name="viewport" content="width=device-width, initial-scale=1.0" />: Ensures proper rendering on mobile devices.
+    - <title>Crear cuenta</title>: Sets the title of the page.
+    - <link rel="stylesheet" href="css/misestilos2.css" />: Links to an external CSS file for styling.
+    - <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap" rel="stylesheet" />: Links to Google Fonts for custom font styles.
+  - <body>: Contains the main content of the page.
+    - <div class="form-container">: A container for the registration form.
+      - <h1>Crear cuenta</h1>: Header for the form.
+      - <form id="registration-form" action="php/registro.php" method="POST">: The registration form.
+        - <div class="form-group">: Container for each form field.
+          - <label for="username">Nombre de usuario</label>: Label for the username field.
+          - <input type="text" id="username" name="username" placeholder="Nombre de usuario" required />: Input field for username.
+        - <div class="form-group">: Container for email field.
+          - <label for="email">Correo electrónico</label>: Label for the email field.
+          - <input type="email" id="email" name="correo" placeholder="Correo electrónico" required />: Input field for email.
+        - <div class="form-group">: Container for password field.
+          - <label for="password">Contraseña</label>: Label for the password field.
+          - <input type="password" id="password" name="contraseña" placeholder="Contraseña" required />: Input field for password.
+        - <div class="form-group">: Container for student ID field.
+          - <label for="boleta">Número de boleta</label>: Label for the student ID field.
+          - <input type="text" id="boleta" name="boleta" placeholder="Número de boleta" required />: Input field for student ID.
+        - <button type="submit" name="registrar">Crear cuenta</button>: Submit button for the form.
+        - <div class="login-link">: Container for the login link.
+          - <a href="secion.php">¿Ya tienes cuenta? Inicia sesión</a>: Link to the login page.
+    - Scripts necesarios: Section for necessary scripts.
+      - <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>: Links to jQuery library.
+      - <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>: Links to jQuery validation plugin.
+      - <script src="js/funciones_Campos.js"></script>: Links to custom JavaScript file for form field functions.
+-->
 <!DOCTYPE html>
 <html lang="es">
   <head>

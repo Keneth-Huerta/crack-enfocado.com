@@ -1,3 +1,42 @@
+/**
+ * Archivo: /d:/crack-enfocado.com/php/InicioSecion.php
+ * 
+ * Este archivo maneja la lógica de inicio de sesión para los usuarios.
+ * 
+ * Configuración de la base de datos:
+ * - Servidor: localhost
+ * - Usuario de la base de datos: u288355303_Keneth
+ * - Contraseña de la base de datos: 1420Genio.
+ * - Nombre de la base de datos: u288355303_Usuarios
+ * 
+ * Funcionalidades:
+ * - Conexión a la base de datos utilizando mysqli.
+ * - Inicio de sesión de usuario mediante la validación de correo y contraseña.
+ * - Uso de sesiones para mantener al usuario autenticado.
+ * - Escapado de entradas para prevenir inyecciones SQL.
+ * - Uso de consultas preparadas para mayor seguridad.
+ * - Verificación de contraseñas cifradas utilizando password_verify.
+ * 
+ * Flujo del script:
+ * 1. Conexión a la base de datos.
+ * 2. Inicio de sesión de usuario.
+ * 3. Validación de entradas del formulario.
+ * 4. Preparación y ejecución de consulta segura.
+ * 5. Verificación de la contraseña.
+ * 6. Manejo de errores y mensajes al usuario.
+ * 7. Cierre de la conexión a la base de datos.
+ * 
+ * Mensajes de alerta:
+ * - Conexión exitosa o fallida a la base de datos.
+ * - Contraseña inválida.
+ * - Usuario inválido.
+ * - Error en el sistema.
+ * - Formulario incompleto.
+ * 
+ * Redirección:
+ * - Redirige a Principal.php si el inicio de sesión es exitoso.
+ * - Redirige a index.html en caso de errores o formulario incompleto.
+ */
 <?php
 // Configuración de la base de datos
 $servidor = "localhost";

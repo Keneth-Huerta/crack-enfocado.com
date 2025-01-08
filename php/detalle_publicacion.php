@@ -1,3 +1,24 @@
+/**
+ * This script handles the display of a specific publication and its associated comments.
+ * It includes functionalities for liking a publication and adding comments.
+ * 
+ * The script performs the following tasks:
+ * - Starts a session and includes the database connection.
+ * - Retrieves the publication ID from the GET request.
+ * - Fetches publication details, including user profile information and like count.
+ * - Checks if the current user has liked the publication.
+ * - Displays the publication details, including user information, publication content, and image.
+ * - Provides buttons for liking the publication and toggling the comments section.
+ * - Displays a form for adding comments if the user is logged in.
+ * - Fetches and displays comments associated with the publication.
+ * 
+ * The script also includes JavaScript functions for handling like toggling and comment submission.
+ * 
+ * @package    SocialNetwork
+ * @subpackage PublicationDetails
+ * @version    1.0
+ * @since      2023-10-01
+ */
 <?php
 session_start();
 require_once 'conexion.php';

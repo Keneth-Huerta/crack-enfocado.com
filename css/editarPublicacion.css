@@ -1,110 +1,143 @@
 /* Estilos generales para la página de edición de publicación */
+
+/* Estilo para el cuerpo de la página */
 body {
+    /* Fuente y color de fondo */
     font-family: 'Arial', sans-serif;
     background-color: #f4f4f9;
+    /* Margen y relleno */
     margin: 0;
     padding: 0;
+    /* Color del texto */
     color: #333;
 }
 
 /* Contenedor principal del formulario de edición */
 .container-edit-publication {
+    /* Ancho y margen automático para centrar */
     width: 90%;
     max-width: 1200px;
     margin: 0 auto;
+    /* Relleno interno */
     padding: 20px;
 }
 
 /* Título del formulario */
 .form-title {
+    /* Tamaño y color de la fuente */
     font-size: 1.8em;
     color: #5c5c5c;
+    /* Margen inferior */
     margin-bottom: 20px;
 }
 
 /* Estilo del mensaje de error */
 .error-message {
+    /* Color de fondo y del texto */
     background-color: #f8d7da;
     color: #721c24;
+    /* Relleno interno y bordes redondeados */
     padding: 15px;
     border-radius: 5px;
+    /* Margen inferior */
     margin-bottom: 20px;
 }
 
 .error-message p {
+    /* Margen cero para párrafos dentro del mensaje de error */
     margin: 0;
 }
 
 /* Estilos del formulario de edición */
 .form-container {
+    /* Color de fondo, relleno y sombra */
     background-color: white;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Bordes redondeados */
     border-radius: 8px;
 }
 
 /* Etiquetas de los campos de formulario */
 .form-label {
+    /* Tamaño y color de la fuente */
     font-size: 1.1em;
     color: #333;
+    /* Margen inferior y visualización en bloque */
     margin-bottom: 5px;
     display: block;
 }
 
 /* Área de texto (contenido de la publicación) */
 .form-textarea {
+    /* Ancho, relleno y márgenes */
     width: 100%;
     padding: 10px;
     margin: 10px 0 20px 0;
+    /* Bordes y tamaño de la fuente */
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 1em;
+    /* Redimensionamiento vertical y altura mínima */
     resize: vertical;
     min-height: 150px;
 }
 
 /* Estilo para el input tipo archivo (imagen) */
 .form-input-file {
+    /* Ancho, relleno y márgenes */
     width: 100%;
     padding: 10px;
     margin: 10px 0 20px 0;
+    /* Bordes y tamaño de la fuente */
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 1em;
+    /* Color de fondo */
     background-color: #f9f9f9;
 }
 
 /* Botones de acción (guardar, cancelar) */
 .action-buttons {
+    /* Distribución de los botones */
     display: flex;
     justify-content: space-between;
+    /* Margen superior */
     margin-top: 20px;
 }
 
 .btn-save,
 .btn-cancel {
+    /* Relleno, bordes redondeados y tamaño de la fuente */
     padding: 10px 20px;
     border-radius: 5px;
     font-size: 1.1em;
+    /* Sin subrayado en el texto */
     text-decoration: none;
 }
 
 .btn-save {
+    /* Color de fondo y del texto */
     background-color: #28a745;
     color: white;
+    /* Transición para el cambio de color de fondo */
     transition: background-color 0.3s ease;
 }
 
 .btn-save:hover {
+    /* Color de fondo al pasar el ratón */
     background-color: #218838;
 }
 
 .btn-cancel {
+    /* Color de fondo y del texto */
     background-color: #f0f0f0;
     color: #333;
+    /* Sin subrayado en el texto */
     text-decoration: none;
 }
 
 .btn-cancel:hover {
+    /* Color de fondo al pasar el ratón */
     background-color: #ddd;
 }

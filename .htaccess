@@ -1,2 +1,8 @@
+# This .htaccess file contains PHP configuration directives.
+# 
+# - `php_flag display_errors on`: This directive enables the display of PHP errors on the web page.
+# - `php_value error_reporting 32767`: This directive sets the error reporting level to display all types of errors, warnings, and notices.
+# 
+# Note: Enabling display_errors and setting a high error_reporting level is useful for debugging during development, but it is recommended to disable these settings in a production environment to avoid exposing sensitive information.
 php_flag display_errors on
 php_value error_reporting 32767

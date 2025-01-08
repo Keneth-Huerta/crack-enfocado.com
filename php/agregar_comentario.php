@@ -1,3 +1,42 @@
+/**
+ * Este script maneja la adición de comentarios a una publicación.
+ * 
+ * Requiere que el usuario esté autenticado y que se envíen los datos necesarios
+ * a través de una solicitud JSON o POST.
+ * 
+ * Dependencias:
+ * - conexion.php: Archivo que establece la conexión a la base de datos.
+ * 
+ * Flujo del script:
+ * 1. Inicia la sesión y verifica si el usuario está autenticado.
+ * 2. Obtiene los datos de la solicitud (JSON o POST).
+ * 3. Valida que los datos necesarios estén presentes.
+ * 4. Inserta el comentario en la base de datos.
+ * 5. Recupera y devuelve los datos del comentario recién creado en formato JSON.
+ * 
+ * Respuestas JSON:
+ * - Éxito: 
+ *   {
+ *     "success": true,
+ *     "comment": {
+ *       "id_comentario": int,
+ *       "usuario_id": int,
+ *       "publicacion_id": int,
+ *       "contenido": string,
+ *       "fecha_comentario": string (formato "d/m/Y H:i"),
+ *       "nombre": string,
+ *       "apellido": string,
+ *       "foto_perfil": string
+ *     }
+ *   }
+ * - Error:
+ *   {
+ *     "success": false,
+ *     "error": string
+ *   }
+ * 
+ * @throws Exception Si ocurre un error al insertar el comentario o al procesar la solicitud.
+ */
 <?php
 session_start();
 require_once 'conexion.php';

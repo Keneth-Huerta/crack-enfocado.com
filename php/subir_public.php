@@ -1,3 +1,22 @@
+/**
+ * This script handles the submission of a new post by a user.
+ * 
+ * It includes the following functionalities:
+ * - Checks if the user is logged in, if not, redirects to the login page.
+ * - Validates the request method to ensure it is a POST request.
+ * - Validates the content of the post to ensure it is not empty.
+ * - Processes an uploaded image if provided, saving it to a specified directory.
+ * - Inserts the post content and image path into the database.
+ * - Redirects the user to the main page after successful submission.
+ * 
+ * @file subir_public.php
+ * @include basePublicacion.php
+ * 
+ * @global PDO $pdo The PDO instance for database connection.
+ * @global array $_SESSION The session array containing user information.
+ * 
+ * @throws PDOException If there is an error while saving the post to the database.
+ */
 <?php
 include 'basePublicacion.php'; // Archivo de conexión a la base de datos
 if (session_status() == PHP_SESSION_NONE) {

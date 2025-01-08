@@ -1,3 +1,48 @@
+/**
+ *
+ * Este script permite a los usuarios editar una publicación existente en la base de datos.
+ * 
+ * Funcionalidades principales:
+ * - Verifica si el usuario está logueado.
+ * - Obtiene los detalles de la publicación a editar.
+ * - Maneja la edición de la publicación, incluyendo la actualización del contenido y la imagen.
+ * 
+ * Variables:
+ * - $publicacion_id: ID de la publicación a editar.
+ * - $usuario_id: ID del usuario logueado.
+ * - $publicacion: Array que contiene los detalles de la publicación.
+ * - $nuevo_contenido: Nuevo contenido de la publicación.
+ * - $nueva_imagen: Nueva imagen de la publicación.
+ * - $imagen_subida: Ruta de la imagen subida.
+ * - $error: Mensaje de error en caso de que el contenido esté vacío.
+ * 
+ * Dependencias:
+ * - conexion.php: Archivo que establece la conexión a la base de datos.
+ * - header.php: Archivo que incluye el encabezado de la página.
+ * 
+ * Métodos:
+ * - session_start(): Inicia una nueva sesión o reanuda la existente.
+ * - mysqli_prepare(): Prepara una consulta SQL para su ejecución.
+ * - mysqli_stmt_bind_param(): Vincula variables a una sentencia preparada como parámetros.
+ * - mysqli_stmt_execute(): Ejecuta una consulta preparada.
+ * - mysqli_stmt_get_result(): Obtiene el resultado de una consulta preparada.
+ * - mysqli_fetch_assoc(): Obtiene una fila de resultado como un array asociativo.
+ * - move_uploaded_file(): Mueve un archivo subido a una nueva ubicación.
+ * 
+ * Redirecciones:
+ * - Redirige a login.php si el usuario no está logueado.
+ * - Redirige a perfil.php con un mensaje de éxito después de actualizar la publicación.
+ * 
+ * HTML:
+ * - Incluye un formulario para editar el contenido y la imagen de la publicación.
+ * - Muestra mensajes de error si el contenido está vacío.
+ * 
+ * CSS:
+ * - Utiliza editarPublicacion.css para estilos específicos de la página de edición.
+ * 
+ * JavaScript:
+ * - Incluye Bootstrap JS para funcionalidades adicionales.
+ */
 <?php
 if (session_status() == PHP_SESSION_NONE) {
     session_start();

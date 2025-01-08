@@ -1,3 +1,27 @@
+/**
+ * Archivo: login.php
+ * 
+ * Este archivo maneja la lógica de inicio de sesión para los usuarios.
+ * 
+ * Configuración de la base de datos:
+ * - Servidor: localhost
+ * - Usuario de la base de datos: u288355303_Keneth
+ * - Contraseña de la base de datos: 1420Genio.
+ * - Nombre de la base de datos: u288355303_Usuarios
+ * 
+ * Funcionalidades:
+ * - Conexión a la base de datos utilizando mysqli.
+ * - Inicio de sesión de usuario.
+ * - Validación de formulario de inicio de sesión.
+ * - Verificación de credenciales de usuario (nombre de usuario o correo electrónico y contraseña).
+ * - Manejo de sesiones para usuarios autenticados.
+ * - Redirección a la página principal en caso de inicio de sesión exitoso.
+ * - Mensajes de alerta en caso de errores (usuario no encontrado, contraseña incorrecta, error en la solicitud).
+ * 
+ * Notas:
+ * - La contraseña se verifica utilizando password_verify().
+ * - Las consultas a la base de datos se realizan de manera segura utilizando consultas preparadas.
+ */
 <?php
 
 // Configuración de la base de datos

@@ -1,3 +1,29 @@
+/**
+ * This script toggles the like status of a publication for a logged-in user.
+ * 
+ * It expects the following:
+ * - A valid session with 'usuario_id' set.
+ * - A POST request with 'publicacion_id' parameter.
+ * 
+ * The script performs the following actions:
+ * 1. Checks if the user is authenticated. If not, returns a 401 error.
+ * 2. Checks if the 'publicacion_id' is provided. If not, returns a 400 error.
+ * 3. Verifies if the user has already liked the publication.
+ *    - If the like exists, it removes the like.
+ *    - If the like does not exist, it adds a like.
+ * 4. Retrieves the updated count of likes for the publication.
+ * 5. Returns a JSON response with the success status, the new like status, and the updated like count.
+ * 
+ * JSON Response:
+ * - success: boolean indicating the operation success.
+ * - liked: boolean indicating if the publication is liked by the user after the operation.
+ * - likes_count: integer representing the total number of likes for the publication.
+ * 
+ * HTTP Status Codes:
+ * - 200: Success
+ * - 400: Bad Request (if 'publicacion_id' is not provided)
+ * - 401: Unauthorized (if the user is not authenticated)
+ */
 <?php
 session_start();
 include 'conexion.php';

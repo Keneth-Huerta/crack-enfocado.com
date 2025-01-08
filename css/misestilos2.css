@@ -1,3 +1,51 @@
+/*
+
+Variables de colores IPN:
+    --ipn-vino: Color vino del IPN (#952F57)
+    --ipn-guinda: Color guinda del IPN (#741739)
+    --ipn-dorado: Color dorado del IPN (#C4983D)
+    --ipn-gris: Color gris del IPN (#58595B)
+    --ipn-blanco: Color blanco del IPN (#FFFFFF)
+
+Estilos generales:
+    *: Resetea márgenes, relleno y establece box-sizing a border-box
+    body: Establece la fuente, fondo con degradado, altura mínima, y centra el contenido
+
+Contenedor del formulario:
+    .form-container: Estilo del contenedor del formulario con fondo blanco, padding, border-radius, y sombra
+
+Título:
+    .form-container h1: Estilo del título del formulario con color guinda, centrado, margen inferior, tamaño y peso de fuente
+
+Grupos de formulario:
+    .form-group: Margen inferior para cada grupo de formulario
+    .form-group label: Estilo de las etiquetas con margen inferior, color gris, peso y tamaño de fuente
+
+Campos de entrada:
+    .form-group input: Estilo de los campos de entrada con ancho completo, padding, borde, border-radius, tamaño de fuente y transición
+    .form-group input:focus: Estilo de los campos de entrada en foco con borde dorado y sombra
+    .form-group input::placeholder: Estilo del placeholder con color gris claro
+
+Botón de envío:
+    button[type="submit"]: Estilo del botón de envío con ancho completo, padding, fondo con degradado, color blanco, sin borde, border-radius, tamaño y peso de fuente, cursor, transición y margen superior
+    button[type="submit"]:hover: Efecto hover del botón con transformación y sombra
+    button[type="submit"]:active: Efecto active del botón con transformación
+
+Enlace de inicio de sesión:
+    .login-link: Centrado y margen superior para el contenedor del enlace
+    .login-link a: Estilo del enlace con color vino, sin subrayado, tamaño de fuente y transición
+    .login-link a:hover: Efecto hover del enlace con color dorado
+
+Estilos de validación:
+    .error: Estilo del mensaje de error con color rojo, tamaño de fuente y margen superior
+    input.error: Estilo del campo de entrada con error con borde rojo
+
+Responsive:
+    @media (max-width: 576px): Estilos para pantallas pequeñas
+        .form-container: Padding reducido
+        .form-container h1: Tamaño de fuente reducido
+        .form-group input: Padding reducido
+*/
 /* Variables de colores IPN */
 :root {
     --ipn-vino: #952F57;

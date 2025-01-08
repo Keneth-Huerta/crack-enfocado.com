@@ -1,3 +1,65 @@
+/*
+
+Variables globales:
+    --primary-color: Color primario de la interfaz.
+    --primary-hover: Color primario al pasar el cursor.
+    --text-color: Color principal del texto.
+    --secondary-text: Color secundario del texto.
+    --bg-color: Color de fondo de la interfaz.
+    --border-color: Color de los bordes.
+    --shadow: Sombra utilizada en elementos.
+    --spacing: Espaciado general utilizado en la interfaz.
+    --radius: Radio de los bordes redondeados.
+
+Estilos base:
+    body: Estilos generales para el cuerpo del documento.
+
+Layout:
+    .container: Contenedor principal con ancho máximo y centrado.
+
+Navbar:
+    .navbar: Barra de navegación fija en la parte superior.
+    .snavbar: Sub-barra de navegación con estilos específicos.
+
+Formulario de publicación:
+    .post-form: Estilos para el formulario de publicación.
+    .post-form textarea: Estilos para el área de texto del formulario.
+    .post-form button: Estilos para el botón del formulario.
+    .post-form button:hover: Estilos para el botón al pasar el cursor.
+
+Publicaciones:
+    .post-item: Estilos para cada publicación.
+    .post-item:hover: Estilos para la publicación al pasar el cursor.
+    .post-header: Encabezado de la publicación con alineación y espaciado.
+    .post-avatar img: Estilos para la imagen del avatar.
+    .post-username: Estilos para el nombre de usuario.
+    .post-content: Estilos para el contenido de la publicación.
+    .post-item img: Estilos para las imágenes dentro de la publicación.
+
+Botones de interacción:
+    .like-button: Estilos para el botón de "me gusta".
+    .like-button:hover: Estilos para el botón al pasar el cursor.
+    .like-button.liked i: Estilos para el icono del botón cuando está activo.
+    .like-count: Estilos para el contador de "me gusta".
+
+Comentarios:
+    .comments-list: Lista de comentarios con fondo y espaciado.
+    .comment-item: Estilos para cada comentario.
+    .comment-item:last-child: Estilos para el último comentario.
+    .comment-form: Formulario para agregar comentarios.
+    .comment-form textarea: Estilos para el área de texto del formulario de comentarios.
+
+Alertas:
+    .alert: Estilos generales para las alertas.
+    .alert-success: Estilos para las alertas de éxito.
+    .alert-error: Estilos para las alertas de error.
+
+Responsividad:
+    @media (max-width: 768px): Estilos específicos para pantallas pequeñas.
+        .container: Ajuste de padding.
+        .post-form, .post-item: Ajuste de bordes redondeados.
+        :root: Ajuste de espaciado.
+*/
 /* Variables globales */
 :root {
     --primary-color: #952F57;

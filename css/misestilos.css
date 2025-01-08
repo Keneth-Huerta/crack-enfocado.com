@@ -1,3 +1,24 @@
+/*
+
+Description:
+This CSS file contains styles for a user profile page, including reset styles, base styles, and specific styles for profile containers, images, titles, and various sections such as profile information, actions, and publications. It also includes responsive design adjustments and animations for a smooth user experience.
+
+Sections:
+1. Variables: Defines color variables based on the identity of IPN with an extended palette.
+2. Reset and Base Styles: Applies box-sizing, margin, and padding resets.
+3. Profile Container: Styles for the main profile container, including hover effects.
+4. Cover Photo: Styles for the cover photo section with hover effects.
+5. Profile Title: Styles for the profile title.
+6. Profile Information: Styles for the profile information section, including profile picture and details.
+7. Actions Section: Styles for action buttons, including hover effects.
+8. Logout Button: Specific styles for the logout button.
+9. Responsiveness: Media queries for responsive design adjustments.
+10. Animations: Keyframes for fade-in animations.
+11. Publications: Styles for user publications, including hover effects and responsive adjustments.
+12. Product Items: Styles for product items in the profile, including hover effects and responsive adjustments.
+13. Tabs: Styles for tab navigation and content.
+14. Form Container: Styles for a form container, including input fields and submit button, with responsive adjustments and animations.
+*/
 /* Colores basados en la identidad del IPN con paleta extendida */
 :root {
     --color-principal: #9B1B30;

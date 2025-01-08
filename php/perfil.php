@@ -1,3 +1,25 @@
+/**
+ * Perfil del usuario
+ * 
+ * Este script muestra el perfil de un usuario, incluyendo sus publicaciones y productos en venta.
+ * 
+ * Funcionalidades:
+ * - Verificar la sesión del usuario.
+ * - Obtener el perfil del usuario desde la base de datos.
+ * - Obtener las publicaciones del usuario desde la base de datos.
+ * - Obtener los productos en venta del usuario desde la base de datos.
+ * - Mostrar la información del perfil del usuario.
+ * - Mostrar las publicaciones del usuario.
+ * - Mostrar los productos en venta del usuario.
+ * - Permitir al usuario editar su perfil y cerrar sesión.
+ * 
+ * @package    RedSocialAcademica
+ * @subpackage Perfil
+ * @version    1.0
+ * @author     Tu Nombre
+ * @license    MIT
+ * @link       https://steelblue-pelican-262083.hostingersite.com/
+ */
 <?php
 if (session_status() == PHP_SESSION_NONE) {
     session_start();

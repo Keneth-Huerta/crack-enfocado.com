@@ -1,3 +1,45 @@
+/**
+ * Editar Producto Script
+ * 
+ * Este script permite a los usuarios autenticados editar la información de un producto existente.
+ * 
+ * Funcionalidades:
+ * - Verifica si el usuario está logueado.
+ * - Conecta a la base de datos.
+ * - Obtiene la información actual del producto basado en el ID proporcionado.
+ * - Permite actualizar el nombre, precio, descripción y la imagen del producto.
+ * - Muestra mensajes de éxito o error según el resultado de la operación.
+ * 
+ * Variables:
+ * - $servidor: Nombre del servidor de la base de datos.
+ * - $usuarioBD: Nombre de usuario de la base de datos.
+ * - $claveBD: Contraseña de la base de datos.
+ * - $baseDeDatos: Nombre de la base de datos.
+ * - $enlace: Conexión a la base de datos.
+ * - $mensaje: Mensaje de éxito o error.
+ * - $producto: Información del producto a editar.
+ * - $id_producto: ID del producto a editar.
+ * 
+ * Métodos:
+ * - session_start(): Inicia la sesión si no está iniciada.
+ * - mysqli_connect(): Conecta a la base de datos.
+ * - mysqli_prepare(): Prepara una consulta SQL.
+ * - mysqli_stmt_bind_param(): Vincula variables a una consulta preparada.
+ * - mysqli_stmt_execute(): Ejecuta una consulta preparada.
+ * - mysqli_stmt_get_result(): Obtiene el resultado de una consulta preparada.
+ * - mysqli_fetch_assoc(): Obtiene una fila de resultados como un array asociativo.
+ * - mysqli_close(): Cierra la conexión a la base de datos.
+ * 
+ * HTML:
+ * - Muestra un formulario para editar el producto.
+ * - Incluye campos para el nombre, precio, descripción y una nueva imagen del producto.
+ * - Muestra la imagen actual del producto si existe.
+ * - Incluye botones para guardar cambios o cancelar la edición.
+ * 
+ * Dependencias:
+ * - Bootstrap 5.3.0-alpha1 para el estilo del formulario.
+ * - header.php para la cabecera de la página.
+ */
 <?php
 if (session_status() == PHP_SESSION_NONE) {
     session_start();

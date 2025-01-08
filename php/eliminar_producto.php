@@ -1,3 +1,22 @@
+/**
+ * This script handles the deletion of a product from the database.
+ * 
+ * It performs the following steps:
+ * 1. Starts a session if not already started.
+ * 2. Checks if the user is logged in; if not, redirects to the login page.
+ * 3. Connects to the MySQL database.
+ * 4. Validates the provided product ID.
+ * 5. Deletes the product from the database if it exists and belongs to the logged-in user.
+ * 6. Sets a session message indicating success or failure of the deletion.
+ * 7. Closes the database connection.
+ * 8. Redirects to the sales page.
+ * 
+ * @package    ProductManagement
+ * @subpackage DeleteProduct
+ * @author     Your Name
+ * @version    1.0
+ * @since      2023-10-01
+ */
 <?php
 if (session_status() == PHP_SESSION_NONE) {
     session_start();

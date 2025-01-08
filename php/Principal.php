@@ -1,3 +1,58 @@
+/**
+ * Principal.php
+ * 
+ * Página principal de la red social académica del CECyT 3 "Estanislao Ramírez Ruiz".
+ * Esta página muestra las publicaciones recientes y productos destacados.
+ * 
+ * @package    RedSocialAcademica
+ * @subpackage Principal
+ * @version    1.0
+ * @since      2024
+ * 
+ * @requires   conexion.php
+ * @requires   header.php
+ * 
+ * @meta       charset="UTF-8"
+ * @meta       description="Red Social Académica del CECyT 3 'Estanislao Ramírez Ruiz'. Conecta con compañeros, comparte materiales y conocimiento."
+ * @meta       keywords="CECyT 3, IPN, red social académica, estudiantes, materiales escolares"
+ * @meta       viewport="width=device-width, initial-scale=1.0"
+ * 
+ * @og:type    website
+ * @og:url     https://steelblue-pelican-262083.hostingersite.com/
+ * @og:title   CECyT 3 - Red Social Académica
+ * @og:description Red Social Académica del CECyT 3. Conecta con compañeros, comparte materiales y conocimiento.
+ * @og:image   https://steelblue-pelican-262083.hostingersite.com/media/Crack-Enfocado.png
+ * @og:image:alt CECyT 3 Red Social Académica
+ * @og:site_name CECyT 3
+ * @og:locale  es_MX
+ * 
+ * @twitter:card summary_large_image
+ * @twitter:url  https://steelblue-pelican-262083.hostingersite.com/
+ * @twitter:title CECyT 3 - Red Social Académica
+ * @twitter:description Red Social Académica del CECyT 3. Conecta con compañeros, comparte materiales y conocimiento.
+ * @twitter:image https://steelblue-pelican-262083.hostingersite.com/media/Crack-Enfocado.png
+ * 
+ * @apple-mobile-web-app-capable yes
+ * @apple-mobile-web-app-status-bar-style black
+ * @apple-mobile-web-app-title CECyT 3
+ * 
+ * @theme-color #741931
+ * 
+ * @link       manifest /manifest.json
+ * @link       mask-icon /media/safari-pinned-tab.svg color="#741931"
+ * @link       shortcut-icon /media/logoweb.svg type="image/x-icon"
+ * 
+ * @css        https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css
+ * 
+ * @style      Define variables de color y estilos personalizados para la página.
+ * 
+ * @section    Publicaciones Recientes
+ * @section    Productos Destacados
+ * 
+ * @footer     Información de contacto y derechos de autor del CECyT 3.
+ * 
+ * @script     https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js
+ */
 <?php
 if (session_status() == PHP_SESSION_NONE) {
     session_start();

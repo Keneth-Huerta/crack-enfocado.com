@@ -1,3 +1,33 @@
+/**
+ * This script handles the display of user posts and comments on a webpage.
+ * 
+ * It includes the following functionalities:
+ * 
+ * - Displays a form for creating new posts if the user is logged in.
+ * - Fetches and displays posts from the database, including user profile information and like counts.
+ * - Allows users to like/unlike posts and submit comments.
+ * - Displays comments for each post and allows logged-in users to add new comments.
+ * 
+ * The script uses PHP for server-side logic and MySQL for database interactions.
+ * JavaScript is used for handling asynchronous actions like liking posts and submitting comments.
+ * 
+ * Key Components:
+ * 
+ * - HTML structure for displaying posts and comments.
+ * - PHP code for fetching posts and comments from the database.
+ * - JavaScript functions for handling likes and comments asynchronously.
+ * - CSS styles for layout and design.
+ * 
+ * Dependencies:
+ * 
+ * - Font Awesome for icons.
+ * - Bootstrap for responsive design.
+ * - External CSS file for custom styles.
+ * 
+ * Note:
+ * - Users must be logged in to create posts, like posts, and add comments.
+ * - The script includes error handling for server responses and form validations.
+ */
 <!DOCTYPE html>
 <html lang="es">
 
