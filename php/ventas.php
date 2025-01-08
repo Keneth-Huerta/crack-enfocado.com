@@ -38,7 +38,7 @@ if (!$perfil) {
 }
 
 // Consultar ventas del usuario (corrección aquí)
-$ventas_query = "SELECT * FROM productos WHERE usuario_id = ? ORDER BY producto_id DESC";
+$ventas_query = "SELECT * FROM productos WHERE usuario_id = ? ORDER BY idProducto DESC";
 $stmt_ventas = mysqli_prepare($enlace, $ventas_query);
 mysqli_stmt_bind_param($stmt_ventas, "i", $usuario_ids);
 mysqli_stmt_execute($stmt_ventas);
