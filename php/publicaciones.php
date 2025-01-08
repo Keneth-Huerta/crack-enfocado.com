@@ -267,8 +267,101 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            autoResizeTextarea();
+            const commentForm = document.getElementById('commentForm');
+            if (commentForm) {
+                commentForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+
+                    const spinner = document.getElementById('comment-spinner');
+                    const errorDiv = document.getElementById('comment-error');
+                    const submitButton = this.querySelector('button[type="submit"]');
+                    const textarea = this.querySelector('textarea[name="contenido"]');
+                    const contenido = textarea.value.trim();
+                    const publicacionId = this.querySelector('input[name="publicacion_id"]').value;
+
+                    if (!contenido) {
+                        errorDiv.textContent = 'El comentario no puede estar vacío';
+                        errorDiv.style.display = 'block';
+                        return;
+                    }
+
+                    spinner.style.display = 'block';
+                    submitButton.disabled = true;
+                    errorDiv.style.display = 'none';
+
+                    try {
+                        const response = await fetch('agregar_comentario.php', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                publicacion_id: publicacionId,
+                                contenido: contenido
+                            })
+                        });
+
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+
+                        const result = await response.json();
+
+                        if (result.success) {
+                            // Limpiar el formulario
+                            this.reset();
+
+                            // Crear y agregar el nuevo comentario
+                            const commentsList = document.getElementById('comments-list');
+                            const newComment = createCommentElement(result.comment);
+
+                            if (commentsList.firstChild) {
+                                commentsList.insertBefore(newComment, commentsList.firstChild);
+                            } else {
+                                commentsList.appendChild(newComment);
+                            }
+                        } else {
+                            throw new Error(result.error || 'Error al agregar el comentario');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        errorDiv.textContent = error.message || 'Error al procesar la solicitud';
+                        errorDiv.style.display = 'block';
+                    } finally {
+                        spinner.style.display = 'none';
+                        submitButton.disabled = false;
+                    }
+                });
+            }
         });
+
+        function createCommentElement(comment) {
+            const div = document.createElement('div');
+            div.className = 'comment-item';
+
+            div.innerHTML = `
+        <div class="comment-header">
+            <img src="${comment.foto_perfil || '../media/user.png'}" 
+                 class="comment-avatar" 
+                 alt="Avatar">
+            <strong>${escapeHtml(comment.nombre)}</strong>
+        </div>
+        <p>${escapeHtml(comment.contenido)}</p>
+        <small class="text-muted">${comment.fecha_comentario}</small>
+    `;
+            return div;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function toggleComments() {
+            const commentsSection = document.getElementById('comments-section');
+            commentsSection.style.display = commentsSection.style.display === 'none' ? 'block' : 'none';
+        }
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
