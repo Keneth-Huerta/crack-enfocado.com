@@ -223,3 +223,243 @@ button:hover {
 .btn-like.liked .fa-heart-o {
     color: transparent; /* Elimina el color del icono vacío cuando le da like */
 }
+/* Estilos generales */
+body {
+    background-color: #f0f2f5;
+    margin: 0;
+    padding-top: 60px; /* Espacio para el header fijo */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Header fijo */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: #952F57;
+}
+
+/* Barra de navegación secundaria */
+.snavbar {
+    background-color: white;
+    padding: 15px 20px;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Contenedor principal */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Formulario de publicación */
+.post-form {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.post-form textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    resize: none;
+}
+
+.post-form input[type="file"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+
+.post-form button {
+    background-color: #952F57;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.post-form button:hover {
+    background-color: #7a2647;
+}
+
+/* Publicaciones */
+.post-item {
+    background: white;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.post-avatar {
+    margin-right: 12px;
+}
+
+.post-avatar img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.post-username {
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.post-content {
+    padding: 15px;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #1a1a1a;
+}
+
+.post-item img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Botones de interacción */
+.btn-like, button {
+    background-color: transparent;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #65676b;
+    transition: all 0.2s;
+}
+
+.btn-like:hover, button:hover {
+    background-color: #f2f2f2;
+}
+
+.btn-like.liked {
+    color: #952F57;
+}
+
+.btn-like.liked i {
+    color: #952F57;
+}
+
+/* Comentarios */
+.comments-list {
+    background-color: #f8f9fa;
+    padding: 10px 15px;
+    border-top: 1px solid #ddd;
+}
+
+.comment-item {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.comment-item:last-child {
+    border-bottom: none;
+}
+
+.comment-form {
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-top: 1px solid #ddd;
+}
+
+.comment-form textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    resize: none;
+}
+
+.comment-form button {
+    background-color: #952F57;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+}
+
+.comment-form button:hover {
+    background-color: #7a2647;
+}
+
+/* Animaciones */
+.post-item {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.post-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .post-form, .post-item {
+        border-radius: 0;
+    }
+}
+
+/* Estilos para los mensajes de error/éxito */
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Mostrar/Ocultar comentarios de forma suave */
+.comments-list {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.comments-list.show {
+    max-height: 1000px; /* Altura máxima para la animación */
+    transition: max-height 0.3s ease-in;
+}

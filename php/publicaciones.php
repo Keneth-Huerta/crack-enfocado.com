@@ -139,6 +139,30 @@
 
 
     <script>
+        // Función para mostrar/ocultar sección de comentarios
+        function toggleCommentSection(publicationId) {
+            const commentsSection = document.getElementById(`comments-section-${publicationId}`);
+            const commentForm = document.getElementById(`comment-form-${publicationId}`);
+
+            if (commentsSection) {
+                commentsSection.classList.toggle('show');
+                if (commentForm) {
+                    commentForm.style.display = commentsSection.classList.contains('show') ? 'block' : 'none';
+                }
+            }
+        }
+
+        // Función para ajustar altura de textareas automáticamente
+        function autoResizeTextarea() {
+            document.querySelectorAll('textarea').forEach(textarea => {
+                textarea.addEventListener('input', function() {
+                    this.style.height = 'auto';
+                    this.style.height = (this.scrollHeight) + 'px';
+                });
+            });
+        }
+
+        // Función para manejar likes de forma asíncrona
         async function toggleLike(publicacion_id) {
             const likeButton = document.querySelector(`.btn-like[data-id="${publicacion_id}"]`);
             const likeCount = document.getElementById(`like-count-${publicacion_id}`);
@@ -160,27 +184,31 @@
                     return;
                 }
 
-                // Actualizar estado visual inmediatamente
-                if (status === 'liked') {
-                    likeButton.classList.add('liked');
-                } else if (status === 'unliked') {
-                    likeButton.classList.remove('liked');
+                // Actualizar UI
+                if (status === 'liked' || status === 'unliked') {
+                    likeButton.classList.toggle('liked', status === 'liked');
+                    const icon = likeButton.querySelector('i');
+                    icon.classList.toggle('fas', status === 'liked');
+                    icon.classList.toggle('far', status === 'unliked');
+
+                    if (newCount) {
+                        likeCount.textContent = newCount;
+                        // Añadir una pequeña animación al contador
+                        likeCount.style.transform = 'scale(1.2)';
+                        setTimeout(() => {
+                            likeCount.style.transform = 'scale(1)';
+                        }, 200);
+                    }
                 }
-
-                // Actualizar contador de likes
-                if (newCount) {
-                    likeCount.textContent = newCount;
-                }
-
-                // Alternar el color del icono también
-                const icon = likeButton.querySelector('i');
-                icon.classList.toggle('fa-heart', status === 'liked');
-                icon.classList.toggle('fa-heart-o', status === 'unliked');
-
             } catch (error) {
                 console.error('Error al procesar el like:', error);
             }
         }
+
+        // Inicializar funciones cuando el DOM esté cargado
+        document.addEventListener('DOMContentLoaded', function() {
+            autoResizeTextarea();
+        });
     </script>
 
     <!-- Bootstrap JS (incluye Popper.js) -->
