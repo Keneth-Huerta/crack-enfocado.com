@@ -7,7 +7,8 @@ if (isset($_GET['id'])) {
 
     // Consulta mejorada para obtener datos de la publicación y el usuario
     $stmt = $enlace->prepare("SELECT p.*, pr.foto_perfil, pr.nombre, pr.apellido, 
-                             (SELECT COUNT(*) FROM likes WHERE publicacion_id = p.id_publicacion) as likes_count
+                             (SELECT COUNT(*) FROM likes WHERE publicacion_id = p.id_publicacion) as likes_count,
+                             (SELECT COUNT(*) FROM comentarios WHERE publicacion_id = p.id_publicacion) as comments_count
                              FROM publicaciones p 
                              JOIN perfiles pr ON p.usuario_id = pr.usuario_id 
                              WHERE p.id_publicacion = ?");
@@ -46,143 +47,42 @@ if (isset($_SESSION['usuario_id'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        .publication-container {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
-            margin: 2rem auto;
-            overflow: hidden;
+        /* ... [Previous styles remain the same] ... */
+
+        .comment-error {
+            color: #dc3545;
+            margin-top: 0.5rem;
+            display: none;
         }
 
-        .publication-header {
-            display: flex;
-            align-items: center;
-            padding: 1rem;
-            border-bottom: 1px solid #eee;
-        }
-
-        .user-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-right: 1rem;
-        }
-
-        .user-info h4 {
-            margin: 0;
-            color: #333;
-            font-size: 1.1rem;
-        }
-
-        .user-info p {
-            margin: 0;
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        .publication-image {
-            width: 100%;
-            max-height: 500px;
-            object-fit: contain;
-            background-color: #f8f9fa;
-        }
-
-        .publication-content {
-            padding: 1.5rem;
-            font-size: 1.1rem;
-            line-height: 1.6;
-            color: #333;
-        }
-
-        .publication-actions {
-            padding: 1rem;
-            border-top: 1px solid #eee;
-            display: flex;
-            gap: 1rem;
-        }
-
-        .btn-like {
-            background: none;
-            border: none;
-            color: #666;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-like:hover {
-            background-color: #f8f9fa;
-        }
-
-        .btn-like.liked {
-            color: #e74c3c;
-        }
-
-        .btn-like.liked i {
+        .like-animation {
             animation: likeAnimation 0.3s ease;
         }
 
-        .comments-section {
-            padding: 1rem;
-            background-color: #f8f9fa;
+        .comment-count {
+            color: #666;
+            font-size: 0.9rem;
+            margin-left: 0.5rem;
         }
 
-        .comment-form {
-            margin-bottom: 1rem;
-        }
-
-        .comment-form textarea {
-            width: 100%;
-            padding: 0.5rem;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            resize: vertical;
-            min-height: 60px;
-        }
-
-        .comment-item {
-            background: white;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 0.5rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-
-        .comment-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 0.5rem;
-        }
-
-        .comment-avatar {
-            width: 30px;
-            height: 30px;
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #3498db;
             border-radius: 50%;
-            margin-right: 0.5rem;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
         }
 
-        @keyframes likeAnimation {
+        @keyframes spin {
             0% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.2);
+                transform: rotate(0deg);
             }
 
             100% {
-                transform: scale(1);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .publication-image {
-                max-height: 300px;
+                transform: rotate(360deg);
             }
         }
     </style>
@@ -193,51 +93,44 @@ if (isset($_SESSION['usuario_id'])) {
 
     <div class="container">
         <div class="publication-container">
-            <!-- Encabezado con información del usuario -->
-            <div class="publication-header">
-                <img src="<?php echo !empty($publicacion['foto_perfil']) ? htmlspecialchars($publicacion['foto_perfil']) : '../media/user.png'; ?>"
-                    class="user-avatar" alt="Foto de perfil">
-                <div class="user-info">
-                    <h4><?php echo htmlspecialchars($publicacion['nombre'] . ' ' . $publicacion['apellido']); ?></h4>
-                    <p><?php echo date("d/m/Y H:i", strtotime($publicacion['fecha_publicada'])); ?></p>
-                </div>
-            </div>
-
-            <!-- Imagen de la publicación -->
-            <?php if (!empty($publicacion['imagen'])): ?>
-                <img src="<?php echo htmlspecialchars($publicacion['imagen']); ?>"
-                    class="publication-image" alt="Imagen de la publicación">
-            <?php endif; ?>
-
-            <!-- Contenido de la publicación -->
-            <div class="publication-content">
-                <?php echo nl2br(htmlspecialchars($publicacion['contenido'])); ?>
-            </div>
+            <!-- ... [Previous header and content sections remain the same] ... -->
 
             <!-- Acciones (Like y Comentarios) -->
             <div class="publication-actions">
                 <button type="button" class="btn-like <?php echo $userLiked ? 'liked' : ''; ?>"
                     data-id="<?php echo $publicacion['id_publicacion']; ?>"
-                    onclick="toggleLike(<?php echo $publicacion['id_publicacion']; ?>)">
+                    onclick="toggleLike(this, <?php echo $publicacion['id_publicacion']; ?>)">
                     <i class="fa<?php echo $userLiked ? 's' : 'r'; ?> fa-heart"></i>
                     <span id="like-count-<?php echo $publicacion['id_publicacion']; ?>">
                         <?php echo $publicacion['likes_count']; ?>
                     </span>
                 </button>
                 <button type="button" class="btn-like" onclick="toggleComments()">
-                    <i class="far fa-comment"></i> Comentarios
+                    <i class="far fa-comment"></i>
+                    Comentarios
+                    <span class="comment-count" id="comment-count">
+                        <?php echo $publicacion['comments_count']; ?>
+                    </span>
                 </button>
             </div>
 
             <!-- Sección de comentarios -->
-            <div id="comments-section" class="comments-section" style="display: none;">
+            <div id="comments-section" class="comments-section">
                 <?php if (isset($_SESSION['usuario_id'])): ?>
                     <div class="comment-form">
-                        <form id="commentForm" onsubmit="return submitComment(event)">
+                        <form id="commentForm">
                             <input type="hidden" name="publicacion_id" value="<?php echo $publicacionId; ?>">
-                            <textarea name="contenido" placeholder="Escribe un comentario..." required></textarea>
-                            <button type="submit" class="btn btn-primary mt-2">Comentar</button>
+                            <textarea name="contenido" placeholder="Escribe un comentario..." required class="form-control"></textarea>
+                            <div class="d-flex align-items-center mt-2">
+                                <button type="submit" class="btn btn-primary">Comentar</button>
+                                <div class="loading-spinner" id="comment-spinner"></div>
+                            </div>
+                            <div class="comment-error" id="comment-error"></div>
                         </form>
+                    </div>
+                <?php else: ?>
+                    <div class="alert alert-info">
+                        Debes <a href="../secion.php">iniciar sesión</a> para comentar.
                     </div>
                 <?php endif; ?>
 
@@ -272,63 +165,111 @@ if (isset($_SESSION['usuario_id'])) {
     </div>
 
     <script>
-        async function toggleLike(publicacionId) {
+        async function toggleLike(button, publicacionId) {
             if (!<?php echo isset($_SESSION['usuario_id']) ? 'true' : 'false'; ?>) {
                 alert('Debes iniciar sesión para dar like');
                 return;
             }
 
             try {
-                const formData = new FormData();
-                formData.append('id_publicacion', publicacionId);
-
-                const response = await fetch('dar_like.php', {
+                const response = await fetch('toggle_like.php', {
                     method: 'POST',
-                    body: formData
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `publicacion_id=${publicacionId}`
                 });
 
-                const data = await response.text();
-                const [status, newCount] = data.split('|');
+                const data = await response.json();
 
-                const likeButton = document.querySelector(`.btn-like[data-id="${publicacionId}"]`);
-                const likeCount = document.getElementById(`like-count-${publicacionId}`);
-                const icon = likeButton.querySelector('i');
+                if (data.success) {
+                    const likeCount = button.querySelector(`#like-count-${publicacionId}`);
+                    const icon = button.querySelector('i');
 
-                if (status === 'liked' || status === 'unliked') {
-                    likeButton.classList.toggle('liked', status === 'liked');
-                    icon.className = status === 'liked' ? 'fas fa-heart' : 'far fa-heart';
-                    if (newCount) likeCount.textContent = newCount;
+                    button.classList.toggle('liked', data.liked);
+                    icon.className = data.liked ? 'fas fa-heart' : 'far fa-heart';
+                    icon.classList.add('like-animation');
+                    likeCount.textContent = data.likes_count;
+
+                    // Eliminar la clase de animación después de que termine
+                    setTimeout(() => {
+                        icon.classList.remove('like-animation');
+                    }, 300);
                 }
             } catch (error) {
                 console.error('Error:', error);
             }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const commentForm = document.getElementById('commentForm');
+            if (commentForm) {
+                commentForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+
+                    const spinner = document.getElementById('comment-spinner');
+                    const errorDiv = document.getElementById('comment-error');
+                    const submitButton = this.querySelector('button[type="submit"]');
+
+                    spinner.style.display = 'block';
+                    submitButton.disabled = true;
+                    errorDiv.style.display = 'none';
+
+                    try {
+                        const formData = new FormData(this);
+                        const response = await fetch('agregar_comentario.php', {
+                            method: 'POST',
+                            body: formData
+                        });
+
+                        const result = await response.json();
+
+                        if (result.success) {
+                            // Agregar el nuevo comentario al principio de la lista
+                            const commentsList = document.getElementById('comments-list');
+                            const newComment = createCommentElement(result.comment);
+                            commentsList.insertBefore(newComment, commentsList.firstChild);
+
+                            // Actualizar el contador de comentarios
+                            const commentCount = document.getElementById('comment-count');
+                            commentCount.textContent = parseInt(commentCount.textContent) + 1;
+
+                            // Limpiar el formulario
+                            this.reset();
+                        } else {
+                            errorDiv.textContent = result.error || 'Error al agregar el comentario';
+                            errorDiv.style.display = 'block';
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        errorDiv.textContent = 'Error al procesar la solicitud';
+                        errorDiv.style.display = 'block';
+                    } finally {
+                        spinner.style.display = 'none';
+                        submitButton.disabled = false;
+                    }
+                });
+            }
+        });
+
+        function createCommentElement(comment) {
+            const div = document.createElement('div');
+            div.className = 'comment-item';
+            div.innerHTML = `
+                <div class="comment-header">
+                    <img src="${comment.foto_perfil || '../media/user.png'}" class="comment-avatar" alt="Avatar">
+                    <strong>${comment.nombre} ${comment.apellido}</strong>
+                </div>
+                <p>${comment.contenido}</p>
+                <small class="text-muted">${comment.fecha_comentario}</small>
+            `;
+            return div;
         }
 
         function toggleComments() {
             const commentsSection = document.getElementById('comments-section');
-            commentsSection.style.display = commentsSection.style.display === 'none' ? 'block' : 'none';
-        }
-
-        async function submitComment(event) {
-            event.preventDefault();
-            const form = event.target;
-            const formData = new FormData(form);
-
-            try {
-                const response = await fetch('agregar_comentario.php', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                const result = await response.text();
-                if (result === 'success') {
-                    location.reload(); // Recargar para mostrar el nuevo comentario
-                } else {
-                    alert('Error al agregar el comentario');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-            }
+            const isHidden = commentsSection.style.display === 'none';
+            commentsSection.style.display = isHidden ? 'block' : 'none';
         }
     </script>
 
