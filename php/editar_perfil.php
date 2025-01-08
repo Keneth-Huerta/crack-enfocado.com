@@ -261,75 +261,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <button type="submit">Guardar cambios</button>
         </form>
     </div>
-    <script>
-       document.addEventListener('DOMContentLoaded', function() {
-    function createPreviewContainer(inputId, previewId) {
-        const input = document.getElementById(inputId);
-        const container = document.createElement('div');
-        container.className = 'preview-container';
-        
-        const preview = document.createElement('div');
-        preview.id = previewId;
-        preview.className = 'image-preview empty';
-        
-        const placeholder = document.createElement('div');
-        placeholder.className = 'placeholder';
-        placeholder.innerHTML = `
-            <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z"/>
-                <circle cx="8.5" cy="8.5" r="1.5"/>
-                <path d="m21 15-5-5L5 21"/>
-            </svg>
-            <span>Vista previa no disponible</span>
-        `;
-        
-        preview.appendChild(placeholder);
-        container.appendChild(preview);
-        input.parentNode.appendChild(container);
-        
-        return preview;
-    }
-
-    function previewImage(input, previewId) {
-        const preview = document.getElementById(previewId);
-        const file = input.files[0];
-        const placeholder = preview.querySelector('.placeholder');
-        const existingImg = preview.querySelector('img');
-
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                if (existingImg) {
-                    existingImg.src = e.target.result;
-                } else {
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.className = 'preview-image';
-                    if (placeholder) placeholder.style.display = 'none';
-                    preview.appendChild(img);
-                }
-                preview.classList.remove('empty');
-            };
-            reader.readAsDataURL(file);
-        } else {
-            if (existingImg) existingImg.remove();
-            if (placeholder) placeholder.style.display = 'flex';
-            preview.classList.add('empty');
-        }
-    }
-
-    const previewPerfil = createPreviewContainer('foto_perfil', 'preview_perfil');
-    const previewPortada = createPreviewContainer('foto_portada', 'preview_portada');
-
-    document.getElementById('foto_perfil').addEventListener('change', function() {
-        previewImage(this, 'preview_perfil');
-    });
-
-    document.getElementById('foto_portada').addEventListener('change', function() {
-        previewImage(this, 'preview_portada');
-    });
-});
-    </script>
+   
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
