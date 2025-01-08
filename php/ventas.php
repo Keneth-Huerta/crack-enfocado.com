@@ -13,15 +13,20 @@ if (!$enlace) {
     die("Conexión fallida: " . mysqli_connect_error());
 }
 
+// Obtener lista de usuarios para el formulario
+$usuariosQuery = "SELECT idUsuario, nombre FROM usuarios";
+$usuariosResult = mysqli_query($enlace, $usuariosQuery);
+
 // Procesar formulario de ventas
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $producto = htmlspecialchars($_POST['producto']);
     $precio = floatval($_POST['precio']);
     $descripcion = htmlspecialchars($_POST['descripcion']);
     $imagen = htmlspecialchars($_POST['imagen']);
+    $usuario_id = intval($_POST['usuario_id']);
 
-    $stmt = $enlace->prepare("INSERT INTO productos (producto, precio, descripcion, imagen) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("sdss", $producto, $precio, $descripcion, $imagen);
+    $stmt = $enlace->prepare("INSERT INTO productos (producto, precio, descripcion, imagen, usuario_id) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("sdssi", $producto, $precio, $descripcion, $imagen, $usuario_id);
 
     if ($stmt->execute()) {
         echo "<p>Venta agregada con éxito.</p>";
@@ -105,6 +110,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <label for="imagen">URL de la Imagen:</label>
             <input type="url" id="imagen" name="imagen" required class="form-control"><br>
 
+            <label for="usuario_id">Usuario:</label>
+            <select id="usuario_id" name="usuario_id" required class="form-control">
+                <?php while ($usuario = mysqli_fetch_assoc($usuariosResult)) {
+                    echo '<option value="' . $usuario['idUsuario'] . '">' . htmlspecialchars($usuario['nombre']) . '</option>';
+                } ?>
+            </select><br>
+
             <button type="submit" class="btn btn-primary">Agregar Venta</button>
         </form>
     </div>
@@ -115,7 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         <div class="sales-cards">
             <?php
-            $sql = "SELECT * FROM productos";
+            $sql = "SELECT productos.*, usuarios.nombre AS usuario FROM productos JOIN usuarios ON productos.usuario_id = usuarios.idUsuario";
             $result = mysqli_query($enlace, $sql);
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
@@ -124,6 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     echo "<h3>" . htmlspecialchars($row['producto']) . "</h3>";
                     echo "<p><strong>Precio:</strong> $" . htmlspecialchars($row['precio']) . "</p>";
                     echo "<p><strong>Descripción:</strong> " . htmlspecialchars($row['descripcion']) . "</p>";
+                    echo "<p><strong>Publicado por:</strong> " . htmlspecialchars($row['usuario']) . "</p>";
                     echo '</div>';
                 }
             } else {
