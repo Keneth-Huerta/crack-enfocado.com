@@ -7,6 +7,14 @@
     <title>CECyT 3 - Página Principal</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        body,
+        html {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+
         .carousel-item img {
             width: 100%;
             height: 300px;
@@ -24,6 +32,14 @@
             background-color: #007bff;
             color: white;
         }
+
+        .container {
+            flex: 1;
+        }
+
+        footer {
+            margin-top: auto;
+        }
     </style>
 </head>
 
@@ -35,11 +51,7 @@
         <div id="publicacionesCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <?php
-                // Iniciar sesión
-                if (session_status() == PHP_SESSION_NONE) {
-                    session_start();
-                }
-
+                session_start();
                 require_once 'conexion.php';
 
                 $stmt = $enlace->prepare("SELECT imagen, contenido, fecha_publicada FROM publicaciones ORDER BY fecha_publicada DESC LIMIT 5");
@@ -85,12 +97,12 @@
         <div class="text-center mt-4">
             <a href="publicaciones.php" class="btn btn-primary">Ver todas las publicaciones</a>
         </div>
-
-        <footer class="container-fluid bg-light mt-4 py-3 text-center">
-            <p>&copy; 2024 Centro de Estudios Científicos y Tecnológicos No. 3 "Estanislao Ramírez Ruiz".</p>
-            <p>Contacto: <a href="mailto:info@cecyt3.ipn.mx">info@cecyt3.ipn.mx</a></p>
-        </footer>
     </div>
+
+    <footer class="container-fluid bg-light py-3 text-center">
+        <p>&copy; 2024 Centro de Estudios Científicos y Tecnológicos No. 3 "Estanislao Ramírez Ruiz".</p>
+        <p>Contacto: <a href="mailto:info@cecyt3.ipn.mx">info@cecyt3.ipn.mx</a></p>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
