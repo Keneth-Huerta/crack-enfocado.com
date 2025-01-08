@@ -215,6 +215,22 @@ $current_page = basename($_SERVER['PHP_SELF']);
     .search-form .form-control:focus+.bi-search {
         color: #6c757d;
     }
+
+
+    .comment-form {
+        display: none;
+        margin-top: 10px;
+    }
+
+    .comments-list {
+        display: none;
+        margin-top: 10px;
+    }
+
+
+    .container {
+        margin-top: 70px;
+    }
 </style>
 
 <!-- Navbar -->
