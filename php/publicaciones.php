@@ -32,9 +32,10 @@
             <?php
             include 'conexion.php'; // Incluir la conexión a la base de datos
             if (session_status() == PHP_SESSION_NONE) {
-            if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}        }
+                if (session_status() == PHP_SESSION_NONE) {
+                    session_start();
+                }
+            }
 
             if (!isset($_SESSION['usuario_id'])) {
                 echo "<p>Debes <a href='../crearCuenta.html'>crear una cuenta</a> o <a href='../secion.php'>iniciar sesión</a> para poder publicar.</p>";
@@ -166,103 +167,44 @@
         }
 
         // Función para manejar likes de forma asíncrona
-        <?php
-// dar_like.php
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+        async function toggleLike(publicacionId) {
+            try {
+                const formData = new FormData();
+                formData.append('id_publicacion', publicacionId);
 
-include 'conexion.php';
+                const response = await fetch('dar_like.php', {
+                    method: 'POST',
+                    body: formData
+                });
 
-function crearNotificacionLike($enlace, $id_publicacion, $usuario_id) {
-    $stmt = $enlace->prepare("INSERT INTO notificaciones (usuario_id, publicacion_id, tipo) VALUES (?, ?, 'like')");
-    $stmt->bind_param("ii", $usuario_id, $id_publicacion);
-    $stmt->execute();
-}
+                const data = await response.text();
+                const [status, newCount] = data.split('|');
 
-// Verificar conexión a la base de datos
-if ($enlace->connect_error) {
-    die("Error de conexión: " . $enlace->connect_error);
-}
+                const likeButton = document.querySelector(`.btn-like[data-id="${publicacionId}"]`);
+                const likeCount = document.getElementById(`like-count-${publicacionId}`);
+                const icon = likeButton.querySelector('i');
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Validar input
-    $id_publicacion = filter_input(INPUT_POST, 'id_publicacion', FILTER_VALIDATE_INT);
-
-    if (!$id_publicacion) {
-        echo "error|ID de publicación inválido";
-        exit();
-    }
-
-    // Verificar si existe la publicación primero
-    $stmt = $enlace->prepare("SELECT cantidad_megusta FROM publicaciones WHERE id_publicacion = ?");
-    $stmt->bind_param("i", $id_publicacion);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows === 0) {
-        echo "error|Publicación no encontrada";
-        exit();
-    }
-
-    // Si no hay sesión iniciada, devolver el conteo actual de likes
-    if (!isset($_SESSION['usuario_id'])) {
-        $row = $result->fetch_assoc();
-        echo "info|" . $row['cantidad_megusta'];
-        exit();
-    }
-
-    try {
-        $enlace->begin_transaction();
-
-        // Verificar si ya existe el like
-        $stmt = $enlace->prepare("SELECT * FROM likes WHERE usuario_id = ? AND publicacion_id = ?");
-        $stmt->bind_param("ii", $_SESSION['usuario_id'], $id_publicacion);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result->num_rows == 0) {
-            // Insertar like
-            $stmt = $enlace->prepare("INSERT INTO likes (usuario_id, publicacion_id) VALUES (?, ?)");
-            $stmt->bind_param("ii", $_SESSION['usuario_id'], $id_publicacion);
-            $stmt->execute();
-
-            // Actualizar contador
-            $stmt = $enlace->prepare("UPDATE publicaciones SET cantidad_megusta = cantidad_megusta + 1 WHERE id_publicacion = ?");
-            $stmt->bind_param("i", $id_publicacion);
-            $stmt->execute();
-
-            // Crear notificación
-            crearNotificacionLike($enlace, $id_publicacion, $_SESSION['usuario_id']);
-        } else {
-            // Eliminar like
-            $stmt = $enlace->prepare("DELETE FROM likes WHERE usuario_id = ? AND publicacion_id = ?");
-            $stmt->bind_param("ii", $_SESSION['usuario_id'], $id_publicacion);
-            $stmt->execute();
-
-            // Actualizar contador
-            $stmt = $enlace->prepare("UPDATE publicaciones SET cantidad_megusta = cantidad_megusta - 1 WHERE id_publicacion = ?");
-            $stmt->bind_param("i", $id_publicacion);
-            $stmt->execute();
+                switch (status) {
+                    case 'liked':
+                    case 'unliked':
+                        likeButton.classList.toggle('liked', status === 'liked');
+                        icon.className = status === 'liked' ? 'fas fa-heart' : 'far fa-heart';
+                        if (newCount) likeCount.textContent = newCount;
+                        break;
+                    case 'info':
+                        // Solo actualizar el contador si es necesario
+                        if (newCount) likeCount.textContent = newCount;
+                        // Mostrar mensaje para iniciar sesión si se desea dar like
+                        alert('Inicia sesión para dar like a esta publicación');
+                        break;
+                    case 'error':
+                        console.error('Error:', newCount);
+                        break;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
         }
-
-        // Obtener nuevo conteo
-        $stmt = $enlace->prepare("SELECT cantidad_megusta FROM publicaciones WHERE id_publicacion = ?");
-        $stmt->bind_param("i", $id_publicacion);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
-
-        $enlace->commit();
-
-        echo ($result->num_rows == 0 ? "liked" : "unliked") . "|" . $row['cantidad_megusta'];
-    } catch (Exception $e) {
-        $enlace->rollback();
-        echo "error|" . $e->getMessage();
-    }
-}
 
         // Inicializar funciones cuando el DOM esté cargado
         document.addEventListener('DOMContentLoaded', function() {
