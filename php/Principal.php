@@ -175,7 +175,8 @@ require_once 'conexion.php';
                                             Publicado el <?php echo date("d/m/Y H:i", strtotime($publicacion['fecha_publicada'])); ?>
                                         </small>
                                         <div class="mt-2">
-                                            <a href="detalle_publicacion.php?id=<?php echo $publicacion['id']; ?>" class="btn btn-ver-todas btn-sm">Ver más</a>
+                                            <a href="detalle_publicacion.php?id=<?php echo $publicacion['id_publicacion']; ?>" class="btn btn-ver-todas btn-sm">Ver más</a>
+                                          
                                         </div>
                                     </div>
                                 </div>
