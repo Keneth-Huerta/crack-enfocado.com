@@ -24,70 +24,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $descripcion = htmlspecialchars($_POST['descripcion']);
     $usuario_id = $_SESSION['usuario_id'];
 
-    // Manejo de la imagen
-    if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
-        // Verificar el tipo de archivo
-        $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
-        $file_type = $_FILES['imagen']['type'];
+    try {
+        // Manejo de la imagen
+        if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
+            // Verificar el tipo de archivo
+            $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
+            $file_type = $_FILES['imagen']['type'];
 
-        if (!in_array($file_type, $allowed_types)) {
-            echo "<div class='alert alert-danger'>Tipo de archivo no permitido. Por favor, sube una imagen JPG, PNG o GIF.</div>";
+            if (!in_array($file_type, $allowed_types)) {
+                throw new Exception("Tipo de archivo no permitido. Por favor, sube una imagen JPG, PNG o GIF.");
+            }
+
+            // Leer la imagen
+            $imagen = addslashes(file_get_contents($_FILES['imagen']['tmp_name']));
+
+            // Query con imagen
+            $query = "INSERT INTO productos (producto, precio, descripcion, imagen, usuario_id) 
+                     VALUES ('$producto', $precio, '$descripcion', '$imagen', $usuario_id)";
         } else {
-            try {
-                // Leer el contenido del archivo
-                $imagen_temporal = $_FILES['imagen']['tmp_name'];
-                $imagen_contenido = null;
-
-                if ($fp = fopen($imagen_temporal, "rb")) {
-                    $imagen_contenido = fread($fp, filesize($imagen_temporal));
-                    fclose($fp);
-
-                    // Preparar la consulta
-                    $stmt = $enlace->prepare("INSERT INTO productos (producto, precio, descripcion, imagen, usuario_id) VALUES (?, ?, ?, ?, ?)");
-                    if ($stmt === false) {
-                        throw new Exception("Error en la preparación de la consulta: " . $enlace->error);
-                    }
-
-                    // Vincular parámetros
-                    if (!$stmt->bind_param("sdsbi", $producto, $precio, $descripcion, $imagen_contenido, $usuario_id)) {
-                        throw new Exception("Error al vincular parámetros: " . $stmt->error);
-                    }
-
-                    // Ejecutar la consulta
-                    if (!$stmt->execute()) {
-                        throw new Exception("Error al ejecutar la consulta: " . $stmt->error);
-                    }
-
-                    echo "<div class='alert alert-success'>Venta agregada con éxito.</div>";
-                    $stmt->close();
-                } else {
-                    throw new Exception("No se pudo abrir el archivo temporal");
-                }
-            } catch (Exception $e) {
-                echo "<div class='alert alert-danger'>Error: " . $e->getMessage() . "</div>";
-            }
+            // Query sin imagen
+            $query = "INSERT INTO productos (producto, precio, descripcion, usuario_id) 
+                     VALUES ('$producto', $precio, '$descripcion', $usuario_id)";
         }
-    } else {
-        // Si no hay imagen, insertar sin ella
-        try {
-            $stmt = $enlace->prepare("INSERT INTO productos (producto, precio, descripcion, usuario_id) VALUES (?, ?, ?, ?)");
-            if ($stmt === false) {
-                throw new Exception("Error en la preparación de la consulta: " . $enlace->error);
-            }
 
-            if (!$stmt->bind_param("sdsi", $producto, $precio, $descripcion, $usuario_id)) {
-                throw new Exception("Error al vincular parámetros: " . $stmt->error);
-            }
-
-            if (!$stmt->execute()) {
-                throw new Exception("Error al ejecutar la consulta: " . $stmt->error);
-            }
-
-            echo "<div class='alert alert-success'>Venta agregada con éxito (sin imagen).</div>";
-            $stmt->close();
-        } catch (Exception $e) {
-            echo "<div class='alert alert-danger'>Error: " . $e->getMessage() . "</div>";
+        // Ejecutar la consulta
+        if (mysqli_query($enlace, $query)) {
+            echo "<div class='alert alert-success'>Venta agregada con éxito.</div>";
+        } else {
+            throw new Exception("Error en la inserción: " . mysqli_error($enlace));
         }
+    } catch (Exception $e) {
+        echo "<div class='alert alert-danger'>Error: " . $e->getMessage() . "</div>";
     }
 }
 ?>
