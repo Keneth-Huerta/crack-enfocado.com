@@ -20,128 +20,6 @@
             display: none;
             margin-top: 10px;
         }
-
-        .container {
-            max-width: 700px;
-            /* Limit width for better readability */
-            margin: 70px auto;
-            /* Center container and add top margin */
-            padding: 0 15px;
-        }
-
-        .post-form {
-            background-color: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .post-form form {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .post-form textarea {
-            resize: none;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            padding: 10px;
-        }
-
-        .post-form input[type="file"] {
-            margin-bottom: 10px;
-        }
-
-        .post-form button {
-            align-self: flex-end;
-            background-color: #952F57;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            transition: background-color 0.3s ease;
-        }
-
-        .post-form button:hover {
-            background-color: #6f1f42;
-        }
-
-        .post-item {
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-            padding: 20px;
-        }
-
-        .post-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .post-avatar {
-            margin-right: 10px;
-        }
-
-        .post-username {
-            font-weight: bold;
-            color: #333;
-        }
-
-        .post-content {
-            margin-bottom: 15px;
-        }
-
-        .post-item img {
-            max-width: 100%;
-            border-radius: 8px;
-            margin-bottom: 15px;
-        }
-
-        .btn-like,
-        .btn-like:hover {
-            background-color: transparent;
-            border: 1px solid #952F57;
-            color: #952F57;
-            margin-right: 10px;
-            padding: 8px 15px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-like.liked {
-            background-color: #952F57;
-            color: white;
-        }
-
-        .btn-like i {
-            margin-right: 5px;
-        }
-
-        .comment-item {
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-
-        .comments-list.show {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
     </style>
 
 </head>
@@ -259,38 +137,17 @@
 
 
     <script>
-        // Improved toggleCommentSection function
+        // Función para mostrar/ocultar sección de comentarios
         function toggleCommentSection(publicationId) {
-            if (!publicationId) return; // Ensure publicationId is valid
             const commentsSection = document.getElementById(`comments-section-${publicationId}`);
             const commentForm = document.getElementById(`comment-form-${publicationId}`);
 
             if (commentsSection) {
-                const isCurrentlyVisible = commentsSection.classList.contains('show');
-
-                // Hide all comment sections first
-                document.querySelectorAll('.comments-list').forEach(section => {
-                    section.classList.remove('show');
-                    const form = document.getElementById(`comment-form-${section.id.split('-').pop()}`);
-                    if (form) form.style.display = 'none';
-                });
-
-                // Toggle current section if it wasn't already shown
-                if (!isCurrentlyVisible) {
-                    commentsSection.classList.add('show');
-                    if (commentForm) {
-                        commentForm.style.display = 'block';
-                    }
+                commentsSection.classList.toggle('show');
+                if (commentForm) {
+                    commentForm.style.display = commentsSection.classList.contains('show') ? 'block' : 'none';
                 }
             }
-        } // Improved validation for comment and post forms
-        function validateForm(form) {
-            const textarea = form.querySelector('textarea');
-            if (!textarea.value.trim()) {
-                alert('Por favor, escribe algo antes de publicar.');
-                return false;
-            }
-            return true;
         }
 
         // Función para ajustar altura de textareas automáticamente
@@ -345,31 +202,10 @@
                 console.error('Error al procesar el like:', error);
             }
         }
-        // Add event listeners to forms
+
+        // Inicializar funciones cuando el DOM esté cargado
         document.addEventListener('DOMContentLoaded', function() {
             autoResizeTextarea();
-
-            // Add form validation
-            document.querySelectorAll('form').forEach(form => {
-                form.addEventListener('submit', function(e) {
-                    if (!validateForm(this)) {
-                        e.preventDefault();
-                    }
-                });
-            });
-
-            // Optional: Add character limit to textareas
-            document.querySelectorAll('textarea').forEach(textarea => {
-                textarea.setAttribute('maxlength', '500');
-                textarea.addEventListener('input', function() {
-                    const remaining = 500 - this.value.length;
-                    const counter = this.nextElementSibling || document.createElement('div');
-                    counter.textContent = `${remaining} caracteres restantes`;
-                    counter.style.color = '#888';
-                    counter.style.fontSize = '0.8em';
-                    if (!counter.parentNode) this.parentNode.insertBefore(counter, this.nextSibling);
-                });
-            });
         });
     </script>
 
