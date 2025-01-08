@@ -292,7 +292,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
                     <!-- Perfil -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link" href="perfil.php" data-bs-toggle="dropdown">
+                        <a class="nav-link" href="#" data-bs-toggle="dropdown">
                             <img src="<?php echo htmlspecialchars($foto_perfil); ?>"
                                 alt="Perfil"
                                 class="rounded-circle"
@@ -306,7 +306,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                                     style="width: 50px; height: 50px; object-fit: cover;">
                                 <div>
                                     <h6 class="mb-0"><?php echo $nombre_usuario; ?></h6>
-                                    <small class="text-muted"><?php echo htmlspecialchars($perfil['email']); ?></small>
+                                    <small class="text-muted"><?php echo htmlspecialchars($perfil['correo']); ?></small>
                                 </div>
                             </div>
                             <div class="dropdown-divider"></div>
