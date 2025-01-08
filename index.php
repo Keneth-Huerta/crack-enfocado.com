@@ -126,10 +126,10 @@ session_start();
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="btn btn-ipn" href="php/login.php">Iniciar Sesión</a>
+                        <a class="btn btn-ipn" href="/secion.php">Iniciar Sesión</a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-outline-ipn" href="php/registro.php">Crear Cuenta</a>
+                        <a class="btn btn-outline-ipn" href="/crearCuenta.html">Crear Cuenta</a>
                     </li>
                 </ul>
             </div>
