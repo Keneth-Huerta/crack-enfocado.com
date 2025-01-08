@@ -1,10 +1,6 @@
 <?php
 session_start();
 // Si ya hay una sesión iniciada, redirigir a la página principal
-if (isset($_SESSION['usuario_id'])) {
-    header("Location: php/perfil.php");
-    exit();
-}
 ?>
 <!DOCTYPE html>
 <html lang="es">
