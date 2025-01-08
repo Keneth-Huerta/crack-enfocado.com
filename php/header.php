@@ -275,7 +275,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                                 <div class="dropdown-item text-muted">No hay notificaciones nuevas</div>
                             <?php else: ?>
                                 <?php foreach ($notificaciones as $notif): ?>
-                                    <form method="POST" action="/php/marcar_notificacion.php" class="notification-form">
+                                    <form method="POST" class="notification-form">
                                         <input type="hidden" name="notification_id" value="<?php echo $notif['id']; ?>">
                                         <input type="hidden" name="mark_read" value="1">
                                         <button type="submit" class="dropdown-item notification-item">
