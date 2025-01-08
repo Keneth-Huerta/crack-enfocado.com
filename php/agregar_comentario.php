@@ -1,6 +1,9 @@
 <?php
 session_start();
 require_once 'conexion.php';
+$data = json_decode(file_get_contents('php://input'), true);
+$publicacion_id = $data['publicacion_id'];
+$contenido = trim($data['contenido']);
 
 header('Content-Type: application/json');
 

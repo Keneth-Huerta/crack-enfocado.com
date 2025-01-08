@@ -37,6 +37,11 @@
             font-size: 0.9em;
             color: #666;
         }
+
+        .comment-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
     </style>
 </head>
 
@@ -121,10 +126,21 @@
                 // Botón de "Comentar"
                 echo '<button type="button" onclick="toggleCommentSection(' . $publicacion['id_publicacion'] . ')">Comentar</button>';
 
-                echo '</div>'; // post-item
-
-                // Comentarios
+                // Sección de comentarios
                 echo '<div id="comments-section-' . $publicacion['id_publicacion'] . '" class="comments-list">';
+
+                // Formulario de comentarios
+                if (isset($_SESSION['usuario_id'])) {
+                    echo '<div id="comment-form-' . $publicacion['id_publicacion'] . '" class="comment-form">';
+                    echo '<form onsubmit="submitComment(event, ' . $publicacion['id_publicacion'] . ')">';
+                    echo '<textarea name="contenido_comentario" placeholder="Escribe un comentario..." required></textarea>';
+                    echo '<button type="submit">Comentar</button>';
+                    echo '</form>';
+                    echo '</div>';
+                }
+
+                // Lista de comentarios
+                echo '<div id="comments-list-' . $publicacion['id_publicacion'] . '" class="comments-container">';
                 $stmt_comentarios = $enlace->prepare("
                     SELECT comentarios.*, perfiles.nombre AS usuario_nombre 
                     FROM comentarios 
@@ -142,16 +158,9 @@
                     echo '<p>' . htmlspecialchars($comentario['contenido']) . '</p>';
                     echo '</div>';
                 }
-
-                echo '<div id="comment-form-' . $publicacion['id_publicacion'] . '" class="comment-form">';
-                echo '<form action="agregar_comentario.php" method="POST">';
-                echo '<input type="hidden" name="publicacion_id" value="' . $publicacion['id_publicacion'] . '">';
-                echo '<textarea name="contenido_comentario" placeholder="Escribe un comentario..." required></textarea>';
-                echo '<button type="submit">Comentar</button>';
-                echo '</form>';
-                echo '</div>';
-
+                echo '</div>'; // comments-container
                 echo '</div>'; // comments-section
+                echo '</div>'; // post-item
             }
             ?>
         </div>
@@ -194,12 +203,56 @@
 
         function toggleCommentSection(publicationId) {
             const commentsSection = document.getElementById(`comments-section-${publicationId}`);
-            const commentForm = document.getElementById(`comment-form-${publicationId}`);
+            commentsSection.style.display = commentsSection.style.display === 'block' ? 'none' : 'block';
+        }
 
-            if (commentsSection && commentForm) {
-                const isVisible = (commentsSection.style.display === 'block');
-                commentsSection.style.display = isVisible ? 'none' : 'block';
-                commentForm.style.display = isVisible ? 'none' : 'block';
+        async function submitComment(event, publicationId) {
+            event.preventDefault();
+
+            const form = event.target;
+            const textarea = form.querySelector('textarea');
+            const contenido = textarea.value.trim();
+
+            if (!contenido) {
+                alert('El comentario no puede estar vacío');
+                return;
+            }
+
+            try {
+                const response = await fetch('agregar_comentario.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        publicacion_id: publicationId,
+                        contenido: contenido
+                    })
+                });
+
+                if (!response.ok) throw new Error('Error en la respuesta del servidor');
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Agregar el nuevo comentario al DOM
+                    const commentsList = document.getElementById(`comments-list-${publicationId}`);
+                    const newComment = document.createElement('div');
+                    newComment.className = 'comment-item';
+                    newComment.innerHTML = `
+                        <strong>${data.comment.nombre}:</strong>
+                        <p>${data.comment.contenido}</p>
+                    `;
+                    commentsList.appendChild(newComment);
+
+                    // Limpiar el textarea
+                    textarea.value = '';
+                } else {
+                    alert(data.error || 'Error al agregar el comentario');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al procesar el comentario');
             }
         }
 

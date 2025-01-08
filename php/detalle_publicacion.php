@@ -227,9 +227,6 @@ if (isset($_SESSION['usuario_id'])) {
                 <button type="button" class="btn-like" onclick="toggleComments()">
                     <i class="far fa-comment"></i>
                     Comentarios
-                    <span class="comment-count" id="comment-count">
-                        <?php echo $publicacion['comments_count']; ?>
-                    </span>
                 </button>
             </div>
 
