@@ -694,4 +694,28 @@ body {
         padding: 8px 15px;
         font-size: 0.9em;
     }
+}.btn-success {
+    background-color: #25D366;
+    color: white;
+    border: none;
+}
+
+.btn-success:hover {
+    background-color: #128C7E;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.acciones-producto .btn-success {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.acciones-producto .btn-success i {
+    font-size: 1.2em;
 }

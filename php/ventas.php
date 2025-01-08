@@ -353,6 +353,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+
+        .btn-success {
+            background-color: #25D366;
+            color: white;
+            border: none;
+        }
+
+        .btn-success:hover {
+            background-color: #128C7E;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .acciones-producto .btn-success {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .acciones-producto .btn-success i {
+            font-size: 1.2em;
+        }
     </style>
 </head>
 
@@ -422,23 +448,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </div>
 
                         <!-- Detalles del producto -->
+                        <!-- En la sección de detalles del producto -->
                         <div class="producto-detalles">
-                            <h3><?php echo htmlspecialchars($row['producto']); ?></h3>
-                            <p class="precio">$<?php echo number_format($row['precio'], 2); ?></p>
-                            <p class="descripcion"><?php echo htmlspecialchars($row['descripcion']); ?></p>
+                            <h3><?php echo htmlspecialchars($producto['producto']); ?></h3>
+                            <p class="precio">$<?php echo number_format($producto['precio'], 2); ?></p>
+                            <p class="descripcion"><?php echo htmlspecialchars($producto['descripcion']); ?></p>
 
-                            <?php if (isset($_SESSION['usuario_id']) && $_SESSION['usuario_id'] == $row['usuario_id']): ?>
-                                <div class="acciones-producto">
-                                    <a href="editar_producto.php?id=<?php echo $row['idProducto']; ?>"
-                                        class="btn btn-primary btn-sm">
-                                        <i class="fas fa-edit"></i> Editar
-                                    </a>
-                                    <a href="eliminar_producto.php?id=<?php echo $row['idProducto']; ?>"
-                                        class="btn btn-danger btn-sm"
-                                        onclick="return confirm('¿Estás seguro de eliminar este producto?')">
-                                        <i class="fas fa-trash-alt"></i> Eliminar
-                                    </a>
-                                </div>
+                            <?php if (isset($_SESSION['usuario_id'])): ?>
+                                <?php if ($_SESSION['usuario_id'] == $row['usuario_id']): ?>
+                                    <!-- Botones de editar y eliminar para el propietario -->
+                                    <div class="acciones-producto">
+                                        <a href="editar_producto.php?id=<?php echo $row['idProducto']; ?>"
+                                            class="btn btn-primary btn-sm">
+                                            <i class="fas fa-edit"></i> Editar
+                                        </a>
+                                        <a href="eliminar_producto.php?id=<?php echo $row['idProducto']; ?>"
+                                            class="btn btn-danger btn-sm"
+                                            onclick="return confirm('¿Estás seguro de eliminar este producto?')">
+                                            <i class="fas fa-trash-alt"></i> Eliminar
+                                        </a>
+                                    </div>
+                                <?php else: ?>
+                                    <!-- Botón de contacto para otros usuarios -->
+                                    <?php
+                                    $telefono = $row['telefono'];
+                                    $mensaje = "Hola, me interesa tu producto: " . $row['producto'] . " por $" . $row['precio'];
+                                    $mensaje_codificado = urlencode($mensaje);
+                                    $whatsapp_link = "https://wa.me/{$telefono}?text={$mensaje_codificado}";
+                                    ?>
+                                    <div class="acciones-producto">
+                                        <a href="<?php echo $whatsapp_link; ?>"
+                                            target="_blank"
+                                            class="btn btn-success btn-sm">
+                                            <i class="fab fa-whatsapp"></i> Contactar por WhatsApp
+                                        </a>
+                                    </div>
+                                <?php endif; ?>
                             <?php endif; ?>
                         </div>
                     </div>

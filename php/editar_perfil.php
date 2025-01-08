@@ -44,6 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $carrera = $_POST['carrera'];
     $semestre = $_POST['semestre'];
     $informacion_extra = $_POST['informacion_extra'];
+    $telefono = $_POST['telefono'];
 
     // Subir las nuevas fotos si se han proporcionado
     $foto_perfil = $_FILES['foto_perfil']['name'] ? '../media/uploads/' . basename($_FILES['foto_perfil']['name']) : $perfil['foto_perfil'];
@@ -59,21 +60,44 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Si el perfil ya existe, actualizamos
     if ($perfil['usuario_id'] != '') {
-        $update_query = "UPDATE perfiles SET nombre = ?, apellido = ?, carrera = ?, semestre = ?, foto_perfil = ?, foto_portada = ?, informacion_extra = ? WHERE usuario_id = ?";
+        $update_query = "UPDATE perfiles SET nombre = ?, apellido = ?, carrera = ?, semestre = ?, 
+                     foto_perfil = ?, foto_portada = ?, informacion_extra = ?, telefono = ? 
+                     WHERE usuario_id = ?";
         $stmt = mysqli_prepare($enlace, $update_query);
-
-        // Asegúrate de que la cantidad de marcadores coincida con el número de parámetros
-        mysqli_stmt_bind_param($stmt, "sssisssi", $nombre, $apellido, $carrera, $semestre, $foto_perfil, $foto_portada, $informacion_extra, $usuario_id);
+        mysqli_stmt_bind_param(
+            $stmt,
+            "sssissssi",
+            $nombre,
+            $apellido,
+            $carrera,
+            $semestre,
+            $foto_perfil,
+            $foto_portada,
+            $informacion_extra,
+            $telefono,
+            $usuario_id
+        );
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
     } else {
         // Insertar un nuevo perfil si no existe
-        $insert_query = "INSERT INTO perfiles (usuario_id, nombre, apellido, carrera, semestre, foto_perfil, foto_portada, informacion_extra) 
-                         VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $insert_query = "INSERT INTO perfiles (usuario_id, nombre, apellido, carrera, semestre, 
+                     foto_perfil, foto_portada, informacion_extra, telefono) 
+                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = mysqli_prepare($enlace, $insert_query);
-
-        // Asegúrate de que la cantidad de marcadores coincida con el número de parámetros
-        mysqli_stmt_bind_param($stmt, "isssisss", $usuario_id, $nombre, $apellido, $carrera, $semestre, $foto_perfil, $foto_portada, $informacion_extra);
+        mysqli_stmt_bind_param(
+            $stmt,
+            "isssssss",
+            $usuario_id,
+            $nombre,
+            $apellido,
+            $carrera,
+            $semestre,
+            $foto_perfil,
+            $foto_portada,
+            $informacion_extra,
+            $telefono
+        );
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
     }
@@ -139,6 +163,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <textarea id="informacion_extra" name="informacion_extra"><?php echo htmlspecialchars($perfil['informacion_extra'] ?? ''); ?></textarea>
             </div>
 
+            <div class="form-group">
+                <label for="telefono">WhatsApp (incluye código de país):</label>
+                <input type="tel" id="telefono" name="telefono"
+                    pattern="[0-9]+"
+                    placeholder="Ejemplo: 525512345678"
+                    value="<?php echo htmlspecialchars($perfil['telefono'] ?? ''); ?>"
+                    required>
+                <small>Formato: código de país + número (sin espacios ni símbolos)</small>
+            </div>
             <button type="submit">Guardar cambios</button>
         </form>
     </div>
