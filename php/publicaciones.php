@@ -22,6 +22,21 @@
         .liked i {
             color: red;
         }
+
+        .like-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .like-count {
+            font-size: 0.9em;
+            color: #666;
+        }
     </style>
 </head>
 
@@ -51,17 +66,30 @@
         <!-- Mostrar publicaciones -->
         <div class="publicaciones">
             <?php
-            // Consulta para obtener las publicaciones con los datos del usuario
+            // Consulta para obtener las publicaciones con los datos del usuario y cantidad de likes
             $stmt = $enlace->prepare("
-                SELECT publicaciones.*, perfiles.foto_perfil, perfiles.nombre 
-                FROM publicaciones 
-                JOIN perfiles ON publicaciones.usuario_id = perfiles.usuario_id
-                ORDER BY publicaciones.fecha_publicada DESC
+                SELECT 
+                    p.*, 
+                    perf.foto_perfil, 
+                    perf.nombre,
+                    COUNT(DISTINCT l.like_id) as likes_count,
+                    EXISTS(
+                        SELECT 1 
+                        FROM likes 
+                        WHERE publicacion_id = p.id_publicacion 
+                        AND usuario_id = ?
+                    ) as user_liked
+                FROM publicaciones p
+                JOIN perfiles perf ON p.usuario_id = perf.usuario_id
+                LEFT JOIN likes l ON p.id_publicacion = l.publicacion_id
+                GROUP BY p.id_publicacion
+                ORDER BY p.fecha_publicada DESC
             ");
+            $usuario_actual = isset($_SESSION['usuario_id']) ? $_SESSION['usuario_id'] : 0;
+            $stmt->bind_param("i", $usuario_actual);
             $stmt->execute();
             $publicaciones = $stmt->get_result();
 
-            // Mostrar cada publicacion
             while ($publicacion = $publicaciones->fetch_assoc()) {
                 echo '<div class="post-item">';
 
@@ -83,20 +111,11 @@
                     echo '<img src="' . htmlspecialchars($publicacion['imagen']) . '" alt="Imagen de publicación">';
                 }
 
-                // Verificar si el usuario ya dio "Me gusta"
-                $stmt_likes = $enlace->prepare("SELECT 1 FROM likes WHERE usuario_id = ? AND publicacion_id = ?");
-                $stmt_likes->bind_param("ii", $_SESSION['usuario_id'], $publicacion['id_publicacion']);
-                $stmt_likes->execute();
-                $like_check = $stmt_likes->get_result();
-                $already_liked = ($like_check->num_rows > 0);
-
-                // Clases para el botón de "Me gusta"
-                $liked_class = $already_liked ? 'liked' : '';
-                $heart_class = $already_liked ? 'fas fa-heart' : 'far fa-heart';
-
-                // Botón "Me gusta"
-                echo '<button type="button" class="btn-like ' . $liked_class . '" data-id="' . $publicacion['id_publicacion'] . '" onclick="toggleLike(' . $publicacion['id_publicacion'] . ')">';
-                echo '<i class="' . $heart_class . '"></i> Me gusta (<span id="like-count-' . $publicacion['id_publicacion'] . '">' . $publicacion['cantidad_megusta'] . '</span>)';
+                // Botón de "Me gusta"
+                $liked_class = $publicacion['user_liked'] ? 'liked' : '';
+                echo '<button class="like-button ' . $liked_class . '" onclick="toggleLike(' . $publicacion['id_publicacion'] . ')" data-publication-id="' . $publicacion['id_publicacion'] . '">';
+                echo '<i class="fas fa-heart"></i>';
+                echo '<span class="like-count">' . $publicacion['likes_count'] . '</span>';
                 echo '</button>';
 
                 // Botón de "Comentar"
@@ -117,7 +136,6 @@
                 $stmt_comentarios->execute();
                 $comentarios = $stmt_comentarios->get_result();
 
-                // Mostrar cada comentario
                 while ($comentario = $comentarios->fetch_assoc()) {
                     echo '<div class="comment-item">';
                     echo '<strong>' . htmlspecialchars($comentario['usuario_nombre']) . ':</strong> ';
@@ -125,24 +143,55 @@
                     echo '</div>';
                 }
 
-                // Formulario para comentar
                 echo '<div id="comment-form-' . $publicacion['id_publicacion'] . '" class="comment-form">';
                 echo '<form action="agregar_comentario.php" method="POST">';
                 echo '<input type="hidden" name="publicacion_id" value="' . $publicacion['id_publicacion'] . '">';
                 echo '<textarea name="contenido_comentario" placeholder="Escribe un comentario..." required></textarea>';
                 echo '<button type="submit">Comentar</button>';
                 echo '</form>';
-                echo '</div>'; // comment-form
+                echo '</div>';
 
                 echo '</div>'; // comments-section
             }
             ?>
-        </div> <!-- /publicaciones -->
-    </div> <!-- /container -->
-
+        </div>
+    </div>
 
     <script>
-        // Mostrar/ocultar comentarios
+        async function toggleLike(publicationId) {
+            if (!<?php echo isset($_SESSION['usuario_id']) ? 'true' : 'false'; ?>) {
+                alert('Debes iniciar sesión para dar me gusta');
+                return;
+            }
+
+            try {
+                const response = await fetch('toggle_like.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `publicacion_id=${publicationId}`
+                });
+
+                if (!response.ok) throw new Error('Error en la respuesta del servidor');
+
+                const data = await response.json();
+                const button = document.querySelector(`button[data-publication-id="${publicationId}"]`);
+                const likeCount = button.querySelector('.like-count');
+
+                if (data.liked) {
+                    button.classList.add('liked');
+                } else {
+                    button.classList.remove('liked');
+                }
+
+                likeCount.textContent = data.likes_count;
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al procesar tu me gusta');
+            }
+        }
+
         function toggleCommentSection(publicationId) {
             const commentsSection = document.getElementById(`comments-section-${publicationId}`);
             const commentForm = document.getElementById(`comment-form-${publicationId}`);
@@ -154,7 +203,6 @@
             }
         }
 
-        // Ajuste automático de alto en textareas
         function autoResizeTextarea() {
             document.querySelectorAll('textarea').forEach(textarea => {
                 textarea.addEventListener('input', function() {
@@ -164,60 +212,11 @@
             });
         }
 
-        // Manejar el like mediante fetch (AJAX)
-        async function toggleLike(publicacionId) {
-            try {
-                const formData = new FormData();
-                formData.append('id_publicacion', publicacionId);
-
-                const response = await fetch('dar_like.php', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                const data = await response.text();
-                // data llega con formato "liked|15" o "unliked|14" o "info|10" o "error|mensajeError"
-                const [status, newCount] = data.split('|');
-
-                const likeButton = document.querySelector(`.btn-like[data-id="${publicacionId}"]`);
-                const likeCount = document.getElementById(`like-count-${publicacionId}`);
-                const icon = likeButton.querySelector('i');
-
-                switch (status) {
-                    case 'liked':
-                        likeButton.classList.add('liked');
-                        icon.className = 'fas fa-heart';
-                        if (newCount) likeCount.textContent = newCount;
-                        break;
-
-                    case 'unliked':
-                        likeButton.classList.remove('liked');
-                        icon.className = 'far fa-heart';
-                        if (newCount) likeCount.textContent = newCount;
-                        break;
-
-                    case 'info':
-                        // Usuario no logueado: solo actualizamos el contador y avisamos
-                        if (newCount) likeCount.textContent = newCount;
-                        alert('Debes iniciar sesión para dar "Me gusta"');
-                        break;
-
-                    case 'error':
-                        console.error('Error en servidor:', newCount);
-                        break;
-                }
-            } catch (error) {
-                console.error('Error de fetch:', error);
-            }
-        }
-
-        // Inicializar funciones
         document.addEventListener('DOMContentLoaded', function() {
             autoResizeTextarea();
         });
     </script>
 
-    <!-- Bootstrap (opcional si usas clases de Bootstrap) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
