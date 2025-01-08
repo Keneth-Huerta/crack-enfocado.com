@@ -1,67 +1,61 @@
-
 <?php
-// comentar.php
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-include 'conexion.php';
+session_start();
+require_once 'conexion.php';
 
-// Función para crear notificación de comentario
-function crearNotificacionComentario($enlace, $publicacion_id, $usuario_que_comento, $contenido_comentario)
-{
-    // Obtener el usuario dueño de la publicación
-    $stmt = $enlace->prepare("SELECT usuario_id, contenido FROM publicaciones WHERE id_publicacion = ?");
-    $stmt->bind_param("i", $publicacion_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $publicacion = $result->fetch_assoc();
+header('Content-Type: application/json');
 
-    // No crear notificación si el usuario comenta su propia publicación
-    if ($publicacion['usuario_id'] == $usuario_que_comento) {
-        return;
-    }
-
-    // Obtener nombre del usuario que comentó
-    $stmt = $enlace->prepare("SELECT nombre, apellido FROM perfiles WHERE usuario_id = ?");
-    $stmt->bind_param("i", $usuario_que_comento);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $usuario = $result->fetch_assoc();
-
-    $nombre_completo = $usuario['nombre'] . ' ' . $usuario['apellido'];
-    $mensaje = $nombre_completo . " comentó en tu publicación '" . substr($publicacion['contenido'], 0, 30) . "'";
-
-    // Insertar notificación
-    $stmt = $enlace->prepare("INSERT INTO notificaciones (usuario_id, tipo, mensaje, referencia_id, fecha) 
-                             VALUES (?, 'comentario', ?, ?, NOW())");
-    $stmt->bind_param("isi", $publicacion['usuario_id'], $mensaje, $publicacion_id);
-    $stmt->execute();
-}
-
-// Verificar si el usuario está logueado
 if (!isset($_SESSION['usuario_id'])) {
-    header('Location: ../secion.php');
-    exit();
+    echo json_encode(['success' => false, 'error' => 'Usuario no autenticado']);
+    exit;
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Obtener los datos del formulario
-    $contenido_comentario = $_POST['contenido_comentario'];
-    $publicacion_id = $_POST['publicacion_id'];
-    $usuario_id = $_SESSION['usuario_id'];
+if (!isset($_POST['publicacion_id']) || !isset($_POST['contenido']) || empty(trim($_POST['contenido']))) {
+    echo json_encode(['success' => false, 'error' => 'Datos incompletos']);
+    exit;
+}
 
-    // Insertar el comentario en la base de datos
-    $stmt = $enlace->prepare("INSERT INTO comentarios (usuario_id, publicacion_id, contenido) 
-                             VALUES (?, ?, ?)");
-    $stmt->bind_param("iis", $usuario_id, $publicacion_id, $contenido_comentario);
+$usuario_id = $_SESSION['usuario_id'];
+$publicacion_id = $_POST['publicacion_id'];
+$contenido = trim($_POST['contenido']);
+
+try {
+    // Insertar el comentario
+    $stmt = $enlace->prepare("INSERT INTO comentarios (usuario_id, publicacion_id, contenido) VALUES (?, ?, ?)");
+    $stmt->bind_param("iis", $usuario_id, $publicacion_id, $contenido);
 
     if ($stmt->execute()) {
-        // Crear notificación
-        crearNotificacionComentario($enlace, $publicacion_id, $usuario_id, $contenido_comentario);
+        // Obtener los datos del comentario recién creado
+        $comentario_id = $stmt->insert_id;
 
-        // Redirigir al usuario a la página de publicaciones
-        header('Location: publicaciones.php');
-        exit();
+        $stmt = $enlace->prepare("
+            SELECT c.*, p.nombre, p.apellido, p.foto_perfil, 
+                   DATE_FORMAT(c.fecha_comentario, '%d/%m/%Y %H:%i') as fecha_formateada
+            FROM comentarios c
+            JOIN perfiles p ON c.usuario_id = p.usuario_id
+            WHERE c.id_comentario = ?
+        ");
+        $stmt->bind_param("i", $comentario_id);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+        $comentario = $resultado->fetch_assoc();
+
+        // Preparar la respuesta
+        $response = [
+            'success' => true,
+            'comment' => [
+                'id' => $comentario_id,
+                'contenido' => htmlspecialchars($comentario['contenido']),
+                'nombre' => htmlspecialchars($comentario['nombre']),
+                'apellido' => htmlspecialchars($comentario['apellido']),
+                'foto_perfil' => htmlspecialchars($comentario['foto_perfil']),
+                'fecha_comentario' => $comentario['fecha_formateada']
+            ]
+        ];
+
+        echo json_encode($response);
+    } else {
+        echo json_encode(['success' => false, 'error' => 'Error al guardar el comentario']);
     }
+} catch (Exception $e) {
+    echo json_encode(['success' => false, 'error' => 'Error en el servidor']);
 }
-?>
