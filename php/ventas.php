@@ -13,7 +13,7 @@ if (!$enlace) {
     die("Conexión fallida: " . mysqli_connect_error());
 }
 
-// Obtener lista de perfiles para el formulario (solo ID y foto de perfil)
+// Obtener lista de perfiles
 $perfilesQuery = "SELECT id, foto_perfil FROM perfiles";
 $perfilesResult = mysqli_query($enlace, $perfilesQuery);
 
@@ -22,16 +22,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $producto = htmlspecialchars($_POST['producto']);
     $precio = floatval($_POST['precio']);
     $descripcion = htmlspecialchars($_POST['descripcion']);
-    $imagen = htmlspecialchars($_POST['imagen']);
     $perfil_id = intval($_POST['perfil_id']);
 
+    // Cargar imagen como datos binarios (BLOB)
+    if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
+        $imagen = file_get_contents($_FILES['imagen']['tmp_name']);
+    } else {
+        $imagen = null;
+    }
+
+    // Preparar e insertar en la base de datos
     $stmt = $enlace->prepare("INSERT INTO productos (producto, precio, descripcion, imagen, usuario_id) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("sdssi", $producto, $precio, $descripcion, $imagen, $perfil_id);
+    $stmt->bind_param("sdssb", $producto, $precio, $descripcion, $imagen, $perfil_id);
 
     if ($stmt->execute()) {
         echo "<p>Venta agregada con éxito.</p>";
     } else {
-        echo "<p>Error al agregar la venta.</p>";
+        echo "<p>Error al agregar la venta: " . $stmt->error . "</p>";
     }
     $stmt->close();
 }
@@ -45,56 +52,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sección de Ventas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-        }
-
-        .form-container,
-        .sales-section {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .sales-cards {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-        }
-
-        .product-card {
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 15px;
-            text-align: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .product-card img {
-            max-width: 100%;
-            border-radius: 8px;
-        }
-
-        .user-profile img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-        }
-    </style>
 </head>
 
 <body>
@@ -102,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <div class="form-container">
         <h2>Agregar Nueva Venta</h2>
-        <form action="ventas.php" method="POST">
+        <form action="ventas.php" method="POST" enctype="multipart/form-data">
             <label for="producto">Producto:</label>
             <input type="text" id="producto" name="producto" required class="form-control"><br>
 
@@ -112,8 +69,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <label for="descripcion">Descripción:</label>
             <textarea id="descripcion" name="descripcion" required class="form-control"></textarea><br>
 
-            <label for="imagen">URL de la Imagen:</label>
-            <input type="url" id="imagen" name="imagen" required class="form-control"><br>
+            <label for="imagen">Selecciona una Imagen:</label>
+            <input type="file" id="imagen" name="imagen" accept="image/*" required class="form-control"><br>
 
             <label for="perfil_id">Selecciona el Perfil:</label>
             <select id="perfil_id" name="perfil_id" required class="form-control">
@@ -137,8 +94,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
                     echo '<div class="product-card">';
-                    echo '<div class="user-profile"><img src="' . htmlspecialchars($row['foto_perfil']) . '" alt="Foto de perfil"></div>';
-                    echo '<img src="' . htmlspecialchars($row['imagen']) . '" alt="Imagen del producto">';
+
+                    // Mostrar imagen del perfil
+                    echo '<div class="user-profile"><img src="data:image/jpeg;base64,' . base64_encode($row['foto_perfil']) . '" alt="Foto de perfil"></div>';
+
+                    // Mostrar imagen del producto desde BLOB
+                    echo '<img src="data:image/jpeg;base64,' . base64_encode($row['imagen']) . '" alt="Imagen del producto">';
+
                     echo "<h3>" . htmlspecialchars($row['producto']) . "</h3>";
                     echo "<p><strong>Precio:</strong> $" . htmlspecialchars($row['precio']) . "</p>";
                     echo "<p><strong>Descripción:</strong> " . htmlspecialchars($row['descripcion']) . "</p>";
