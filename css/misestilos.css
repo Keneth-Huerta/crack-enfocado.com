@@ -402,4 +402,52 @@ body {
     border-radius: var(--border-radius);
     margin: 0 auto 15px;
     display: block;
+}.producto-item {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.producto-imagen img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+.producto-detalles {
+    margin-top: 15px;
+}
+
+.producto-detalles h3 {
+    margin: 0 0 10px 0;
+    color: #333;
+}
+
+.precio {
+    font-size: 1.2em;
+    color: #2ecc71;
+    font-weight: bold;
+}
+
+.descripcion {
+    color: #666;
+    margin: 10px 0;
+}
+
+.acciones-producto {
+    margin-top: 15px;
+}
+
+.acciones-producto .btn {
+    margin-right: 10px;
+}
+
+.sin-productos {
+    text-align: center;
+    padding: 30px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    margin: 20px 0;
 }
