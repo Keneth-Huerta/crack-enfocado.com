@@ -216,6 +216,14 @@ $current_page = basename($_SERVER['PHP_SELF']);
         color: #6c757d;
     }
 
+    :root {
+        --ipn-vino: #952F57;
+        --ipn-guinda: #741739;
+        --ipn-dorado: #C4983D;
+        --ipn-gris: #58595B;
+        --ipn-blanco: #FFFFFF;
+    }
+
     .nav-link.active {
         color: var(--ipn-dorado) !important;
         border-bottom: 2px solid var(--ipn-dorado);
