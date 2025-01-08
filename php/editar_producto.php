@@ -204,7 +204,7 @@ if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
                 <textarea class="form-control" id="descripcion" name="descripcion" required><?php echo htmlspecialchars($producto['descripcion']); ?></textarea>
             </div>
 
-           // Modificar la sección donde se muestra la imagen actual
+           
 <?php if (!empty($producto['imagen'])): ?>
     <div class="mb-3">
         <label class="form-label">Imagen Actual:</label><br>
