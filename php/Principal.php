@@ -175,7 +175,7 @@ require_once 'conexion.php';
                                             Publicado el <?php echo date("d/m/Y H:i", strtotime($publicacion['fecha_publicada'])); ?>
                                         </small>
                                         <div class="mt-2">
-                                            <a href="detalles_publicacion.php?id=<?php echo $publicacion['id']; ?>" class="btn btn-ver-todas btn-sm">Ver más</a>
+                                            <a href="detalle_publicacion.php?id=<?php echo $publicacion['id']; ?>" class="btn btn-ver-todas btn-sm">Ver más</a>
                                         </div>
                                     </div>
                                 </div>
@@ -237,7 +237,7 @@ require_once 'conexion.php';
                                                 <p class="description"><?php echo htmlspecialchars($productos[$j]['descripcion']); ?></p>
                                                 <small class="text-muted">Vendedor: <?php echo htmlspecialchars($productos[$j]['username']); ?></small>
                                                 <div class="mt-2">
-                                                    <a href="detalles_producto.php?id=<?php echo $productos[$j]['idProducto']; ?>"
+                                                    <a href="detalle_producto.php?id=<?php echo $productos[$j]['idProducto']; ?>"
                                                         class="btn btn-ver-todas btn-sm">Ver detalles</a>
                                                 </div>
                                             </div>
