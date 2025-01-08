@@ -203,16 +203,10 @@ if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
                 <label for="descripcion" class="form-label">Descripción:</label>
                 <textarea class="form-control" id="descripcion" name="descripcion" required><?php echo htmlspecialchars($producto['descripcion']); ?></textarea>
             </div>
-
-           
 <?php if (!empty($producto['imagen'])): ?>
     <div class="mb-3">
         <label class="form-label">Imagen Actual:</label><br>
-        <?php
-        $imagen_tipo = exif_imagetype($_FILES['imagen']['tmp_name']);
-        $mime_type = image_type_to_mime_type($imagen_tipo);
-        ?>
-        <img src="data:<?php echo $mime_type; ?>;base64,<?php echo base64_encode($producto['imagen']); ?>"
+        <img src="data:image/jpeg;base64,<?php echo base64_encode($producto['imagen']); ?>"
             alt="Imagen actual del producto" class="current-image">
     </div>
 <?php endif; ?>
