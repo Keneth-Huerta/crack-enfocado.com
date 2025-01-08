@@ -1,49 +1,40 @@
 <?php
-// Iniciar sesión seguro
+// Conexión a la base de datos
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
+$servidor = "localhost";
+$usuarioBD = "u288355303_Keneth";
+$claveBD = "1420Genio.";
+$baseDeDatos = "u288355303_Usuarios";
 
-require_once 'conexion.php';
-
-// Verificar conexión
+$enlace = mysqli_connect($servidor, $usuarioBD, $claveBD, $baseDeDatos);
 if (!$enlace) {
-    die("Error de conexión: " . mysqli_connect_error());
+    die("Conexión fallida: " . mysqli_connect_error());
 }
 
-// Verificar sesión
-if (!isset($_SESSION['usuario_id']) || empty($_SESSION['usuario_id'])) {
-    header("Location: login.php");
-    exit();
+// Obtener lista de perfiles para el formulario (solo ID y foto de perfil)
+$perfilesQuery = "SELECT id, foto_perfil FROM perfiles";
+$perfilesResult = mysqli_query($enlace, $perfilesQuery);
+
+// Procesar formulario de ventas
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $producto = htmlspecialchars($_POST['producto']);
+    $precio = floatval($_POST['precio']);
+    $descripcion = htmlspecialchars($_POST['descripcion']);
+    $imagen = htmlspecialchars($_POST['imagen']);
+    $perfil_id = intval($_POST['perfil_id']);
+
+    $stmt = $enlace->prepare("INSERT INTO productos (producto, precio, descripcion, imagen, usuario_id) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("sdssi", $producto, $precio, $descripcion, $imagen, $perfil_id);
+
+    if ($stmt->execute()) {
+        echo "<p>Venta agregada con éxito.</p>";
+    } else {
+        echo "<p>Error al agregar la venta.</p>";
+    }
+    $stmt->close();
 }
-
-// Depuración de sesión (opcional)
-echo "<pre>";
-var_dump($_SESSION);
-echo "</pre>";
-
-// Obtener el ID del usuario desde la URL o sesión
-$usuario_ids = $_GET['usuario_id'] ?? $_SESSION['usuario_id'];
-
-// Consultar perfil
-$query = "SELECT * FROM perfiles JOIN usuarios on perfiles.usuario_id = usuarios.id WHERE perfiles.usuario_id = ?";
-$stmt = mysqli_prepare($enlace, $query);
-mysqli_stmt_bind_param($stmt, "i", $usuario_ids);
-mysqli_stmt_execute($stmt);
-$resultado = mysqli_stmt_get_result($stmt);
-$perfil = mysqli_fetch_assoc($resultado);
-
-if (!$perfil) {
-    die("Error: Perfil no encontrado.");
-}
-
-// Consultar ventas del usuario (corrección aquí)
-$ventas_query = "SELECT * FROM productos WHERE usuario_id = ? ORDER BY idProducto DESC";
-$stmt_ventas = mysqli_prepare($enlace, $ventas_query);
-mysqli_stmt_bind_param($stmt_ventas, "i", $usuario_ids);
-mysqli_stmt_execute($stmt_ventas);
-$ventas_result = mysqli_stmt_get_result($stmt_ventas);
-
 ?>
 
 <!DOCTYPE html>
@@ -52,53 +43,116 @@ $ventas_result = mysqli_stmt_get_result($stmt_ventas);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil de <?php echo htmlspecialchars($perfil['nombre'] . ' ' . $perfil['apellido']); ?></title>
+    <title>Sección de Ventas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+
+        .form-container,
+        .sales-section {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sales-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .product-card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product-card img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+
+        .user-profile img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
 </head>
 
 <body>
     <?php include('header.php'); ?>
 
-    <div class="container mt-4">
-        <h1>Perfil de <?php echo htmlspecialchars($perfil['nombre'] . ' ' . $perfil['apellido']); ?></h1>
-        <img src="<?php echo htmlspecialchars($perfil['foto_perfil']); ?>" alt="Foto de perfil" class="rounded-circle" width="150">
+    <div class="form-container">
+        <h2>Agregar Nueva Venta</h2>
+        <form action="ventas.php" method="POST">
+            <label for="producto">Producto:</label>
+            <input type="text" id="producto" name="producto" required class="form-control"><br>
 
-        <ul class="nav nav-tabs mt-4" id="perfilTabs" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="publicaciones-tab" data-bs-toggle="tab" data-bs-target="#publicaciones" type="button" role="tab">Publicaciones</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="ventas-tab" data-bs-toggle="tab" data-bs-target="#ventas" type="button" role="tab">Ventas</button>
-            </li>
-        </ul>
+            <label for="precio">Precio:</label>
+            <input type="number" step="0.01" id="precio" name="precio" required class="form-control"><br>
 
-        <div class="tab-content mt-4" id="perfilTabsContent">
-            <!-- Pestaña de ventas corregida -->
-            <div class="tab-pane fade show active" id="ventas" role="tabpanel">
-                <?php if (mysqli_num_rows($ventas_result) > 0): ?>
-                    <?php while ($venta = mysqli_fetch_assoc($ventas_result)) { ?>
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <p><strong>Producto:</strong> <?php echo htmlspecialchars($venta['producto']); ?></p>
-                                <p><strong>Precio:</strong> $<?php echo htmlspecialchars($venta['precio']); ?></p>
-                            </div>
-                        </div>
-                    <?php } ?>
-                <?php else: ?>
-                    <p>No se encontraron ventas registradas.</p>
-                <?php endif; ?>
-            </div>
-        </div>
+            <label for="descripcion">Descripción:</label>
+            <textarea id="descripcion" name="descripcion" required class="form-control"></textarea><br>
+
+            <label for="imagen">URL de la Imagen:</label>
+            <input type="url" id="imagen" name="imagen" required class="form-control"><br>
+
+            <label for="perfil_id">Selecciona el Perfil:</label>
+            <select id="perfil_id" name="perfil_id" required class="form-control">
+                <?php while ($perfil = mysqli_fetch_assoc($perfilesResult)) {
+                    echo '<option value="' . $perfil['id'] . '">Perfil ID: ' . $perfil['id'] . '</option>';
+                } ?>
+            </select><br>
+
+            <button type="submit" class="btn btn-primary">Agregar Venta</button>
+        </form>
     </div>
+
+    <section class="sales-section">
+        <h1 class="sales-title">Materiales</h1>
+        <p class="sales-description">Explora la variedad de materiales cargados por los alumnos</p>
+
+        <div class="sales-cards">
+            <?php
+            $sql = "SELECT p.*, pr.foto_perfil FROM productos p JOIN perfiles pr ON p.usuario_id = pr.id";
+            $result = mysqli_query($enlace, $sql);
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo '<div class="product-card">';
+                    echo '<div class="user-profile"><img src="' . htmlspecialchars($row['foto_perfil']) . '" alt="Foto de perfil"></div>';
+                    echo '<img src="' . htmlspecialchars($row['imagen']) . '" alt="Imagen del producto">';
+                    echo "<h3>" . htmlspecialchars($row['producto']) . "</h3>";
+                    echo "<p><strong>Precio:</strong> $" . htmlspecialchars($row['precio']) . "</p>";
+                    echo "<p><strong>Descripción:</strong> " . htmlspecialchars($row['descripcion']) . "</p>";
+                    echo '</div>';
+                }
+            } else {
+                echo "<p>No se encontraron productos.</p>";
+            }
+            mysqli_close($enlace);
+            ?>
+        </div>
+    </section>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
-
-<?php
-// Cerrar conexiones
-mysqli_stmt_close($stmt);
-mysqli_stmt_close($stmt_ventas);
-mysqli_close($enlace);
-?>
