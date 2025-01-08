@@ -237,7 +237,7 @@ $foto_portada = $perfil['foto_portada'] ?? '../media/user_icon_001.jpg';
                                     <div class="producto-item">
                                         <div class="producto-imagen">
                                             <?php if (!empty($producto['imagen'])): ?>
-                                                <img src="data:image/jpeg;base64,<?php echo base64_encode($producto['imagen']); ?>"
+                                                <img class="img-fluid rounded" src="data:image/jpeg;base64,<?php echo base64_encode($producto['imagen']); ?>"
                                                     alt="Imagen del producto">
                                             <?php else: ?>
                                                 <img src="../media/producto_default.jpg" alt="Imagen no disponible">
