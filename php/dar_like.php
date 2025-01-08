@@ -8,6 +8,13 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 include 'conexion.php';
 
+function crearNotificacionLike($enlace, $id_publicacion, $usuario_id) {
+    // Add your notification creation logic here
+    $stmt = $enlace->prepare("INSERT INTO notificaciones (usuario_id, publicacion_id, tipo) VALUES (?, ?, 'like')");
+    $stmt->bind_param("ii", $usuario_id, $id_publicacion);
+    $stmt->execute();
+}
+
 // Verify database connection
 if ($enlace->connect_error) {
     die("Error de conexión: " . $enlace->connect_error);

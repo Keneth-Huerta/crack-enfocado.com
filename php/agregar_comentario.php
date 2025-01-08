@@ -10,7 +10,7 @@ include 'conexion.php';
 function crearNotificacionComentario($enlace, $publicacion_id, $usuario_que_comento, $contenido_comentario)
 {
     // Obtener el usuario dueño de la publicación
-    $stmt = $enlace->prepare("SELECT usuario_id, titulo FROM publicaciones WHERE id_publicacion = ?");
+    $stmt = $enlace->prepare("SELECT usuario_id, contenido FROM publicaciones WHERE id_publicacion = ?");
     $stmt->bind_param("i", $publicacion_id);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -29,7 +29,7 @@ function crearNotificacionComentario($enlace, $publicacion_id, $usuario_que_come
     $usuario = $result->fetch_assoc();
 
     $nombre_completo = $usuario['nombre'] . ' ' . $usuario['apellido'];
-    $mensaje = $nombre_completo . " comentó en tu publicación '" . substr($publicacion['titulo'], 0, 30) . "'";
+    $mensaje = $nombre_completo . " comentó en tu publicación '" . substr($publicacion['contenido'], 0, 30) . "'";
 
     // Insertar notificación
     $stmt = $enlace->prepare("INSERT INTO notificaciones (usuario_id, tipo, mensaje, referencia_id, fecha) 
