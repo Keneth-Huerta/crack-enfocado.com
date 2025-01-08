@@ -14,7 +14,6 @@ require_once 'conexion.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CECyT 3 - Página Principal</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         /* Variables de colores IPN */
         :root {
@@ -257,27 +256,29 @@ require_once 'conexion.php';
                 ?>
                         <div class="carousel-item <?php echo $activeClass; ?>">
                             <div class="">
-                                <div class="">
-                                    <div class="product-card">
-                                        <?php if (!empty($productos['imagen'])): ?>
-                                            <img src="data:image/jpeg;base64,<?php echo base64_encode($productos['imagen']); ?>"
-                                                class="w-100 product-image" alt="Producto">
-                                        <?php else: ?>
-                                            <img src="media/producto_default.jpg"
-                                                class="w-100 product-image" alt="Imagen no disponible">
-                                        <?php endif; ?>
-                                        <div class="product-details">
-                                            <h5><?php echo htmlspecialchars($productos['producto']); ?></h5>
-                                            <p class="price">$<?php echo number_format($productos['precio'], 2); ?></p>
-                                            <p class="description"><?php echo htmlspecialchars($productos['descripcion']); ?></p>
-                                            <small class="text-muted">Vendedor: <?php echo htmlspecialchars($productos['username']); ?></small>
-                                            <div class="mt-2">
-                                                <a href="detalle_producto.php?id=<?php echo $productos['idProducto']; ?>"
-                                                    class="btn btn-ver-todas btn-sm">Ver detalles</a>
+                                <?php for ($j = $i; $j < min($i, count($productos)); $j++) { ?>
+                                    <div class="">
+                                        <div class="product-card">
+                                            <?php if (!empty($productos[$j]['imagen'])): ?>
+                                                <img src="data:image/jpeg;base64,<?php echo base64_encode($productos[$j]['imagen']); ?>"
+                                                    class="w-100 product-image" alt="Producto">
+                                            <?php else: ?>
+                                                <img src="media/producto_default.jpg"
+                                                    class="w-100 product-image" alt="Imagen no disponible">
+                                            <?php endif; ?>
+                                            <div class="product-details">
+                                                <h5><?php echo htmlspecialchars($productos[$j]['producto']); ?></h5>
+                                                <p class="price">$<?php echo number_format($productos[$j]['precio'], 2); ?></p>
+                                                <p class="description"><?php echo htmlspecialchars($productos[$j]['descripcion']); ?></p>
+                                                <small class="text-muted">Vendedor: <?php echo htmlspecialchars($productos[$j]['username']); ?></small>
+                                                <div class="mt-2">
+                                                    <a href="detalle_producto.php?id=<?php echo $productos[$j]['idProducto']; ?>"
+                                                        class="btn btn-ver-todas btn-sm">Ver detalles</a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                <?php } ?>
                             </div>
                         </div>
                 <?php

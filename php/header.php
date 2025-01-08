@@ -215,6 +215,19 @@ $current_page = basename($_SERVER['PHP_SELF']);
     .search-form .form-control:focus+.bi-search {
         color: #6c757d;
     }
+
+    .nav-link.active {
+        color: var(--ipn-dorado) !important;
+        border-bottom: 2px solid var(--ipn-dorado);
+    }
+
+    .nav-link {
+        color: var(--ipn-blanco) !important;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        transition: all 0.3s ease;
+        border-bottom: 2px solid transparent;
+    }
 </style>
 
 <!-- Navbar -->
