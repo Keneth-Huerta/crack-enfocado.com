@@ -66,14 +66,12 @@ class SearchSystem
             FROM publicaciones p
             JOIN usuarios u ON p.usuario_id = u.id
             JOIN perfiles pf ON u.id = pf.usuario_id
-            WHERE 
-                p.contenido LIKE ? 
-                OR p.titulo LIKE ?
+            WHERE p.contenido LIKE ?
             ORDER BY p.fecha_publicada DESC
         ";
 
         $stmt = mysqli_prepare($this->enlace, $query);
-        mysqli_stmt_bind_param($stmt, 'ss', $this->searchTerm, $this->searchTerm);
+        mysqli_stmt_bind_param($stmt, 's', $this->searchTerm);
         mysqli_stmt_execute($stmt);
         $this->results['publicaciones'] = mysqli_stmt_get_result($stmt);
         mysqli_stmt_close($stmt);
