@@ -74,6 +74,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $mensaje = '<div class="alert alert-danger">Error al actualizar el producto: ' . mysqli_error($enlace) . '</div>';
     }
 }
+
+if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
+    // Validar tipo de archivo
+    $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
+    $file_type = $_FILES['imagen']['type'];
+    
+    if (!in_array($file_type, $allowed_types)) {
+        $mensaje = '<div class="alert alert-danger">Solo se permiten imágenes JPG, PNG y GIF.</div>';
+    } 
+    // Validar tamaño (5MB máximo)
+    elseif ($_FILES['imagen']['size'] > 5242880) {
+        $mensaje = '<div class="alert alert-danger">La imagen no debe exceder 5MB.</div>';
+    } 
+    else {
+        // Procesar imagen
+        $nueva_imagen = file_get_contents($_FILES['imagen']['tmp_name']);
+        $query = "UPDATE productos SET producto = ?, precio = ?, descripcion = ?, imagen = ? WHERE idProducto = ? AND usuario_id = ?";
+        $stmt = mysqli_prepare($enlace, $query);
+        mysqli_stmt_bind_param($stmt, "sdsbii", $nuevo_producto, $nuevo_precio, $nueva_descripcion, $nueva_imagen, $id_producto, $_SESSION['usuario_id']);
+    }
+} 
 ?>
 
 <!DOCTYPE html>
@@ -183,13 +204,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <textarea class="form-control" id="descripcion" name="descripcion" required><?php echo htmlspecialchars($producto['descripcion']); ?></textarea>
             </div>
 
-            <?php if (!empty($producto['imagen'])): ?>
-                <div class="mb-3">
-                    <label class="form-label">Imagen Actual:</label><br>
-                    <img src="data:image/jpeg;base64,<?php echo base64_encode($producto['imagen']); ?>"
-                        alt="Imagen actual del producto" class="current-image">
-                </div>
-            <?php endif; ?>
+           // Modificar la sección donde se muestra la imagen actual
+<?php if (!empty($producto['imagen'])): ?>
+    <div class="mb-3">
+        <label class="form-label">Imagen Actual:</label><br>
+        <?php
+        $imagen_tipo = exif_imagetype($_FILES['imagen']['tmp_name']);
+        $mime_type = image_type_to_mime_type($imagen_tipo);
+        ?>
+        <img src="data:<?php echo $mime_type; ?>;base64,<?php echo base64_encode($producto['imagen']); ?>"
+            alt="Imagen actual del producto" class="current-image">
+    </div>
+<?php endif; ?>
 
             <div class="mb-3">
                 <label for="imagen" class="form-label">Nueva Imagen (opcional):</label>
