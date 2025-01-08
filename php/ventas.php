@@ -13,9 +13,9 @@ if (!$enlace) {
     die("Conexión fallida: " . mysqli_connect_error());
 }
 
-// Obtener lista de usuarios para el formulario
-$usuariosQuery = "SELECT id, nombre, apellido FROM usuarios";
-$usuariosResult = mysqli_query($enlace, $usuariosQuery);
+// Obtener lista de perfiles para el formulario (solo ID y foto de perfil)
+$perfilesQuery = "SELECT id, foto_perfil FROM perfiles";
+$perfilesResult = mysqli_query($enlace, $perfilesQuery);
 
 // Procesar formulario de ventas
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -23,10 +23,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $precio = floatval($_POST['precio']);
     $descripcion = htmlspecialchars($_POST['descripcion']);
     $imagen = htmlspecialchars($_POST['imagen']);
-    $usuario_id = intval($_POST['usuario_id']);
+    $perfil_id = intval($_POST['perfil_id']);
 
     $stmt = $enlace->prepare("INSERT INTO productos (producto, precio, descripcion, imagen, usuario_id) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("sdssi", $producto, $precio, $descripcion, $imagen, $usuario_id);
+    $stmt->bind_param("sdssi", $producto, $precio, $descripcion, $imagen, $perfil_id);
 
     if ($stmt->execute()) {
         echo "<p>Venta agregada con éxito.</p>";
@@ -115,10 +115,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <label for="imagen">URL de la Imagen:</label>
             <input type="url" id="imagen" name="imagen" required class="form-control"><br>
 
-            <label for="usuario_id">Usuario:</label>
-            <select id="usuario_id" name="usuario_id" required class="form-control">
-                <?php while ($usuario = mysqli_fetch_assoc($usuariosResult)) {
-                    echo '<option value="' . $usuario['id'] . '">' . htmlspecialchars($usuario['nombre'] . ' ' . $usuario['apellido']) . '</option>';
+            <label for="perfil_id">Selecciona el Perfil:</label>
+            <select id="perfil_id" name="perfil_id" required class="form-control">
+                <?php while ($perfil = mysqli_fetch_assoc($perfilesResult)) {
+                    echo '<option value="' . $perfil['id'] . '">Perfil ID: ' . $perfil['id'] . '</option>';
                 } ?>
             </select><br>
 
@@ -132,13 +132,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         <div class="sales-cards">
             <?php
-            $sql = "SELECT p.*, u.nombre, u.apellido, u.foto_perfil FROM productos p JOIN usuarios u ON p.usuario_id = u.id";
+            $sql = "SELECT p.*, pr.foto_perfil FROM productos p JOIN perfiles pr ON p.usuario_id = pr.id";
             $result = mysqli_query($enlace, $sql);
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
                     echo '<div class="product-card">';
-                    echo '<div class="user-profile"><img src="' . htmlspecialchars($row['foto_perfil']) . '" alt="Foto de perfil">';
-                    echo "<p>Publicado por: " . htmlspecialchars($row['nombre'] . ' ' . $row['apellido']) . "</p></div>";
+                    echo '<div class="user-profile"><img src="' . htmlspecialchars($row['foto_perfil']) . '" alt="Foto de perfil"></div>';
                     echo '<img src="' . htmlspecialchars($row['imagen']) . '" alt="Imagen del producto">';
                     echo "<h3>" . htmlspecialchars($row['producto']) . "</h3>";
                     echo "<p><strong>Precio:</strong> $" . htmlspecialchars($row['precio']) . "</p>";
