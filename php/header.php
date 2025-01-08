@@ -264,32 +264,25 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 <?php if (isset($_SESSION['usuario_id'])): ?>
                     <!-- Notificaciones -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-bell"></i>
                             <?php if (count($notificaciones) > 0): ?>
                                 <span class="notification-badge"><?php echo count($notificaciones); ?></span>
                             <?php endif; ?>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-end">
+                        <ul class="dropdown-menu">
                             <?php if (empty($notificaciones)): ?>
-                                <div class="dropdown-item text-muted">No hay notificaciones nuevas</div>
+                                <li class="dropdown-item text-muted">No hay notificaciones nuevas</li>
                             <?php else: ?>
                                 <?php foreach ($notificaciones as $notif): ?>
-                                    <form method="POST" action="/php/marcar_notificacion.php" class="notification-form">
-                                        <input type="hidden" name="notification_id" value="<?php echo $notif['id']; ?>">
-                                        <input type="hidden" name="mark_read" value="1">
-                                        <button type="submit" class="dropdown-item notification-item">
-                                            <small class="text-muted"><?php echo date('d/m/Y H:i', strtotime($notif['fecha'])); ?></small>
-                                            <div><?php echo htmlspecialchars($notif['mensaje']); ?></div>
-                                        </button>
-                                    </form>
-
+                                    <li><a class="dropdown-item" href="<?php echo $notif['enlace']; ?>">
+                                            <?php echo htmlspecialchars($notif['mensaje']); ?>
+                                        </a></li>
                                 <?php endforeach; ?>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item text-center" href="/php/notificaciones.php">Ver todas</a>
                             <?php endif; ?>
-                        </div>
+                        </ul>
                     </li>
+
 
                     <!-- Perfil -->
                     <li class="nav-item dropdown">
