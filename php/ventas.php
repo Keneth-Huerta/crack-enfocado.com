@@ -229,7 +229,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <body>
     <?php include('header.php'); ?>
-
+    <?php if (isset($_SESSION['mensaje'])): ?>
+        <div class="alert alert-<?php echo $_SESSION['mensaje_tipo']; ?> alert-dismissible fade show" role="alert">
+            <?php
+            echo $_SESSION['mensaje'];
+            unset($_SESSION['mensaje']);
+            unset($_SESSION['mensaje_tipo']);
+            ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
     <div class="form-container">
         <h2>Agregar Nueva Venta</h2>
         <form action="ventas.php" method="POST" enctype="multipart/form-data">

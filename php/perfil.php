@@ -266,7 +266,7 @@ $foto_portada = $perfil['foto_portada'] ?? '../media/user_icon_001.jpg';
                         <?php else: ?>
                             <div class="sin-productos">
                                 <p><i class="fas fa-store"></i> Aún no tienes productos en venta.</p>
-                                <a href="agregar_producto.php" class="btn btn-primary">
+                                <a href="ventas.php" class="btn btn-primary">
                                     <i class="fas fa-plus"></i> Agregar primer producto
                                 </a>
                             </div>
