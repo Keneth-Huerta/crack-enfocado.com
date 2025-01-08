@@ -47,33 +47,199 @@ if (isset($_SESSION['usuario_id'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* ... [Previous styles remain the same] ... */
+        /* Variables */
+        :root {
+            --primary-color: #952F57;
+            --primary-hover: #7a2647;
+            --bg-light: #f8f9fa;
+            --border-color: #dee2e6;
+            --text-muted: #6c757d;
+            --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
 
-        .comment-error {
-            color: #dc3545;
-            margin-top: 0.5rem;
-            display: none;
+        /* Contenedor principal */
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 0 15px;
+        }
+
+        .publication-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            padding: 24px;
+            margin-bottom: 30px;
+        }
+
+        /* Cabecera de la publicación */
+        .publication-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .publication-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .publication-user {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .publication-date {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Contenido de la publicación */
+        .publication-content {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 24px;
+            white-space: pre-wrap;
+        }
+
+        .publication-image {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        /* Acciones */
+        .publication-actions {
+            display: flex;
+            gap: 20px;
+            padding: 15px 0;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .btn-like {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            transition: var(--transition);
+            border-radius: 20px;
+        }
+
+        .btn-like:hover {
+            background-color: #f0f2f5;
+        }
+
+        .btn-like.liked {
+            color: #e41e3f;
+        }
+
+        .btn-like i {
+            font-size: 1.2rem;
+            transition: var(--transition);
         }
 
         .like-animation {
             animation: likeAnimation 0.3s ease;
         }
 
-        .comment-count {
-            color: #666;
-            font-size: 0.9rem;
-            margin-left: 0.5rem;
+        @keyframes likeAnimation {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.4);
+            }
+
+            100% {
+                transform: scale(1);
+            }
         }
 
+        /* Sección de comentarios */
+        .comments-section {
+            margin-top: 20px;
+            transition: var(--transition);
+        }
+
+        .comment-form {
+            margin-bottom: 24px;
+        }
+
+        .comment-form textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            resize: vertical;
+            min-height: 80px;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .comment-form textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(149, 47, 87, 0.1);
+        }
+
+        .comment-item {
+            padding: 15px;
+            border-radius: 8px;
+            background-color: var(--bg-light);
+            margin-bottom: 12px;
+            transition: var(--transition);
+        }
+
+        .comment-item:hover {
+            background-color: #f0f2f5;
+        }
+
+        .comment-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .comment-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .comment-item p {
+            margin: 8px 0;
+            line-height: 1.5;
+        }
+
+        .text-muted {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Loading spinner */
         .loading-spinner {
-            display: none;
             width: 20px;
             height: 20px;
             border: 2px solid #f3f3f3;
-            border-top: 2px solid #3498db;
+            border-top: 2px solid var(--primary-color);
             border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-left: 10px;
+            animation: spin 0.8s linear infinite;
         }
 
         @keyframes spin {
@@ -83,6 +249,36 @@ if (isset($_SESSION['usuario_id'])) {
 
             100% {
                 transform: rotate(360deg);
+            }
+        }
+
+        /* Error message */
+        .comment-error {
+            padding: 10px;
+            border-radius: 6px;
+            background-color: #fff5f5;
+            color: #dc3545;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                margin: 15px auto;
+            }
+
+            .publication-container {
+                border-radius: 0;
+                padding: 16px;
+            }
+
+            .publication-content {
+                font-size: 1rem;
+            }
+
+            .comment-item {
+                padding: 12px;
             }
         }
     </style>
