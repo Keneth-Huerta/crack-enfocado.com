@@ -14,7 +14,7 @@ if (!$enlace) {
 }
 
 // Obtener lista de usuarios para el formulario
-$usuariosQuery = "SELECT idUsuario, nombre FROM usuarios";
+$usuariosQuery = "SELECT id, nombre FROM usuarios";
 $usuariosResult = mysqli_query($enlace, $usuariosQuery);
 
 // Procesar formulario de ventas
