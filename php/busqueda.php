@@ -1,103 +1,328 @@
 <?php
-require_once 'conexion.php'; // Conexión a la base de datos
+require_once 'conexion.php';
 
-// Obtener el término de búsqueda
-$searchTerm = isset($_GET['search']) ? '%' . $_GET['search'] . '%' : '';
-// Inicializar variables de resultado
-$resultado_usuarios = null;
-$resultado_publicaciones = null;
+class SearchSystem
+{
+    private $enlace;
+    private $searchTerm;
+    private $results;
 
-// Si se ha introducido un término de búsqueda, realizar las consultas
-if ($searchTerm != '') {
-    // Búsqueda de usuarios en la tabla perfiles
-    $query_usuarios = "
-        SELECT p.usuario_id, p.nombre, p.apellido, p.carrera,p.foto_perfil, u.username, u.correo
-        FROM perfiles p
-        JOIN usuarios u ON p.usuario_id = u.id
-        WHERE p.nombre LIKE ? OR p.apellido LIKE ? OR p.carrera LIKE ? OR u.username LIKE ? OR u.correo LIKE ?
-    ";
+    public function __construct($enlace, $searchTerm)
+    {
+        $this->enlace = $enlace;
+        $this->searchTerm = '%' . trim($searchTerm) . '%';
+        $this->results = [
+            'usuarios' => null,
+            'publicaciones' => null,
+            'ventas' => null
+        ];
+    }
 
-    $stmt_usuarios = mysqli_prepare($enlace, $query_usuarios);
-    mysqli_stmt_bind_param($stmt_usuarios, 'sssss', $searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm);
-    mysqli_stmt_execute($stmt_usuarios);
-    $resultado_usuarios = mysqli_stmt_get_result($stmt_usuarios);
+    public function searchUsers()
+    {
+        $query = "
+            SELECT 
+                p.usuario_id,
+                p.nombre,
+                p.apellido,
+                p.carrera,
+                p.foto_perfil,
+                u.username,
+                u.correo,
+                (SELECT COUNT(*) FROM ventas v WHERE v.vendedor_id = p.usuario_id) as total_ventas
+            FROM perfiles p
+            JOIN usuarios u ON p.usuario_id = u.id
+            WHERE 
+                CONCAT(p.nombre, ' ', p.apellido) LIKE ? 
+                OR p.carrera LIKE ? 
+                OR u.username LIKE ? 
+                OR u.correo LIKE ?
+            ORDER BY total_ventas DESC, p.nombre ASC
+        ";
 
-    // Búsqueda de publicaciones
-    $query_publicaciones = "SELECT * FROM publicaciones WHERE contenido LIKE ?";
-    $stmt_publicaciones = mysqli_prepare($enlace, $query_publicaciones);
-    mysqli_stmt_bind_param($stmt_publicaciones, 's', $searchTerm);
-    mysqli_stmt_execute($stmt_publicaciones);
-    $resultado_publicaciones = mysqli_stmt_get_result($stmt_publicaciones);
+        $stmt = mysqli_prepare($this->enlace, $query);
+        mysqli_stmt_bind_param(
+            $stmt,
+            'ssss',
+            $this->searchTerm,
+            $this->searchTerm,
+            $this->searchTerm,
+            $this->searchTerm
+        );
+        mysqli_stmt_execute($stmt);
+        $this->results['usuarios'] = mysqli_stmt_get_result($stmt);
+        mysqli_stmt_close($stmt);
+    }
+
+    public function searchPosts()
+    {
+        $query = "
+            SELECT 
+                p.*,
+                u.username,
+                pf.nombre,
+                pf.apellido,
+                pf.foto_perfil
+            FROM publicaciones p
+            JOIN usuarios u ON p.usuario_id = u.id
+            JOIN perfiles pf ON u.id = pf.usuario_id
+            WHERE 
+                p.contenido LIKE ? 
+                OR p.titulo LIKE ?
+            ORDER BY p.fecha_publicada DESC
+        ";
+
+        $stmt = mysqli_prepare($this->enlace, $query);
+        mysqli_stmt_bind_param($stmt, 'ss', $this->searchTerm, $this->searchTerm);
+        mysqli_stmt_execute($stmt);
+        $this->results['publicaciones'] = mysqli_stmt_get_result($stmt);
+        mysqli_stmt_close($stmt);
+    }
+
+    public function searchSales()
+    {
+        $query = "
+            SELECT 
+                v.*,
+                p.nombre as producto_nombre,
+                p.descripcion as producto_descripcion,
+                p.precio,
+                p.imagen as producto_imagen,
+                u.username as vendedor_username,
+                pf.nombre as vendedor_nombre,
+                pf.apellido as vendedor_apellido
+            FROM ventas v
+            JOIN productos p ON v.producto_id = p.id
+            JOIN usuarios u ON v.vendedor_id = u.id
+            JOIN perfiles pf ON u.id = pf.usuario_id
+            WHERE 
+                p.nombre LIKE ? 
+                OR p.descripcion LIKE ?
+                OR CONCAT(pf.nombre, ' ', pf.apellido) LIKE ?
+            ORDER BY v.fecha_venta DESC
+        ";
+
+        $stmt = mysqli_prepare($this->enlace, $query);
+        mysqli_stmt_bind_param(
+            $stmt,
+            'sss',
+            $this->searchTerm,
+            $this->searchTerm,
+            $this->searchTerm
+        );
+        mysqli_stmt_execute($stmt);
+        $this->results['ventas'] = mysqli_stmt_get_result($stmt);
+        mysqli_stmt_close($stmt);
+    }
+
+    public function getResults()
+    {
+        return $this->results;
+    }
 }
+
+// Inicializar búsqueda
+$searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
+$search = new SearchSystem($enlace, $searchTerm);
+
+if ($searchTerm != '') {
+    $search->searchUsers();
+    $search->searchPosts();
+    $search->searchSales();
+}
+
+$resultados = $search->getResults();
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resultados de búsqueda</title>
-
-    <!-- Incluir Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Incluir tu archivo CSS -->
     <link rel="stylesheet" href="../CSS/estilosprin.css">
+    <style>
+        .search-tabs .nav-link.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .producto-imagen {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+        }
+
+        .search-highlight {
+            background-color: yellow;
+            padding: 2px;
+        }
+    </style>
 </head>
 
 <body>
     <?php include('header.php'); ?>
-    <div class="container mt-4">
-        <h2>Resultados de búsqueda</h2>
 
-        <!-- Formulario de búsqueda -->
+    <div class="container mt-4">
+        <h2>Búsqueda Avanzada</h2>
+
+        <!-- Formulario de búsqueda mejorado -->
         <form method="get" action="busqueda.php" class="mb-4">
             <div class="input-group">
-                <input type="text" name="search" class="form-control" placeholder="Buscar..." value="<?php echo htmlspecialchars($_GET['search'] ?? ''); ?>">
-                <button type="submit" class="btn btn-primary">Buscar</button>
+                <input type="text"
+                    name="search"
+                    class="form-control"
+                    placeholder="Buscar usuarios, publicaciones o ventas..."
+                    value="<?php echo htmlspecialchars($searchTerm); ?>"
+                    required
+                    minlength="3">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-search"></i> Buscar
+                </button>
             </div>
         </form>
 
-        <!-- Resultados de búsqueda de usuarios -->
-        <h3>Usuarios</h3>
-        <?php if ($resultado_usuarios && mysqli_num_rows($resultado_usuarios) > 0): ?>
-            <ul class="list-group">
-                <?php while ($usuario = mysqli_fetch_assoc($resultado_usuarios)): ?>
-                    <li class="list-group-item d-flex align-items-center">
-                        <img src="<?php echo htmlspecialchars($usuario['foto_perfil'] ?? '../media/user.png'); ?>" alt="Foto de perfil" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;" class="rounded-circle" >
+        <!-- Tabs para navegación entre resultados -->
+        <ul class="nav nav-tabs search-tabs mb-4">
+            <li class="nav-item">
+                <a class="nav-link active" data-bs-toggle="tab" href="#usuarios">
+                    Usuarios
+                    <?php if ($resultados['usuarios']): ?>
+                        <span class="badge bg-primary"><?php echo mysqli_num_rows($resultados['usuarios']); ?></span>
+                    <?php endif; ?>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#publicaciones">
+                    Publicaciones
+                    <?php if ($resultados['publicaciones']): ?>
+                        <span class="badge bg-primary"><?php echo mysqli_num_rows($resultados['publicaciones']); ?></span>
+                    <?php endif; ?>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#ventas">
+                    Ventas
+                    <?php if ($resultados['ventas']): ?>
+                        <span class="badge bg-primary"><?php echo mysqli_num_rows($resultados['ventas']); ?></span>
+                    <?php endif; ?>
+                </a>
+            </li>
+        </ul>
 
-                        <div class="ms-3">
-                            <strong><?php echo htmlspecialchars($usuario['nombre'] . ' ' . $usuario['apellido']); ?></strong><br>
-                            <span class="text-muted"><?php echo htmlspecialchars($usuario['username']); ?></span><br>
-                            <a href="perfil.php?usuario_id=<?php echo htmlspecialchars($usuario['usuario_id']); ?>" class="btn btn-info btn-sm mt-2">Ver Perfil</a>
+        <!-- Contenido de los tabs -->
+        <div class="tab-content">
+            <!-- Tab Usuarios -->
+            <div class="tab-pane fade show active" id="usuarios">
+                <?php if ($resultados['usuarios'] && mysqli_num_rows($resultados['usuarios']) > 0): ?>
+                    <div class="row">
+                        <?php while ($usuario = mysqli_fetch_assoc($resultados['usuarios'])): ?>
+                            <div class="col-md-6 mb-3">
+                                <div class="card">
+                                    <div class="card-body d-flex">
+                                        <img src="<?php echo htmlspecialchars($usuario['foto_perfil'] ?? '../media/user.png'); ?>"
+                                            alt="Perfil"
+                                            class="rounded-circle me-3"
+                                            style="width: 64px; height: 64px; object-fit: cover;">
+                                        <div>
+                                            <h5 class="card-title">
+                                                <?php echo htmlspecialchars($usuario['nombre'] . ' ' . $usuario['apellido']); ?>
+                                            </h5>
+                                            <p class="card-text">
+                                                <small class="text-muted">@<?php echo htmlspecialchars($usuario['username']); ?></small><br>
+                                                <span class="badge bg-info"><?php echo htmlspecialchars($usuario['carrera']); ?></span>
+                                                <span class="badge bg-success"><?php echo $usuario['total_ventas']; ?> ventas</span>
+                                            </p>
+                                            <a href="perfil.php?usuario_id=<?php echo $usuario['usuario_id']; ?>"
+                                                class="btn btn-primary btn-sm">Ver Perfil</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endwhile; ?>
+                    </div>
+                <?php else: ?>
+                    <div class="alert alert-info">No se encontraron usuarios.</div>
+                <?php endif; ?>
+            </div>
+
+            <!-- Tab Publicaciones -->
+            <div class="tab-pane fade" id="publicaciones">
+                <?php if ($resultados['publicaciones'] && mysqli_num_rows($resultados['publicaciones']) > 0): ?>
+                    <?php while ($pub = mysqli_fetch_assoc($resultados['publicaciones'])): ?>
+                        <div class="card mb-3">
+                            <div class="card-header d-flex align-items-center">
+                                <img src="<?php echo htmlspecialchars($pub['foto_perfil'] ?? '../media/user.png'); ?>"
+                                    alt="Perfil"
+                                    class="rounded-circle me-2"
+                                    style="width: 32px; height: 32px; object-fit: cover;">
+                                <div>
+                                    <strong><?php echo htmlspecialchars($pub['nombre'] . ' ' . $pub['apellido']); ?></strong>
+                                    <small class="text-muted">@<?php echo htmlspecialchars($pub['username']); ?></small>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text"><?php echo nl2br(htmlspecialchars($pub['contenido'])); ?></p>
+                                <small class="text-muted">
+                                    Publicado el <?php echo date("d/m/Y H:i", strtotime($pub['fecha_publicada'])); ?>
+                                </small>
+                            </div>
+                            <div class="card-footer">
+                                <a href="detalle_publicacion.php?id=<?php echo $pub['id_publicacion']; ?>"
+                                    class="btn btn-info btn-sm">Ver Detalles</a>
+                            </div>
                         </div>
-                    </li>
-                <?php endwhile; ?>
-            </ul>
-        <?php else: ?>
-            <p>No se encontraron usuarios.</p>
-        <?php endif; ?>
+                    <?php endwhile; ?>
+                <?php else: ?>
+                    <div class="alert alert-info">No se encontraron publicaciones.</div>
+                <?php endif; ?>
+            </div>
 
-        <!-- Resultados de búsqueda de publicaciones -->
-        <h3>Publicaciones</h3>
-        <?php if ($resultado_publicaciones && mysqli_num_rows($resultado_publicaciones) > 0): ?>
-            <ul class="list-group">
-                <?php while ($publicacion = mysqli_fetch_assoc($resultado_publicaciones)): ?>
-                    <li class="list-group-item">
-                        <p><strong>Publicado el: <?php echo date("d/m/Y", strtotime($publicacion['fecha_publicada'])); ?></strong></p>
-                        <p><?php echo nl2br(htmlspecialchars($publicacion['contenido'])); ?></p>
-                        <a href="detalle_publicacion.php?id_publicacion=<?php echo htmlspecialchars($publicacion['id_publicacion']); ?>" class="btn btn-info btn-sm">Ver Detalles</a>
-                    </li>
-                <?php endwhile; ?>
-            </ul>
-        <?php else: ?>
-            <p>No se encontraron publicaciones.</p>
-        <?php endif; ?>
+            <!-- Tab Ventas -->
+            <div class="tab-pane fade" id="ventas">
+                <?php if ($resultados['ventas'] && mysqli_num_rows($resultados['ventas']) > 0): ?>
+                    <div class="row">
+                        <?php while ($venta = mysqli_fetch_assoc($resultados['ventas'])): ?>
+                            <div class="col-md-6 mb-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex">
+                                            <img src="<?php echo htmlspecialchars($venta['producto_imagen'] ?? '../media/no-image.png'); ?>"
+                                                alt="Producto"
+                                                class="producto-imagen me-3">
+                                            <div>
+                                                <h5 class="card-title"><?php echo htmlspecialchars($venta['producto_nombre']); ?></h5>
+                                                <p class="card-text">
+                                                    <small class="text-muted">
+                                                        Vendedor: <?php echo htmlspecialchars($venta['vendedor_nombre'] . ' ' . $venta['vendedor_apellido']); ?>
+                                                    </small><br>
+                                                    <strong class="text-success">$<?php echo number_format($venta['precio'], 2); ?></strong>
+                                                </p>
+                                                <p class="card-text">
+                                                    <small class="text-muted">
+                                                        Vendido el <?php echo date("d/m/Y", strtotime($venta['fecha_venta'])); ?>
+                                                    </small>
+                                                </p>
+                                                <a href="detalle_venta.php?id=<?php echo $venta['id']; ?>"
+                                                    class="btn btn-primary btn-sm">Ver Detalles</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endwhile; ?>
+                    </div>
+                <?php else: ?>
+                    <div class="alert alert-info">No se encontraron ventas.</div>
+                <?php endif; ?>
+            </div>
+        </div>
     </div>
 
-    <!-- Incluir Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/your-kit-code.js" crossorigin="anonymous"></script>
 </body>
 
 </html>
