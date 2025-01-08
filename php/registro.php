@@ -1,31 +1,4 @@
-/**
- * This script handles user registration by processing form data, 
- * inserting the user into the database, and starting a session.
- * 
- * - Starts a session if not already started.
- * - Connects to the MySQL database using provided credentials.
- * - Validates and sanitizes form data.
- * - Hashes the user's password.
- * - Inserts the new user into the `usuarios` table.
- * - Starts a session for the new user and redirects to the profile edit page.
- * 
- * @file /d:/crack-enfocado.com/php/registro.php
- * 
- * @param string $servidor The database server address.
- * @param string $usuarioBD The database username.
- * @param string $claveBD The database password.
- * @param string $baseDeDatos The database name.
- * 
- * @param string $_POST['username'] The username from the registration form.
- * @param string $_POST['correo'] The email from the registration form.
- * @param string $_POST['boleta'] The boleta from the registration form.
- * @param string $_POST['contraseña'] The password from the registration form.
- * 
- * @return void
- * 
- * @throws Exception If the database connection fails.
- * @throws Exception If the user registration fails.
- */
+
 <?php
 if (session_status() == PHP_SESSION_NONE) {
     session_start();

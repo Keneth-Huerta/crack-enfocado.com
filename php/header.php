@@ -1,29 +1,4 @@
-/**
- * This script handles the header section of a PHP web application. It includes session management, 
- * database connection, user profile information retrieval, and notification fetching. Additionally, 
- * it generates the HTML for the navigation bar with user-specific details and notifications.
- * 
- * Functions:
- * - handleDatabaseError($error): Logs database errors.
- * - getProfilePhotoPath($photo): Corrects the path of the profile photo.
- * - getUserNotifications($enlace, $usuario_id): Retrieves user notifications from the database.
- * 
- * Variables:
- * - $perfil: Stores user profile information.
- * - $notificaciones: Stores user notifications.
- * - $foto_perfil: Stores the path to the user's profile photo.
- * - $nombre_usuario: Stores the user's name.
- * - $current_page: Stores the name of the current page.
- * 
- * HTML/CSS:
- * - Includes Bootstrap CSS for styling.
- * - Custom CSS for navbar, profile dropdown, notifications, and search form.
- * - Generates the navigation bar with links to different sections and user-specific details.
- * 
- * JavaScript:
- * - Initializes Bootstrap tooltips and dropdowns.
- * - Handles the color change of the search icon on focus and blur events.
- */
+
 <?php
 if (session_status() == PHP_SESSION_NONE) {
     session_start();

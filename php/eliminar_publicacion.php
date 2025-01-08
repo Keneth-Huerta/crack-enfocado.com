@@ -1,33 +1,4 @@
-/**
- * Eliminar Publicación
- * 
- * Este script permite a un usuario eliminar una publicación de la base de datos.
- * 
- * Funcionalidades:
- * - Verifica si el usuario está logueado.
- * - Verifica si el ID de la publicación fue pasado por GET y es numérico.
- * - Verifica si la publicación existe y pertenece al usuario logueado.
- * - Elimina la publicación si todas las verificaciones son correctas.
- * - Redirige al perfil del usuario con un mensaje de éxito si la eliminación es exitosa.
- * 
- * Requiere:
- * - Una conexión a la base de datos establecida en 'conexion.php'.
- * 
- * Variables de sesión:
- * - $_SESSION['usuario_id']: ID del usuario logueado.
- * 
- * Parámetros GET:
- * - id: ID de la publicación a eliminar.
- * 
- * Redirecciones:
- * - Redirige a 'login.php' si el usuario no está logueado.
- * - Redirige a 'perfil.php' con un mensaje de éxito si la publicación es eliminada.
- * 
- * Mensajes de error:
- * - "ID de publicación no válido." si el ID no es pasado por GET o no es numérico.
- * - "No tienes permiso para eliminar esta publicación." si la publicación no pertenece al usuario.
- * - "Error al eliminar la publicación." si ocurre un error durante la eliminación.
- */
+
 <?php
 if (session_status() == PHP_SESSION_NONE) {
     session_start();

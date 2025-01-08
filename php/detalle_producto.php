@@ -1,39 +1,4 @@
-/**
- * This script handles the display of product details on a webpage.
- * 
- * It performs the following tasks:
- * - Starts a session.
- * - Includes the database connection file.
- * - Checks if a product ID is provided via GET request.
- * - Prepares and executes a SQL query to fetch product details along with the seller's information.
- * - Displays the product details in a structured HTML format.
- * 
- * The HTML part includes:
- * - Meta tags for SEO and social media sharing.
- * - Product image, title, price, and description.
- * - Seller information including profile picture and contact details.
- * - A button to contact the seller via WhatsApp if the user is logged in and is not the seller.
- * 
- * Styling is done using Bootstrap and custom CSS.
- * 
- * @file /d:/crack-enfocado.com/php/detalle_producto.php
- * @package ProductDetails
- * @version 1.0
- * 
- * @requires conexion.php
- * @requires header.php
- * 
- * @param int $_GET['id'] The ID of the product to be displayed.
- * 
- * @var mysqli $enlace The database connection object.
- * @var int $productoId The ID of the product fetched from the GET request.
- * @var mysqli_stmt $stmt The prepared statement for fetching product details.
- * @var mysqli_result $resultado The result set from the executed statement.
- * @var array $producto The associative array containing product details.
- * @var string $mensaje The message to be sent via WhatsApp.
- * @var string $mensaje_codificado The URL-encoded message.
- * @var string $whatsapp_link The WhatsApp link with the pre-filled message.
- */
+
 <?php
 session_start();
 require_once 'conexion.php';

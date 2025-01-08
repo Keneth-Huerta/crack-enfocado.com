@@ -1,21 +1,4 @@
-/**
- * 
- * This script handles the sales form submission and displays the sales section.
- * 
- * - Configures file upload limits and execution time.
- * - Connects to the MySQL database.
- * - Processes the sales form submission, including handling image uploads.
- * - Displays a form for adding new sales.
- * - Displays a list of products with user profiles and contact options.
- * 
- * PHP version 7.4+
- * 
- * @category Sales
- * @package  SalesPlatform
- * @author   Your Name
- * @license  MIT License
- * @link     https://yourwebsite.com
- */
+
 <?php
 // Configurar límites de subida de archivos
 ini_set('upload_max_filesize', '10M');

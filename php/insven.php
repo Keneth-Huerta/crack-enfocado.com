@@ -1,34 +1,4 @@
-/**
- * This script handles the addition of new products to the database.
- * 
- * It includes the following functionalities:
- * - Establishes a connection to the MySQL database.
- * - Processes the form submission to add a new product.
- * - Inserts the new product into the database.
- * - Displays a success or error message based on the result of the insertion.
- * 
- * The HTML part of the script includes:
- * - Meta tags for SEO and social media sharing.
- * - A form for adding a new product with fields for product name, ID, price, description, and image URL.
- * - Basic CSS styling for the form and product display.
- * 
- * @file insven.php
- * @package ProductManagement
- * 
- * @var string $servidor The hostname of the MySQL server.
- * @var string $usuarioBD The username for the MySQL database.
- * @var string $claveBD The password for the MySQL database.
- * @var string $baseDeDatos The name of the MySQL database.
- * @var mysqli $enlace The MySQLi connection object.
- * 
- * @param string $_POST['producto'] The name of the product.
- * @param string $_POST['id'] The ID of the product.
- * @param string $_POST['precio'] The price of the product.
- * @param string $_POST['descripcion'] The description of the product.
- * @param string $_POST['imagen'] The URL of the product image.
- * 
- * @return void
- */
+
 <?php
 // Conexión a la base de datos
 if (session_status() == PHP_SESSION_NONE) {
