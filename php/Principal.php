@@ -158,20 +158,22 @@
                         $first = false;
                 ?>
                         <div class="carousel-item <?php echo $activeClass; ?>">
-                            <div class="row g-0">
-                                <div class="col-12 col-md-4">
-                                    <img src="<?php echo htmlspecialchars($publicacion['imagen'] ?? 'https://via.placeholder.com/300'); ?>"
-                                        class="img-fluid" alt="Publicación">
-                                </div>
-                                <div class="col-12 col-md-8">
-                                    <div class="carousel-content">
-                                        <p class="mb-3"><?php echo nl2br(htmlspecialchars($publicacion['contenido'])); ?></p>
-                                        <small class="text-muted">
-                                            Publicado el <?php echo date("d/m/Y H:i", strtotime($publicacion['fecha_publicada'])); ?>
-                                        </small>
+                            <a href="detalles_producto.php?id=<?php echo $productos[$j]['idProducto']; ?>">
+                                <div class="row g-0">
+                                    <div class="col-12 col-md-4">
+                                        <img src="<?php echo htmlspecialchars($publicacion['imagen'] ?? 'https://via.placeholder.com/300'); ?>"
+                                            class="img-fluid" alt="Publicación">
+                                    </div>
+                                    <div class="col-12 col-md-8">
+                                        <div class="carousel-content">
+                                            <p class="mb-3"><?php echo nl2br(htmlspecialchars($publicacion['contenido'])); ?></p>
+                                            <small class="text-muted">
+                                                Publicado el <?php echo date("d/m/Y H:i", strtotime($publicacion['fecha_publicada'])); ?>
+                                            </small>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                 <?php
                     }
@@ -216,27 +218,29 @@
                         $activeClass = $i === 0 ? "active" : "";
                 ?>
                         <div class="carousel-item <?php echo $activeClass; ?>">
-                            <div class="row">
-                                <?php for ($j = $i; $j < min($i + 2, count($productos)); $j++) { ?>
-                                    <div class="col-md-6">
-                                        <div class="product-card">
-                                            <?php if (!empty($productos[$j]['imagen'])): ?>
-                                                <img src="data:image/jpeg;base64,<?php echo base64_encode($productos[$j]['imagen']); ?>"
-                                                    class="w-100 product-image" alt="Producto">
-                                            <?php else: ?>
-                                                <img src="../media/producto_default.jpg"
-                                                    class="w-100 product-image" alt="Imagen no disponible">
-                                            <?php endif; ?>
-                                            <div class="product-details">
-                                                <h5><?php echo htmlspecialchars($productos[$j]['producto']); ?></h5>
-                                                <p class="price">$<?php echo number_format($productos[$j]['precio'], 2); ?></p>
-                                                <p class="description"><?php echo htmlspecialchars($productos[$j]['descripcion']); ?></p>
-                                                <small class="text-muted">Vendedor: <?php echo htmlspecialchars($productos[$j]['username']); ?></small>
+                            <a href="detalles_publicacion.php?id=<?php echo $publicacion['id']; ?>">
+                                <div class="row">
+                                    <?php for ($j = $i; $j < min($i + 2, count($productos)); $j++) { ?>
+                                        <div class="col-md-6">
+                                            <div class="product-card">
+                                                <?php if (!empty($productos[$j]['imagen'])): ?>
+                                                    <img src="data:image/jpeg;base64,<?php echo base64_encode($productos[$j]['imagen']); ?>"
+                                                        class="w-100 product-image" alt="Producto">
+                                                <?php else: ?>
+                                                    <img src="../media/producto_default.jpg"
+                                                        class="w-100 product-image" alt="Imagen no disponible">
+                                                <?php endif; ?>
+                                                <div class="product-details">
+                                                    <h5><?php echo htmlspecialchars($productos[$j]['producto']); ?></h5>
+                                                    <p class="price">$<?php echo number_format($productos[$j]['precio'], 2); ?></p>
+                                                    <p class="description"><?php echo htmlspecialchars($productos[$j]['descripcion']); ?></p>
+                                                    <small class="text-muted">Vendedor: <?php echo htmlspecialchars($productos[$j]['username']); ?></small>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                <?php } ?>
-                            </div>
+                                    <?php } ?>
+                                </div>
+                            </a>
                         </div>
                 <?php
                     }
