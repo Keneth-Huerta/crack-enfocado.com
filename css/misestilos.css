@@ -718,4 +718,156 @@ body {
 
 .acciones-producto .btn-success i {
     font-size: 1.2em;
+}/* Estilos para las pestañas y contenedores */
+.tab-content {
+    padding: 20px;
+    background: white;
+    border: 1px solid var(--color-borde);
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+}
+
+.nav-tabs {
+    border-bottom: none;
+}
+
+.nav-tabs .nav-link {
+    color: var(--color-texto);
+    border: 1px solid transparent;
+    margin-bottom: -1px;
+    padding: 10px 20px;
+    font-weight: 500;
+}
+
+.nav-tabs .nav-link.active {
+    color: var(--color-principal);
+    background-color: white;
+    border-color: var(--color-borde) var(--color-borde) white;
+}
+
+/* Estilos para los productos */
+.productos-usuario {
+    padding: 20px 0;
+}
+
+.lista-productos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 10px;
+}
+
+.producto-item {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--sombra-suave);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid var(--color-borde);
+}
+
+.producto-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.producto-imagen {
+    width: 100%;
+    height: 200px;
+    position: relative;
+    overflow: hidden;
+}
+
+.producto-imagen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.producto-detalles {
+    padding: 15px;
+}
+
+.producto-detalles h3 {
+    color: var(--color-texto);
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.precio {
+    color: var(--color-principal);
+    font-size: 1.4em;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.descripcion {
+    color: var(--color-texto-claro);
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.acciones-producto {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.acciones-producto .btn {
+    flex: 1;
+    padding: 8px 15px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+/* Estilos para el botón de WhatsApp */
+.btn-success {
+    background-color: #25D366;
+    color: white;
+    border: none;
+}
+
+.btn-success:hover {
+    background-color: #128C7E;
+    transform: translateY(-2px);
+}
+
+/* Estilos para cuando no hay productos */
+.sin-productos {
+    text-align: center;
+    padding: 30px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.sin-productos p {
+    color: var(--color-texto-claro);
+    margin-bottom: 15px;
+}
+
+.sin-productos .btn {
+    padding: 10px 20px;
+    font-size: 1.1em;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .lista-productos {
+        grid-template-columns: 1fr;
+    }
+
+    .producto-imagen {
+        height: 180px;
+    }
+
+    .acciones-producto {
+        flex-direction: column;
+    }
+
+    .acciones-producto .btn {
+        width: 100%;
+    }
 }
