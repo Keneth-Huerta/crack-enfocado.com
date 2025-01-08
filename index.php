@@ -164,7 +164,7 @@ session_start();
         <div class="container">
             <!-- Logo -->
             <img src="media/logo_cecyt.png" alt="Logo CECyT 3" class="navbar-logo me-2">
-            <a class="navbar-brand" href="#">CECyT 3</a>
+            <a class="navbar-brand" href="/media/Crack-Enfocado.png">CECyT 3</a>
 
             <!-- Botón hamburguesa -->
             <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
