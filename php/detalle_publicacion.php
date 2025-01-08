@@ -185,6 +185,37 @@ if (isset($_SESSION['usuario_id'])) {
                 max-height: 300px;
             }
         }
+
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            margin-left: 10px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .comment-error {
+            display: none;
+            color: #dc3545;
+            margin-top: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+        }
     </style>
 </head>
 
@@ -326,6 +357,13 @@ if (isset($_SESSION['usuario_id'])) {
                     const spinner = document.getElementById('comment-spinner');
                     const errorDiv = document.getElementById('comment-error');
                     const submitButton = this.querySelector('button[type="submit"]');
+                    const textarea = this.querySelector('textarea');
+
+                    if (!textarea.value.trim()) {
+                        errorDiv.textContent = 'El comentario no puede estar vacío';
+                        errorDiv.style.display = 'block';
+                        return;
+                    }
 
                     spinner.style.display = 'block';
                     submitButton.disabled = true;
@@ -338,27 +376,31 @@ if (isset($_SESSION['usuario_id'])) {
                             body: formData
                         });
 
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+
                         const result = await response.json();
 
                         if (result.success) {
-                            // Agregar el nuevo comentario al principio de la lista
-                            const commentsList = document.getElementById('comments-list');
-                            const newComment = createCommentElement(result.comment);
-                            commentsList.insertBefore(newComment, commentsList.firstChild);
-
-                            // Actualizar el contador de comentarios
-                            const commentCount = document.getElementById('comment-count');
-                            commentCount.textContent = parseInt(commentCount.textContent) + 1;
-
                             // Limpiar el formulario
                             this.reset();
+
+                            // Crear y agregar el nuevo comentario
+                            const commentsList = document.getElementById('comments-list');
+                            const newComment = createCommentElement(result.comment);
+
+                            if (commentsList.firstChild) {
+                                commentsList.insertBefore(newComment, commentsList.firstChild);
+                            } else {
+                                commentsList.appendChild(newComment);
+                            }
                         } else {
-                            errorDiv.textContent = result.error || 'Error al agregar el comentario';
-                            errorDiv.style.display = 'block';
+                            throw new Error(result.error || 'Error al agregar el comentario');
                         }
                     } catch (error) {
                         console.error('Error:', error);
-                        errorDiv.textContent = 'Error al procesar la solicitud';
+                        errorDiv.textContent = error.message || 'Error al procesar la solicitud';
                         errorDiv.style.display = 'block';
                     } finally {
                         spinner.style.display = 'none';
@@ -371,15 +413,26 @@ if (isset($_SESSION['usuario_id'])) {
         function createCommentElement(comment) {
             const div = document.createElement('div');
             div.className = 'comment-item';
+
+            const contenido = comment.contenido.replace(/\n/g, '<br>');
+
             div.innerHTML = `
-                <div class="comment-header">
-                    <img src="${comment.foto_perfil || '../media/user.png'}" class="comment-avatar" alt="Avatar">
-                    <strong>${comment.nombre} ${comment.apellido}</strong>
-                </div>
-                <p>${comment.contenido}</p>
-                <small class="text-muted">${comment.fecha_comentario}</small>
-            `;
+        <div class="comment-header">
+            <img src="${comment.foto_perfil || '../media/user.png'}" 
+                 class="comment-avatar" 
+                 alt="Avatar">
+            <strong>${escapeHtml(comment.nombre)} ${escapeHtml(comment.apellido)}</strong>
+        </div>
+        <p>${escapeHtml(contenido)}</p>
+        <small class="text-muted">${comment.fecha_comentario}</small>
+    `;
             return div;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
         }
 
         function toggleComments() {
