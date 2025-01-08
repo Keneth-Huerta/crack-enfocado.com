@@ -126,16 +126,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
         padding-top: 70px;
     }
 
-    .nav-link {
-        position: relative;
-        color: white !important;
-        transition: color 0.3s ease;
-    }
-
-    .nav-link:hover {
-        color: rgba(255, 255, 255, 0.8) !important;
-    }
-
     .nav-link.active::after {
         content: '';
         position: absolute;
