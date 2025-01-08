@@ -131,7 +131,7 @@ require_once 'conexion.php';
         <div id="publicacionesCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <?php
-                $stmt = $enlace->prepare("SELECT id, imagen, contenido, fecha_publicada FROM publicaciones ORDER BY fecha_publicada DESC LIMIT 5");
+                $stmt = $enlace->prepare("SELECT id_publicacion, imagen, contenido, fecha_publicada FROM publicaciones ORDER BY fecha_publicada DESC LIMIT 5");
                 $stmt->execute();
                 $resultado = $stmt->get_result();
 
