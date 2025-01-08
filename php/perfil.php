@@ -48,7 +48,7 @@ mysqli_stmt_execute($stmt_pub);
 $publicaciones_result = mysqli_stmt_get_result($stmt_pub);
 
 // Consultar ventas del usuario con la columna `id` corregida
-$ventas_query = "SELECT * FROM productos WHERE usuario_id = ? ORDER BY id DESC";
+$ventas_query = "SELECT * FROM productos WHERE usuario_id = ? ORDER BY idProductos DESC";
 $stmt_ventas = mysqli_prepare($enlace, $ventas_query);
 mysqli_stmt_bind_param($stmt_ventas, "i", $usuario_ids);
 mysqli_stmt_execute($stmt_ventas);
