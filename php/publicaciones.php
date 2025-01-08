@@ -38,7 +38,7 @@
             }
 
             if (!isset($_SESSION['usuario_id'])) {
-                echo "<p>Debes <a href='../crearCuenta.html'>crear una cuenta</a> o <a href='../index.php'>iniciar sesión</a> para poder publicar.</p>";
+                echo "<p>Debes <a href='../crearCuenta.html'>crear una cuenta</a> o <a href='../secion.php'>iniciar sesión</a> para poder publicar.</p>";
             } else {
             ?>
                 <form action="subir_public.php" method="post" enctype="multipart/form-data">

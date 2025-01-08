@@ -11,6 +11,6 @@ session_unset();
 session_destroy();
 
 // Redirigir al inicio de sesión
-header("Location: ../index.php");
+header("Location: ../secion.php");
 exit();
 ?>

@@ -1,29 +1,66 @@
-# Proyecto de Red Social
+# CECyT 3 - Red Social Académica
 
-Este proyecto es una aplicación de red social simple que permite a los usuarios agregar comentarios a publicaciones. A continuación se describen los archivos y su funcionalidad:
+## Descripción
+Plataforma web diseñada específicamente para estudiantes del CECyT 3 "Estanislao Ramirez Ruiz" del IPN. Esta red social académica facilita la comunicación, venta de materiales y compartición de recursos entre estudiantes.
 
-## Estructura del Proyecto
+## Características Principales
+- **Perfiles de Estudiante**: Información académica y personal relevante
+- **Sistema de Publicaciones**: Comparte actualizaciones y contenido académico
+- **Marketplace de Materiales**: Venta e intercambio de materiales escolares
+- **Mensajería por WhatsApp**: Contacto directo para transacciones
 
-- **src/agregar_comentario.php**: Maneja la lógica para agregar comentarios a las publicaciones. Verifica si el usuario está logueado, obtiene los datos del formulario y los inserta en la base de datos.
+## Tecnologías Utilizadas
+- PHP 7.4+
+- MySQL
+- HTML5
+- CSS3
+- JavaScript
+- Bootstrap 5
 
-- **src/publicaciones.php**: Se encarga de mostrar las publicaciones y los comentarios asociados. Incluye la lógica para recuperar datos de la base de datos y presentarlos en la interfaz.
-
-- **src/conexion.php**: Establece la conexión a la base de datos. Contiene la configuración necesaria para conectarse a la base de datos MySQL.
-
-- **src/index.php**: Página de inicio de la aplicación. Redirige a los usuarios a otras secciones de la aplicación o muestra contenido relevante.
-
-- **css/styles.css**: Contiene los estilos CSS para la aplicación, definiendo la apariencia visual de las páginas.
-
-- **js/main.js**: Incluye la lógica de JavaScript para la interacción del lado del cliente, como la validación de formularios o la manipulación del DOM.
-
-- **config/database.php**: Contiene la configuración de la base de datos, como el nombre de usuario, la contraseña y el nombre de la base de datos.
+## Requisitos del Sistema
+- Servidor web (Apache/Nginx)
+- PHP 7.4 o superior
+- MySQL 5.7 o superior
+- Navegador web moderno
 
 ## Instalación
+1. Clonar el repositorio
+2. Configurar la base de datos usando el script proporcionado
+3. Configurar las credenciales en `conexion.php`
+4. Asegurarse que el directorio `media/uploads` tenga permisos de escritura
 
-1. Clona el repositorio.
-2. Configura la base de datos en `config/database.php`.
-3. Abre `src/index.php` en tu navegador.
+## Estructura del Proyecto
+CECyT9-RedSocial/
+├── css/
+│   ├── misestilos.css
+│   └── editar_perfil.css
+├── media/
+│   └── uploads/
+├── php/
+│   ├── conexion.php
+│   ├── login.php
+│   ├── registro.php
+│   ├── perfil.php
+│   ├── ventas.php
+│   └── ...
+└── index.html
 
-## Contribuciones
+## Guía de Uso
+1. **Registro**: Crear cuenta con correo institucional
+2. **Perfil**: Completar información académica
+3. **Publicaciones**: Compartir contenido relevante
+4. **Ventas**: Publicar materiales disponibles
 
-Las contribuciones son bienvenidas. Si deseas colaborar, por favor abre un issue o envía un pull request.
+## Contribución
+Para contribuir al proyecto:
+1. Fork del repositorio
+2. Crear rama para nueva característica
+3. Commit de cambios
+4. Push a la rama
+5. Crear Pull Request
+
+## Soporte
+Para soporte contactar a [correo de soporte]
+
+## Licencia
+Este proyecto está bajo la Licencia MIT
