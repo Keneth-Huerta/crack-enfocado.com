@@ -146,8 +146,8 @@ if (isset($_SESSION['usuario_id'])) {
             <h1 class="display-4 mb-4">Red Social Académica CECyT 3</h1>
             <p class="lead mb-5">Conecta con compañeros, comparte materiales y conocimiento</p>
             <div class="auth-buttons">
-                <a href="php/registro.php" class="btn btn-ipn btn-lg">Crear Cuenta</a>
-                <a href="php/login.php" class="btn btn-outline-ipn btn-lg">Iniciar Sesión</a>
+                <a href="crearCuenta.html" class="btn btn-ipn btn-lg">Crear Cuenta</a>
+                <a href="secion.php" class="btn btn-outline-ipn btn-lg">Iniciar Sesión</a>
             </div>
         </div>
     </section>
@@ -197,7 +197,7 @@ if (isset($_SESSION['usuario_id'])) {
                     <div class="text-center">
                         <div class="step-number">1</div>
                         <h4>Regístrate</h4>
-                        <p>Crea tu cuenta con tu correo institucional</p>
+                        <p>Crea tu cuenta con tu correo institucional o personal</p>
                     </div>
                 </div>
                 <div class="col-md-3">

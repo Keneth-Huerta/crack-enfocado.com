@@ -1,45 +1,65 @@
 <!DOCTYPE html>
 <html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Crear cuenta</title>
-    <link rel="stylesheet" href="css/misestilos.css">
-</head>
-
-<body>
+    <link rel="stylesheet" href="css/misestilos.css" />
+  </head>
+  <body>
     <div class="form-container">
-        <h1>Crear cuenta</h1>
-        <form action="php/registro.php" method="POST">
-            <div class="form-group">
-                <input type="text" name="username" placeholder="Nombre de usuario" required>
-            </div>
-
-            <div class="form-group">
-                <input type="email" name="correo" placeholder="Correo electrónico" required>
-            </div>
-
-            <div class="form-group">
-                <input type="password" name="contraseña" placeholder="Contraseña" required>
-            </div>
-
-            <div class="form-group">
-                <input type="text" name="boleta" placeholder="Número de boleta" required>
-            </div>
-
-            <button type="submit" name="registrar">Crear cuenta</button>
-
-            <div class="login-link">
-                <a href="secion.php">¿Ya tienes cuenta? Inicia sesión</a>
-            </div>
-        </form>
+      <h1>Crear cuenta</h1>
+      <form id="registration-form" action="php/registro.php" method="POST">
+        <div class="form-group">
+          <label for="username">Nombre de usuario</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            placeholder="Nombre de usuario"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="email">Correo electrónico</label>
+          <input
+            type="email"
+            id="email"
+            name="correo"
+            placeholder="Correo electrónico"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="password">Contraseña</label>
+          <input
+            type="password"
+            id="password"
+            name="contraseña"
+            placeholder="Contraseña"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="boleta">Número de boleta</label>
+          <input
+            type="text"
+            id="boleta"
+            name="boleta"
+            placeholder="Número de boleta"
+            required
+          />
+        </div>
+        <button type="submit" name="registrar">Crear cuenta</button>
+        <div class="login-link">
+          <a href="secion.php">¿Ya tienes cuenta? Inicia sesión</a>
+        </div>
+      </form>
     </div>
 
     <!-- Scripts necesarios -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
     <script src="js/funciones_Campos.js"></script>
-</body>
-
+  </body>
 </html>
