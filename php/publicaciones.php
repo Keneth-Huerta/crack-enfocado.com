@@ -175,7 +175,8 @@
 
                 const response = await fetch('dar_like.php', {
                     method: 'POST',
-                    body: formData
+                    body: formData,
+                    credentials: 'same-origin' 
                 });
 
                 const data = await response.text();
