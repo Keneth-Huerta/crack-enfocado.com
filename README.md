@@ -30,20 +30,56 @@ Plataforma web diseñada específicamente para estudiantes del CECyT 3 "Estanisl
 4. Asegurarse que el directorio `media/uploads` tenga permisos de escritura
 
 ## Estructura del Proyecto
-CECyT9-RedSocial/
-├── css/
-│   ├── misestilos.css
-│   └── editar_perfil.css
-├── media/
-│   └── uploads/
-├── php/
-│   ├── conexion.php
-│   ├── login.php
-│   ├── registro.php
-│   ├── perfil.php
-│   ├── ventas.php
-│   └── ...
-└── index.html
+CECyT3-RedSocial Crack Enfocado
+│   .htaccess
+│   crearCuenta.html
+│   index.php
+│   README.md
+│   secion.php
+│
+├───css
+│       editarPublicacion.css
+│       editar_perfil.css
+│       estilosprin.css
+│       login.css
+│       misestilos.css
+│       misestilos2.css
+│       publicaciones.css
+│       styles.css
+│
+├───media
+│   │   logoweb.jpg
+│   │   logoweb.svg
+│   │   user.png
+│   │   user_icon_001.jpg
+│   │
+│   └───uploads
+│           Crack-Enfocado.kra
+│
+└───php
+        agregar_comentario.php
+        basePublicacion.php
+        busqueda.php
+        conexion.php
+        dar_like.php
+        descprod.php
+        detalle_publicacion.php
+        editar_perfil.php
+        editar_producto.php
+        editar_publicacion.php
+        eliminar_producto.php
+        eliminar_publicacion.php
+        header.php
+        InicioSecion.php
+        insven.php
+        login.php
+        logout.php
+        perfil.php
+        Principal.php
+        publicaciones.php
+        registro.php
+        subir_public.php
+        ventas.php
 
 ## Guía de Uso
 1. **Registro**: Crear cuenta con correo institucional

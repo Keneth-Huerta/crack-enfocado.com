@@ -191,7 +191,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 <nav class="navbar navbar-expand-lg">
     <div class="container">
         <!-- Logo -->
-        <a class="navbar-brand" href="/secion.php">
+        <a class="navbar-brand" href="../index.php">
             <img src="../media/logoweb.svg" alt="Logo" class="img-fluid" style="max-height: 50px;">
         </a>
 
@@ -211,8 +211,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <!-- Menú de navegación -->
             <ul class="navbar-nav align-items-center">
                 <li class="nav-item">
-                    <a class="nav-link <?php echo $current_page === 'secion.php' ? 'active' : ''; ?>"
-                        href="secion.php">
+                    <a class="nav-link <?php echo $current_page === 'Principal.php' ? 'active' : ''; ?>"
+                        href="Principal.php">
                         <i class="bi bi-house-door"></i> Inicio
                     </a>
                 </li>
@@ -290,7 +290,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                     </li>
                 <?php else: ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="../secion.php">Iniciar Sesión</a>
+                        <a class="nav-link" href="../index.php">Iniciar Sesión</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../crearCuenta.html">Registrarse</a>
