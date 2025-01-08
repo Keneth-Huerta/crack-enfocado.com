@@ -1,2 +1,21 @@
 php_flag display_errors on
 php_value error_reporting 32767
+# Habilitar el motor de reescritura
+RewriteEngine On
+
+# Si el archivo o directorio no existe físicamente
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Permitir el acceso directo a archivos en media/
+RewriteRule ^media/.+\.(jpg|jpeg|png|gif|svg)$ - [L]
+
+# Redirigir todas las otras solicitudes al archivo PHP correspondiente
+RewriteRule ^(.*)$ $1.php [L]
+
+# Configurar directorio de medios
+<Directory "/media">
+    Options Indexes MultiViews
+    AllowOverride None
+    Require all granted
+</Directory>
