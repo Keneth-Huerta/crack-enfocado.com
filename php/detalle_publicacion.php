@@ -7,8 +7,7 @@ if (isset($_GET['id'])) {
 
     // Consulta mejorada para obtener datos de la publicación y el usuario
     $stmt = $enlace->prepare("SELECT p.*, pr.foto_perfil, pr.nombre, pr.apellido, 
-                             (SELECT COUNT(*) FROM likes WHERE publicacion_id = p.id_publicacion) as likes_count,
-                             (SELECT COUNT(*) FROM comentarios WHERE publicacion_id = p.id_publicacion) as comments_count
+                             (SELECT COUNT(*) FROM likes WHERE publicacion_id = p.id_publicacion) as likes_count
                              FROM publicaciones p 
                              JOIN perfiles pr ON p.usuario_id = pr.usuario_id 
                              WHERE p.id_publicacion = ?");
@@ -47,112 +46,124 @@ if (isset($_SESSION['usuario_id'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* Variables */
-        :root {
-            --primary-color: #952F57;
-            --primary-hover: #7a2647;
-            --bg-light: #f8f9fa;
-            --border-color: #dee2e6;
-            --text-muted: #6c757d;
-            --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s ease;
-        }
-
-        /* Contenedor principal */
-        .container {
-            max-width: 800px;
-            margin: 30px auto;
-            padding: 0 15px;
-        }
-
         .publication-container {
             background: white;
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            padding: 24px;
-            margin-bottom: 30px;
+            border-radius: 15px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            margin: 2rem auto;
+            overflow: hidden;
         }
 
-        /* Cabecera de la publicación */
         .publication-header {
             display: flex;
             align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--border-color);
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
         }
 
-        .publication-avatar {
+        .user-avatar {
             width: 50px;
             height: 50px;
             border-radius: 50%;
             object-fit: cover;
+            margin-right: 1rem;
         }
 
-        .publication-user {
-            font-size: 1.1rem;
-            font-weight: 600;
+        .user-info h4 {
+            margin: 0;
             color: #333;
-        }
-
-        .publication-date {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
-
-        /* Contenido de la publicación */
-        .publication-content {
             font-size: 1.1rem;
-            line-height: 1.6;
-            margin-bottom: 24px;
-            white-space: pre-wrap;
+        }
+
+        .user-info p {
+            margin: 0;
+            color: #666;
+            font-size: 0.9rem;
         }
 
         .publication-image {
-            max-width: 100%;
-            border-radius: 8px;
-            margin: 15px 0;
+            width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            background-color: #f8f9fa;
         }
 
-        /* Acciones */
+        .publication-content {
+            padding: 1.5rem;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #333;
+        }
+
         .publication-actions {
+            padding: 1rem;
+            border-top: 1px solid #eee;
             display: flex;
-            gap: 20px;
-            padding: 15px 0;
-            border-top: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
+            gap: 1rem;
         }
 
         .btn-like {
             background: none;
             border: none;
-            cursor: pointer;
-            padding: 8px 16px;
-            display: inline-flex;
+            color: #666;
+            display: flex;
             align-items: center;
-            gap: 8px;
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            transition: var(--transition);
+            gap: 0.5rem;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
             border-radius: 20px;
+            transition: all 0.3s ease;
         }
 
         .btn-like:hover {
-            background-color: #f0f2f5;
+            background-color: #f8f9fa;
         }
 
         .btn-like.liked {
-            color: #e41e3f;
+            color: #e74c3c;
         }
 
-        .btn-like i {
-            font-size: 1.2rem;
-            transition: var(--transition);
-        }
-
-        .like-animation {
+        .btn-like.liked i {
             animation: likeAnimation 0.3s ease;
+        }
+
+        .comments-section {
+            padding: 1rem;
+            background-color: #f8f9fa;
+        }
+
+        .comment-form {
+            margin-bottom: 1rem;
+        }
+
+        .comment-form textarea {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .comment-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .comment-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .comment-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
         }
 
         @keyframes likeAnimation {
@@ -161,7 +172,7 @@ if (isset($_SESSION['usuario_id'])) {
             }
 
             50% {
-                transform: scale(1.4);
+                transform: scale(1.2);
             }
 
             100% {
@@ -169,116 +180,9 @@ if (isset($_SESSION['usuario_id'])) {
             }
         }
 
-        /* Sección de comentarios */
-        .comments-section {
-            margin-top: 20px;
-            transition: var(--transition);
-        }
-
-        .comment-form {
-            margin-bottom: 24px;
-        }
-
-        .comment-form textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            resize: vertical;
-            min-height: 80px;
-            font-size: 0.95rem;
-            transition: var(--transition);
-        }
-
-        .comment-form textarea:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 2px rgba(149, 47, 87, 0.1);
-        }
-
-        .comment-item {
-            padding: 15px;
-            border-radius: 8px;
-            background-color: var(--bg-light);
-            margin-bottom: 12px;
-            transition: var(--transition);
-        }
-
-        .comment-item:hover {
-            background-color: #f0f2f5;
-        }
-
-        .comment-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 8px;
-        }
-
-        .comment-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .comment-item p {
-            margin: 8px 0;
-            line-height: 1.5;
-        }
-
-        .text-muted {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-
-        /* Loading spinner */
-        .loading-spinner {
-            width: 20px;
-            height: 20px;
-            border: 2px solid #f3f3f3;
-            border-top: 2px solid var(--primary-color);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        /* Error message */
-        .comment-error {
-            padding: 10px;
-            border-radius: 6px;
-            background-color: #fff5f5;
-            color: #dc3545;
-            margin-top: 10px;
-            font-size: 0.9rem;
-        }
-
-        /* Responsive */
         @media (max-width: 768px) {
-            .container {
-                margin: 15px auto;
-            }
-
-            .publication-container {
-                border-radius: 0;
-                padding: 16px;
-            }
-
-            .publication-content {
-                font-size: 1rem;
-            }
-
-            .comment-item {
-                padding: 12px;
+            .publication-image {
+                max-height: 300px;
             }
         }
     </style>
@@ -289,7 +193,26 @@ if (isset($_SESSION['usuario_id'])) {
 
     <div class="container">
         <div class="publication-container">
-            <!-- ... [Previous header and content sections remain the same] ... -->
+            <!-- Encabezado con información del usuario -->
+            <div class="publication-header">
+                <img src="<?php echo !empty($publicacion['foto_perfil']) ? htmlspecialchars($publicacion['foto_perfil']) : '../media/user.png'; ?>"
+                    class="user-avatar" alt="Foto de perfil">
+                <div class="user-info">
+                    <h4><?php echo htmlspecialchars($publicacion['nombre'] . ' ' . $publicacion['apellido']); ?></h4>
+                    <p><?php echo date("d/m/Y H:i", strtotime($publicacion['fecha_publicada'])); ?></p>
+                </div>
+            </div>
+
+            <!-- Imagen de la publicación -->
+            <?php if (!empty($publicacion['imagen'])): ?>
+                <img src="<?php echo htmlspecialchars($publicacion['imagen']); ?>"
+                    class="publication-image" alt="Imagen de la publicación">
+            <?php endif; ?>
+
+            <!-- Contenido de la publicación -->
+            <div class="publication-content">
+                <?php echo nl2br(htmlspecialchars($publicacion['contenido'])); ?>
+            </div>
 
             <!-- Acciones (Like y Comentarios) -->
             <div class="publication-actions">
