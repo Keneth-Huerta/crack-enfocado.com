@@ -79,7 +79,7 @@ $nombre_usuario = '';
 // Obtener información del usuario si está logueado
 if (isset($_SESSION['usuario_id'])) {
     try {
-        $query = "SELECT p.*, u.username, u.email, u.foto_perfil 
+        $query = "SELECT p.*, u.username, u.correo, p.foto_perfil 
                  FROM perfiles p 
                  JOIN usuarios u ON p.usuario_id = u.id 
                  WHERE p.usuario_id = ?";
@@ -292,7 +292,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
                     <!-- Perfil -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link" href="#" data-bs-toggle="dropdown">
+                        <a class="nav-link" href="perfil.php" data-bs-toggle="dropdown">
                             <img src="<?php echo htmlspecialchars($foto_perfil); ?>"
                                 alt="Perfil"
                                 class="rounded-circle"

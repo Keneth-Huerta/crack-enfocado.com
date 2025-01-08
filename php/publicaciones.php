@@ -26,8 +26,6 @@
 
 <body>
     <?php include('header.php'); ?>
-    <div class="snavbar">Publicaciones</div>
-
     <div class="container">
         <!-- Formulario para crear una publicación -->
         <div class="post-form">
