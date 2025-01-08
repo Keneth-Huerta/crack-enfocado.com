@@ -20,12 +20,11 @@ if (!isset($_SESSION['usuario_id'])) {
 if (isset($_GET['usuario_id'])) {
     $usuario_ids = (int) $_GET['usuario_id'];
 } else {
-    // Si no se pasa el ID de usuario, redirigir al perfil del usuario actual
     $usuario_ids = $_SESSION['usuario_id'];
 }
 $perfil = [];
 $publicaciones = [];
-
+$ventas = [];
 
 // Obtener publicaciones del usuario con manejo de errores
 try {
@@ -36,18 +35,26 @@ try {
 
     if ($stmt_publicaciones = mysqli_prepare($enlace, $publicaciones_query)) {
         mysqli_stmt_bind_param($stmt_publicaciones, "i", $usuario_ids);
-
-        if (!mysqli_stmt_execute($stmt_publicaciones)) {
-            throw new Exception("Error al obtener publicaciones: " . mysqli_error($enlace));
-        }
-
+        mysqli_stmt_execute($stmt_publicaciones);
         $publicaciones_result = mysqli_stmt_get_result($stmt_publicaciones);
-    } else {
-        throw new Exception("Error en la preparación de la consulta de publicaciones");
     }
 } catch (Exception $e) {
     error_log($e->getMessage());
-    $publicaciones_result = false;
+}
+
+// Obtener ventas del usuario con manejo de errores
+try {
+    $ventas_query = "SELECT id, producto, precio, descripcion, imagen 
+                     FROM productos 
+                     WHERE usuario_id = ? 
+                     ORDER BY id DESC";
+    if ($stmt_ventas = mysqli_prepare($enlace, $ventas_query)) {
+        mysqli_stmt_bind_param($stmt_ventas, "i", $usuario_ids);
+        mysqli_stmt_execute($stmt_ventas);
+        $ventas_result = mysqli_stmt_get_result($stmt_ventas);
+    }
+} catch (Exception $e) {
+    error_log($e->getMessage());
 }
 
 // Obtener perfil con manejo de errores mejorado
@@ -55,16 +62,9 @@ try {
     $query = "SELECT * FROM perfiles JOIN usuarios on perfiles.usuario_id = usuarios.id WHERE usuario_id = ?";
     if ($stmt = mysqli_prepare($enlace, $query)) {
         mysqli_stmt_bind_param($stmt, "i", $usuario_ids);
-
-        if (mysqli_stmt_execute($stmt)) {
-            $resultado = mysqli_stmt_get_result($stmt);
-            $perfil = mysqli_fetch_assoc($resultado);
-        } else {
-            throw new Exception("Error al ejecutar la consulta: " . mysqli_error($enlace));
-        }
-        mysqli_stmt_close($stmt);
-    } else {
-        throw new Exception("Error en la preparación de la consulta: " . mysqli_error($enlace));
+        mysqli_stmt_execute($stmt);
+        $resultado = mysqli_stmt_get_result($stmt);
+        $perfil = mysqli_fetch_assoc($resultado);
     }
 } catch (Exception $e) {
     error_log($e->getMessage());
@@ -106,11 +106,9 @@ $foto_portada = $perfil['foto_portada'] ?? '../media/user_icon_001.jpg';
         <h1 class="titulo-perfil"><?php echo htmlspecialchars($username); ?></h1>
 
         <div class="perfil-info">
-            <!-- Foto de perfil -->
             <div class="foto-perfil">
                 <img src="<?php echo htmlspecialchars($foto_perfils); ?>" alt="Foto de perfil">
             </div>
-
             <div class="informacion">
                 <p><strong>Nombre Completo:</strong> <?php echo htmlspecialchars($nombre . ' ' . $apellido); ?></p>
                 <p><strong>Carrera:</strong> <?php echo htmlspecialchars($carrera); ?></p>
@@ -118,109 +116,69 @@ $foto_portada = $perfil['foto_portada'] ?? '../media/user_icon_001.jpg';
                 <p><strong>Información Extra:</strong> <?php echo nl2br(htmlspecialchars($informacion_extra)); ?></p>
             </div>
         </div>
-        <?php if ($usuario_ids == $_SESSION['usuario_id']): ?>
 
-            <link rel="stylesheet" href="../css/misestilos.css">
+        <!-- Botones para el dueño del perfil -->
+        <?php if ($usuario_ids == $_SESSION['usuario_id']): ?>
             <div class="acciones">
-                <a href="editar_perfil.php" class="btn-editar">
-                    <i class="fas fa-edit"></i> Editar perfil
-                </a>
-                <a href="logout.php" class="btn-cerrar-sesion">
-                    <i class="fas fa-sign-out-alt"></i> Cerrar sesión
-                </a>
+                <a href="editar_perfil.php" class="btn-editar"><i class="fas fa-edit"></i> Editar perfil</a>
+                <a href="logout.php" class="btn-cerrar-sesion"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
             </div>
         <?php endif; ?>
 
-        <!-- Mostrar publicaciones del usuario -->
+        <!-- Publicaciones -->
         <div class="publicaciones-usuario">
             <h2>Publicaciones</h2>
             <?php if ($publicaciones_result && mysqli_num_rows($publicaciones_result) > 0): ?>
                 <div class="lista-publicaciones">
                     <?php while ($publicacion = mysqli_fetch_assoc($publicaciones_result)): ?>
                         <div class="publicacion-item">
-                            <!-- Fecha y estadísticas -->
-                            <div class="publicacion-meta">
-                                <p class="fecha">
-                                    <i class="far fa-clock"></i>
-                                    <?php
-                                    $fecha = new DateTime($publicacion['fecha_publicada']);
-                                    echo $fecha->format('d/m/Y H:i');
-                                    ?>
-                                </p>
-                            </div>
-
-                            <!-- Contenido de la publicación -->
-                            <div class="publicacion-contenido">
-                                <p><?php echo nl2br(htmlspecialchars($publicacion['contenido'])); ?></p>
-                                <?php if (!empty($publicacion['imagen'])): ?>
-                                    <div class="publicacion-imagen">
-                                        <img src="<?php echo htmlspecialchars($publicacion['imagen']); ?>"
-                                            alt="Imagen de publicación">
-                                    </div>
-                                <?php endif; ?>
-                            </div>
-
-                            <!-- Botones de acción -->
-                            <?php if ($usuario_ids == $_SESSION['usuario_id']): ?>
-                                <div class="acciones-publicacion">
-                                    <a href="editar_publicacion.php?id=<?php echo $publicacion['id_publicacion']; ?>"
-                                        class="btn-editar">
-                                        <i class="fas fa-edit"></i> Editar
-                                    </a>
-                                    <a href="eliminar_publicacion.php?id=<?php echo $publicacion['id_publicacion']; ?>"
-                                        class="btn-eliminar"
-                                        onclick="return confirm('¿Estás seguro de que deseas eliminar esta publicación?')">
-                                        <i class="fas fa-trash-alt"></i> Eliminar
-                                    </a>
-                                </div>
+                            <p class="fecha">
+                                <?php echo (new DateTime($publicacion['fecha_publicada']))->format('d/m/Y H:i'); ?>
+                            </p>
+                            <p><?php echo nl2br(htmlspecialchars($publicacion['contenido'])); ?></p>
+                            <?php if (!empty($publicacion['imagen'])): ?>
+                                <img src="<?php echo htmlspecialchars($publicacion['imagen']); ?>" alt="Imagen de publicación">
                             <?php endif; ?>
                         </div>
                     <?php endwhile; ?>
                 </div>
             <?php else: ?>
-                <div class="sin-publicaciones">
-                    <p><i class="far fa-newspaper"></i> Aún no has realizado ninguna publicación.</p>
-                    <a href="publicaciones.php" class="btn-nueva-publicacion">
-                        <i class="fas fa-plus"></i> Crear primera publicación
-                    </a>
-                </div>
+                <p>No hay publicaciones disponibles.</p>
             <?php endif; ?>
         </div>
+
+        <!-- Sección de ventas -->
+        <div class="ventas-usuario">
+            <h2>Ventas</h2>
+            <?php if ($ventas_result && mysqli_num_rows($ventas_result) > 0): ?>
+                <div class="lista-ventas">
+                    <?php while ($venta = mysqli_fetch_assoc($ventas_result)): ?>
+                        <div class="venta-item">
+                            <h4><?php echo htmlspecialchars($venta['producto']); ?></h4>
+                            <p><strong>Precio:</strong> $<?php echo htmlspecialchars($venta['precio']); ?></p>
+                            <p><?php echo htmlspecialchars($venta['descripcion']); ?></p>
+                            <?php if (!empty($venta['imagen'])): ?>
+                                <img src="<?php echo htmlspecialchars($venta['imagen']); ?>" alt="Imagen del producto">
+                            <?php endif; ?>
+                        </div>
+                    <?php endwhile; ?>
+                </div>
+            <?php else: ?>
+                <p>No hay ventas disponibles.</p>
+            <?php endif; ?>
+        </div>
+
     </div>
 
-    <script>
-        // Script para lazy loading de imágenes
-        document.addEventListener('DOMContentLoaded', function() {
-            var lazyImages = [].slice.call(document.querySelectorAll("img[loading='lazy']"));
-
-            if ("IntersectionObserver" in window) {
-                let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
-                    entries.forEach(function(entry) {
-                        if (entry.isIntersecting) {
-                            let lazyImage = entry.target;
-                            lazyImage.src = lazyImage.dataset.src;
-                            lazyImage.removeAttribute('loading');
-                            lazyImageObserver.unobserve(lazyImage);
-                        }
-                    });
-                });
-
-                lazyImages.forEach(function(lazyImage) {
-                    lazyImageObserver.observe(lazyImage);
-                });
-            }
-        });
-    </script>
-
-    <!-- Bootstrap JS (incluye Popper.js) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
 
 <?php
-if (isset($stmt_publicaciones)) {
-    mysqli_stmt_close($stmt_publicaciones);
-}
+// Cerrar conexiones de manera segura
+if (isset($stmt_publicaciones)) mysqli_stmt_close($stmt_publicaciones);
+if (isset($stmt_ventas)) mysqli_stmt_close($stmt_ventas);
+if (isset($stmt)) mysqli_stmt_close($stmt);
 mysqli_close($enlace);
 ?>
