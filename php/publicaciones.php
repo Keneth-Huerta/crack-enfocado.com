@@ -129,9 +129,9 @@
                 // Sección de comentarios
                 echo '<div id="comments-section-' . $publicacion['id_publicacion'] . '" class="comments-list">';
 
-                // Formulario de comentarios
+                // Formulario de comentarios siempre antes de la lista de comentarios
                 if (isset($_SESSION['usuario_id'])) {
-                    echo '<div id="comment-form-' . $publicacion['id_publicacion'] . '" class="comment-form">';
+                    echo '<div class="comment-form" style="display: block;">'; // Quitamos el ID y dejamos visible
                     echo '<form onsubmit="submitComment(event, ' . $publicacion['id_publicacion'] . ')">';
                     echo '<textarea name="contenido_comentario" placeholder="Escribe un comentario..." required></textarea>';
                     echo '<button type="submit">Comentar</button>';
@@ -203,7 +203,8 @@
 
         function toggleCommentSection(publicationId) {
             const commentsSection = document.getElementById(`comments-section-${publicationId}`);
-            commentsSection.style.display = commentsSection.style.display === 'block' ? 'none' : 'block';
+            const isVisible = commentsSection.style.display === 'block';
+            commentsSection.style.display = isVisible ? 'none' : 'block';
         }
 
         async function submitComment(event, publicationId) {

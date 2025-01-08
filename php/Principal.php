@@ -1,3 +1,11 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+require_once 'conexion.php';
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -141,40 +149,37 @@
         <div id="publicacionesCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <?php
-                if (session_status() == PHP_SESSION_NONE) {
-                if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}            }
-
-                require_once 'conexion.php';
-
-                $stmt = $enlace->prepare("SELECT imagen, contenido, fecha_publicada FROM publicaciones ORDER BY fecha_publicada DESC LIMIT 5");
+                $stmt = $enlace->prepare("SELECT id, imagen, contenido, fecha_publicada FROM publicaciones ORDER BY fecha_publicada DESC LIMIT 5");
                 $stmt->execute();
                 $resultado = $stmt->get_result();
 
-                if ($resultado->num_rows > 0) {
+                if ($resultado && $resultado->num_rows > 0) {
                     $first = true;
                     while ($publicacion = $resultado->fetch_assoc()) {
                         $activeClass = $first ? "active" : "";
                         $first = false;
                 ?>
                         <div class="carousel-item <?php echo $activeClass; ?>">
-                            <a href="detalles_publicacion.php?id=<?php echo $publicacion['id']; ?>">
-                                <div class="row g-0">
-                                    <div class="col-12 col-md-4">
-                                        <img src="<?php echo htmlspecialchars($publicacion['imagen'] ?? 'https://via.placeholder.com/300'); ?>"
-                                            class="img-fluid" alt="Publicación">
-                                    </div>
-                                    <div class="col-12 col-md-8">
-                                        <div class="carousel-content">
-                                            <p class="mb-3"><?php echo nl2br(htmlspecialchars($publicacion['contenido'])); ?></p>
-                                            <small class="text-muted">
-                                                Publicado el <?php echo date("d/m/Y H:i", strtotime($publicacion['fecha_publicada'])); ?>
-                                            </small>
+                            <div class="row g-0">
+                                <div class="col-12 col-md-4">
+                                    <?php if (!empty($publicacion['imagen'])): ?>
+                                        <img src="<?php echo htmlspecialchars($publicacion['imagen']); ?>" class="img-fluid" alt="Publicación">
+                                    <?php else: ?>
+                                        <img src="media/publicacion_default.jpg" class="img-fluid" alt="Imagen no disponible">
+                                    <?php endif; ?>
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <div class="carousel-content">
+                                        <p class="mb-3"><?php echo nl2br(htmlspecialchars($publicacion['contenido'])); ?></p>
+                                        <small class="text-muted">
+                                            Publicado el <?php echo date("d/m/Y H:i", strtotime($publicacion['fecha_publicada'])); ?>
+                                        </small>
+                                        <div class="mt-2">
+                                            <a href="detalles_publicacion.php?id=<?php echo $publicacion['id']; ?>" class="btn btn-ver-todas btn-sm">Ver más</a>
                                         </div>
                                     </div>
                                 </div>
-                            </a>
+                            </div>
                         </div>
                 <?php
                     }
@@ -198,19 +203,15 @@
         <div id="ventasCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <?php
-                $stmt = $enlace->prepare("SELECT p.*, u.username, pr.foto_perfil 
+                $stmt = $enlace->prepare("SELECT p.*, u.username 
                                         FROM productos p 
                                         JOIN usuarios u ON p.usuario_id = u.id 
-                                        JOIN perfiles pr ON p.usuario_id = pr.usuario_id 
                                         ORDER BY p.idProducto DESC LIMIT 6");
                 $stmt->execute();
                 $resultado = $stmt->get_result();
 
-                if ($resultado->num_rows > 0) {
-                    $first = true;
-                    $counter = 0;
-                    $productos = [];
-
+                if ($resultado && $resultado->num_rows > 0) {
+                    $productos = array();
                     while ($producto = $resultado->fetch_assoc()) {
                         $productos[] = $producto;
                     }
@@ -219,31 +220,31 @@
                         $activeClass = $i === 0 ? "active" : "";
                 ?>
                         <div class="carousel-item <?php echo $activeClass; ?>">
-
                             <div class="row">
                                 <?php for ($j = $i; $j < min($i + 2, count($productos)); $j++) { ?>
                                     <div class="col-md-6">
-                                        <a href="detalles_producto.php?id=<?php echo $productos[$j]['idProducto']; ?>">
-                                            <div class="product-card">
-                                                <?php if (!empty($productos[$j]['imagen'])): ?>
-                                                    <img src="data:image/jpeg;base64,<?php echo base64_encode($productos[$j]['imagen']); ?>"
-                                                        class="w-100 product-image" alt="Producto">
-                                                <?php else: ?>
-                                                    <img src="../media/producto_default.jpg"
-                                                        class="w-100 product-image" alt="Imagen no disponible">
-                                                <?php endif; ?>
-                                                <div class="product-details">
-                                                    <h5><?php echo htmlspecialchars($productos[$j]['producto']); ?></h5>
-                                                    <p class="price">$<?php echo number_format($productos[$j]['precio'], 2); ?></p>
-                                                    <p class="description"><?php echo htmlspecialchars($productos[$j]['descripcion']); ?></p>
-                                                    <small class="text-muted">Vendedor: <?php echo htmlspecialchars($productos[$j]['username']); ?></small>
+                                        <div class="product-card">
+                                            <?php if (!empty($productos[$j]['imagen'])): ?>
+                                                <img src="data:image/jpeg;base64,<?php echo base64_encode($productos[$j]['imagen']); ?>"
+                                                    class="w-100 product-image" alt="Producto">
+                                            <?php else: ?>
+                                                <img src="media/producto_default.jpg"
+                                                    class="w-100 product-image" alt="Imagen no disponible">
+                                            <?php endif; ?>
+                                            <div class="product-details">
+                                                <h5><?php echo htmlspecialchars($productos[$j]['producto']); ?></h5>
+                                                <p class="price">$<?php echo number_format($productos[$j]['precio'], 2); ?></p>
+                                                <p class="description"><?php echo htmlspecialchars($productos[$j]['descripcion']); ?></p>
+                                                <small class="text-muted">Vendedor: <?php echo htmlspecialchars($productos[$j]['username']); ?></small>
+                                                <div class="mt-2">
+                                                    <a href="detalles_producto.php?id=<?php echo $productos[$j]['idProducto']; ?>"
+                                                        class="btn btn-ver-todas btn-sm">Ver detalles</a>
                                                 </div>
                                             </div>
-                                        </a>
+                                        </div>
                                     </div>
                                 <?php } ?>
                             </div>
-
                         </div>
                 <?php
                     }
