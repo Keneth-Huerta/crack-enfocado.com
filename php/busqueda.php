@@ -178,25 +178,25 @@ $resultados = $search->getResults();
         </form>
 
         <!-- Tabs para navegación entre resultados -->
-        <ul class="nav nav-tabs search-tabs mb-4">
-            <li class="nav-item">
-                <a class="nav-link active" data-bs-toggle="tab" href="#usuarios">
+        <ul class="nav nav-tabs search-tabs mb-4" style="color: #000 !important;">
+            <li class="nav-item" style="color: #000 !important;">
+                <a class="nav-link active" data-bs-toggle="tab" href="#usuarios" style="color: #000 !important;">
                     Usuarios
                     <?php if ($resultados['usuarios']): ?>
                         <span class="badge bg-primary"><?php echo mysqli_num_rows($resultados['usuarios']); ?></span>
                     <?php endif; ?>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#publicaciones">
+            <li class="nav-item" style="color: #000 !important;">
+                <a class="nav-link" data-bs-toggle="tab" href="#publicaciones" style="color: #000 !important;">
                     Publicaciones
                     <?php if ($resultados['publicaciones']): ?>
                         <span class="badge bg-primary"><?php echo mysqli_num_rows($resultados['publicaciones']); ?></span>
                     <?php endif; ?>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#productos">
+            <li class="nav-item" style="color: #000 !important;">
+                <a class="nav-link" data-bs-toggle="tab" href="#productos" style="color: #000 !important;">
                     Productos
                     <?php if ($resultados['productos']): ?>
                         <span class="badge bg-primary"><?php echo mysqli_num_rows($resultados['productos']); ?></span>
