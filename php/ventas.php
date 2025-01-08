@@ -448,11 +448,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </div>
 
                         <!-- Detalles del producto -->
-                        <!-- En la sección de detalles del producto -->
                         <div class="producto-detalles">
-                            <h3><?php echo htmlspecialchars($producto['producto']); ?></h3>
-                            <p class="precio">$<?php echo number_format($producto['precio'], 2); ?></p>
-                            <p class="descripcion"><?php echo htmlspecialchars($producto['descripcion']); ?></p>
+                            <h3><?php echo htmlspecialchars($row['producto']); ?></h3>
+                            <p class="precio">$<?php echo number_format($row['precio'], 2); ?></p>
+                            <p class="descripcion"><?php echo htmlspecialchars($row['descripcion']); ?></p>
 
                             <?php if (isset($_SESSION['usuario_id'])): ?>
                                 <?php if ($_SESSION['usuario_id'] == $row['usuario_id']): ?>
@@ -471,18 +470,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <?php else: ?>
                                     <!-- Botón de contacto para otros usuarios -->
                                     <?php
-                                    $telefono = $row['telefono'];
-                                    $mensaje = "Hola, me interesa tu producto: " . $row['producto'] . " por $" . $row['precio'];
-                                    $mensaje_codificado = urlencode($mensaje);
-                                    $whatsapp_link = "https://wa.me/{$telefono}?text={$mensaje_codificado}";
+                                    // Modificar la consulta SQL para incluir el teléfono
+                                    $sql_usuario = "SELECT telefono FROM perfiles WHERE usuario_id = ?";
+                                    $stmt = mysqli_prepare($enlace, $sql_usuario);
+                                    mysqli_stmt_bind_param($stmt, "i", $row['usuario_id']);
+                                    mysqli_stmt_execute($stmt);
+                                    $resultado = mysqli_stmt_get_result($stmt);
+                                    $datos_usuario = mysqli_fetch_assoc($resultado);
+                                    $telefono = $datos_usuario['telefono'] ?? '';
+
+                                    if (!empty($telefono)) {
+                                        $mensaje = "Hola, me interesa tu producto: " . $row['producto'] . " por $" . $row['precio'];
+                                        $mensaje_codificado = urlencode($mensaje);
+                                        $whatsapp_link = "https://wa.me/{$telefono}?text={$mensaje_codificado}";
                                     ?>
-                                    <div class="acciones-producto">
-                                        <a href="<?php echo $whatsapp_link; ?>"
-                                            target="_blank"
-                                            class="btn btn-success btn-sm">
-                                            <i class="fab fa-whatsapp"></i> Contactar por WhatsApp
-                                        </a>
-                                    </div>
+                                        <div class="acciones-producto">
+                                            <a href="<?php echo $whatsapp_link; ?>"
+                                                target="_blank"
+                                                class="btn btn-success btn-sm">
+                                                <i class="fab fa-whatsapp"></i> Contactar por WhatsApp
+                                            </a>
+                                        </div>
+                                    <?php } ?>
                                 <?php endif; ?>
                             <?php endif; ?>
                         </div>
