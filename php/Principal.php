@@ -142,8 +142,9 @@
             <div class="carousel-inner">
                 <?php
                 if (session_status() == PHP_SESSION_NONE) {
-                    session_start();
-                }
+                if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}            }
 
                 require_once 'conexion.php';
 
