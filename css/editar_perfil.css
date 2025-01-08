@@ -33,7 +33,10 @@ h1 {
     margin-bottom: 20px;
 }
 
-input[type="text"], input[type="number"], input[type="file"], textarea {
+input[type="text"],
+input[type="number"],
+input[type="file"],
+textarea {
     width: 100%;
     padding: 12px;
     margin: 10px 0;
@@ -44,7 +47,9 @@ input[type="text"], input[type="number"], input[type="file"], textarea {
     transition: all 0.3s ease;
 }
 
-input[type="text"]:focus, input[type="number"]:focus, textarea:focus {
+input[type="text"]:focus,
+input[type="number"]:focus,
+textarea:focus {
     border-color: #7d1b1b; /* Bordes rojos al enfocar */
     box-shadow: 0 0 8px rgba(125, 27, 27, 0.4); /* Sombra suave en el borde */
 }
@@ -125,4 +130,46 @@ label.error {
 .upload-section input[type="file"] {
     font-size: 14px;
     padding: 10px;
+}
+
+/* Modificación para los botones de cancelar y guardar */
+.acciones {
+    display: flex;
+    justify-content: space-between; 
+    gap: 15px; /* Espacio entre los botones */
+    margin-top: 20px;
+}
+
+/* Botón guardar cambios */
+button[type="submit"] {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1.1em;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #218838;
+}
+
+/* Botón cancelar */
+a.btn-cancelar {
+    background-color: #f0f0f0;
+    color: #333;
+    padding: 12px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease;
+}
+
+a.btn-cancelar:hover {
+    background-color: #ddd;
 }

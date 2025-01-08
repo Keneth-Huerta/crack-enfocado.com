@@ -1,15 +1,20 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 require_once '../php/conexion.php'; // Conexión a la base de datos
 
 // Asegúrate de que el usuario esté logueado
 if (!isset($_SESSION['usuario_id'])) {
-    header("Location: login.php");
+    echo "Por favor, inicie sesión para continuar.";
     exit();
 }
 
-// Obtener la información del usuario
+// Obtener el usuario_id de la sesión
 $usuario_id = $_SESSION['usuario_id'];
+
+// Obtener la información del usuario
 $query = "SELECT * FROM perfiles WHERE usuario_id = ?";
 $stmt = mysqli_prepare($enlace, $query);
 mysqli_stmt_bind_param($stmt, "i", $usuario_id);
@@ -20,16 +25,15 @@ mysqli_stmt_close($stmt);
 
 // Verificar si el perfil existe
 if ($perfil === null) {
-    // Si no existe el perfil, el usuario debe llenar sus datos
-    // El formulario se presentará vacío
+    // Si no existe el perfil, inicializamos los valores en blanco
     $perfil = [
-        'nombre' => '',
-        'apellido' => '',
-        'carrera' => '',
-        'semestre' => '',
-        'foto_perfil' => '',
-        'foto_portada' => '',
-        'informacion_extra' => ''
+        'nombre' => null,
+        'apellido' => null,
+        'carrera' => null,
+        'semestre' => null,
+        'foto_perfil' => null,
+        'foto_portada' => null,
+        'informacion_extra' => null
     ];
 }
 
@@ -53,26 +57,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         move_uploaded_file($_FILES['foto_portada']['tmp_name'], $foto_portada);
     }
 
-    // Si el perfil ya existe, actualizamos, si no, insertamos uno nuevo
+    // Si el perfil ya existe, actualizamos
     if ($perfil['usuario_id'] != '') {
-        // Actualizar datos del perfil existente
         $update_query = "UPDATE perfiles SET nombre = ?, apellido = ?, carrera = ?, semestre = ?, foto_perfil = ?, foto_portada = ?, informacion_extra = ? WHERE usuario_id = ?";
         $stmt = mysqli_prepare($enlace, $update_query);
-        
-        // Asegúrate de que el número de marcadores de tipo coincida con los valores
-        // 8 marcadores para las 8 variables: nombre, apellido, carrera, semestre, foto_perfil, foto_portada, informacion_extra, usuario_id
-        mysqli_stmt_bind_param($stmt, "sssisiss", $nombre, $apellido, $carrera, $semestre, $foto_perfil, $foto_portada, $informacion_extra, $usuario_id);
+
+        // Asegúrate de que la cantidad de marcadores coincida con el número de parámetros
+        mysqli_stmt_bind_param($stmt, "sssisssi", $nombre, $apellido, $carrera, $semestre, $foto_perfil, $foto_portada, $informacion_extra, $usuario_id);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
     } else {
-        // Insertar nuevo perfil si no existe
+        // Insertar un nuevo perfil si no existe
         $insert_query = "INSERT INTO perfiles (usuario_id, nombre, apellido, carrera, semestre, foto_perfil, foto_portada, informacion_extra) 
                          VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = mysqli_prepare($enlace, $insert_query);
-        
-        // Asegúrate de que el número de marcadores de tipo coincida con los valores
-        // 8 marcadores para las 8 variables: usuario_id, nombre, apellido, carrera, semestre, foto_perfil, foto_portada, informacion_extra
-        mysqli_stmt_bind_param($stmt, "isssisiss", $usuario_id, $nombre, $apellido, $carrera, $semestre, $foto_perfil, $foto_portada, $informacion_extra);
+
+        // Asegúrate de que la cantidad de marcadores coincida con el número de parámetros
+        mysqli_stmt_bind_param($stmt, "isssisss", $usuario_id, $nombre, $apellido, $carrera, $semestre, $foto_perfil, $foto_portada, $informacion_extra);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
     }
@@ -82,8 +83,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     exit();
 }
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="es">

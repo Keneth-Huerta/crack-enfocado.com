@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 // Configuración de la base de datos
 $servidor = "localhost";
 $usuarioBD = "u288355303_Keneth";

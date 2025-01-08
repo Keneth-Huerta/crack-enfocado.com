@@ -1,0 +1,110 @@
+/* Estilos generales para la página de edición de publicación */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+/* Contenedor principal del formulario de edición */
+.container-edit-publication {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Título del formulario */
+.form-title {
+    font-size: 1.8em;
+    color: #5c5c5c;
+    margin-bottom: 20px;
+}
+
+/* Estilo del mensaje de error */
+.error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.error-message p {
+    margin: 0;
+}
+
+/* Estilos del formulario de edición */
+.form-container {
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* Etiquetas de los campos de formulario */
+.form-label {
+    font-size: 1.1em;
+    color: #333;
+    margin-bottom: 5px;
+    display: block;
+}
+
+/* Área de texto (contenido de la publicación) */
+.form-textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0 20px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    resize: vertical;
+    min-height: 150px;
+}
+
+/* Estilo para el input tipo archivo (imagen) */
+.form-input-file {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0 20px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    background-color: #f9f9f9;
+}
+
+/* Botones de acción (guardar, cancelar) */
+.action-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.btn-save,
+.btn-cancel {
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1.1em;
+    text-decoration: none;
+}
+
+.btn-save {
+    background-color: #28a745;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.btn-save:hover {
+    background-color: #218838;
+}
+
+.btn-cancel {
+    background-color: #f0f0f0;
+    color: #333;
+    text-decoration: none;
+}
+
+.btn-cancel:hover {
+    background-color: #ddd;
+}

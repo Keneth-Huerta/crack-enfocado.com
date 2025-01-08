@@ -1,58 +1,73 @@
-body {
-    font-family: Arial, sans-serif;
+:root {
+    --primary-color: #7d1b1b;
+    --text-color: #333;
+    --bg-color: #f0f2f5;
+    --border-color: #ddd;
+    --shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    --spacing: 20px;
+    --radius: 10px;
+    --radius-full: 50%;
+    --radius-btn: 20px;
+}
+
+/* Reset y estilos base */
+body, .general {
     margin: 0;
     padding: 0;
-    background-color: #f0f2f5;
+    font-family: Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.5;
 }
 
-.navbar {
-    background-color: #7d1b1b;
-    color: white;
-    padding: 15px;
-    text-align: center;
-    font-size: 1.8rem;
-    font-weight: bold;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
+/* Layout */
 .container {
     max-width: 800px;
-    margin: 20px auto;
+    margin: var(--spacing) auto;
     padding: 10px;
 }
 
-/* Estilos para el contenedor de publicaciones */
+.snavbar {
+    background-color: var(--primary-color);
+    color: white;
+    padding: var(--spacing);
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    box-shadow: var(--shadow);
+}
+
+/* Publicaciones */
 .publicaciones {
     margin-top: 30px;
 }
 
-/* Estilo para cada publicación */
-.post-item {
+.post-item, .post-form {
     background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
+    padding: var(--spacing);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: var(--spacing);
+}
+
+.post-item {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
-/* Estilo para la imagen de la publicación */
+/* Imágenes */
 .post-item img {
-    width: 100%;  /* Hace que la imagen ocupe el 100% del contenedor */
-    max-width: 500px;  /* Limita el tamaño máximo de la imagen a 500px */
-    max-height: 300px; /* Limita la altura máxima de la imagen */
-    object-fit: cover;  /* Asegura que la imagen se recorte y se ajuste sin deformarse */
-    border-radius: 10px; /* Bordes redondeados */
-    margin-bottom: 15px;  /* Separación inferior */
-    display: block;  /* Elimina los márgenes extra alrededor de la imagen */
-    margin-left: auto;  /* Centra la imagen en su contenedor */
-    margin-right: auto; /* Centra la imagen en su contenedor */
+    width: 100%;
+    max-width: 500px;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: var(--radius);
+    margin: 0 auto 15px;
+    display: block;
 }
 
-
-/* Estilo para el encabezado de la publicación */
+/* Header de publicación */
 .post-header {
     display: flex;
     align-items: center;
@@ -62,77 +77,149 @@ body {
 .post-avatar {
     width: 50px;
     height: 50px;
-    border-radius: 50%;
-    background-color: #ddd;
+    border-radius: var(--radius-full);
+    background-color: var(--border-color);
 }
 
 .post-username {
     font-weight: bold;
     font-size: 1.2rem;
-    color: #333;
 }
 
-/* Estilo para el contenido de la publicación */
-.post-content {
-    font-size: 1rem;
-    color: #444;
-    margin-bottom: 15px;
-    line-height: 1.5;
-}
-
-.post-form {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-    margin-bottom: 30px;
-}
-
-.post-form textarea {
+/* Formularios */
+textarea {
     width: 100%;
-    height: 100px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color);
     border-radius: 6px;
     padding: 10px;
-    resize: none;
     font-size: 1rem;
     box-sizing: border-box;
 }
 
-.post-form input[type="file"] {
-    margin-top: 10px;
-    font-size: 0.9rem;
+.post-form textarea {
+    height: 100px;
+    resize: none;
 }
 
-.post-form button {
-    background-color: #7d1b1b;
+.comments-section textarea {
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+/* Botón Me gusta */
+.btn-like {
+    background-color: white;
+    color: #666;
+    border: 1px solid var(--border-color);
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: var(--radius-btn);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+
+.btn-like i {
+    font-size: 16px;
+}
+
+.btn-like.liked {
+    background-color: #e8f5e9;
+    color: #4CAF50;
+    border-color: #4CAF50;
+}
+
+.btn-like:not(.liked):hover {
+    background-color: #ffe5e5;
+    color: #ff4444;
+    border-color: #ff4444;
+}
+
+/* Comentarios */
+.comments-section {
+    margin-top: var(--spacing);
+    border-top: 1px solid var(--border-color);
+    padding-top: 10px;
+}
+
+.comment-item {
+    margin-bottom: 10px;
+    padding-left: var(--spacing);
+}
+
+.comment-item strong {
+    font-size: 14px;
+}
+
+.comment-item p {
+    font-size: 13px;
+    color: #666;
+}
+
+/* Botón general */
+button {
+    background-color: var(--primary-color);
     color: white;
     border: none;
     padding: 10px 20px;
     border-radius: 6px;
     cursor: pointer;
     font-size: 1rem;
-    margin-top: 10px;
     transition: background-color 0.3s;
 }
 
-/* Estilo para las acciones de la publicación */
-.post-actions {
-    margin-top: 10px;
-    display: flex;
-    gap: 15px;
+button:hover {
+    opacity: 0.9;
 }
 
-.post-actions button {
-    background: none;
+/* Responsive */
+@media (max-width: 600px) {
+    :root {
+        --spacing: 15px;
+    }
+
+    .btn-like {
+        font-size: 14px;
+        padding: 8px 15px;
+    }
+} .btn-like {
     border: none;
-    color: #7d1b1b;
+    padding: 8px 16px;
     cursor: pointer;
-    font-size: 0.95rem;
-    font-weight: bold;
+    background: none;
+    color: #666;
+    transition: all 0.3s ease;
 }
 
-.post-actions button:hover {
-    text-decoration: underline;
+.btn-like .fa-heart {
+    color: #666;
+    transition: all 0.3s ease;
 }
 
+.btn-like.liked {
+    color: #ff4444;
+}
+
+.btn-like.liked .fa-heart {
+    color: #ff4444;
+}/* Icono de "Me gusta" */
+.btn-like .fa-heart {
+    color: #666;
+    transition: all 0.3s ease;
+}
+
+.btn-like.liked .fa-heart {
+    color: #ff4444; /* Rojo cuando está activo */
+}
+
+/* Icono de corazón vacío (cuando no le ha dado like) */
+.btn-like .fa-heart-o {
+    color: #666;
+    transition: all 0.3s ease;
+}
+
+.btn-like.liked .fa-heart-o {
+    color: transparent; /* Elimina el color del icono vacío cuando le da like */
+}
