@@ -256,7 +256,7 @@ require_once 'conexion.php';
                 ?>
                         <div class="carousel-item <?php echo $activeClass; ?>">
                             <div class="">
-                                <?php for ($j = $i; $j < min($i, count($productos)); $j++) { ?>
+                                <?php for ($j = $i; $j < min($i+1, count($productos)); $j++) { ?>
                                     <div class="">
                                         <div class="product-card">
                                             <?php if (!empty($productos[$j]['imagen'])): ?>
