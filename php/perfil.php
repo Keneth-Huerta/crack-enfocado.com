@@ -38,7 +38,7 @@ mysqli_stmt_execute($stmt_publicaciones);
 $publicaciones_result = mysqli_stmt_get_result($stmt_publicaciones);
 
 // Obtener ventas
-$ventas_query = "SELECT idProcuto, producto, precio, descripcion, imagen 
+$ventas_query = "SELECT idProducto, producto, precio, descripcion, imagen 
                  FROM productos 
                  WHERE usuario_id = ? 
                  ORDER BY idProducto DESC";
