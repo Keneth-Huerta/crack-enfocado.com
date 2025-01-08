@@ -45,32 +45,43 @@ if (!$producto) {
     exit();
 }
 
-// Procesar el formulario de actualización
+// Procesar el formulario de actualizació
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nuevo_producto = htmlspecialchars($_POST['producto']);
     $nuevo_precio = floatval($_POST['precio']);
     $nueva_descripcion = htmlspecialchars($_POST['descripcion']);
-
+    
     if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
-        // Si se subió una nueva imagen
-        $nueva_imagen = file_get_contents($_FILES['imagen']['tmp_name']);
-        $query = "UPDATE productos SET producto = ?, precio = ?, descripcion = ?, imagen = ? WHERE idProducto = ? AND usuario_id = ?";
-        $stmt = mysqli_prepare($enlace, $query);
-        mysqli_stmt_bind_param($stmt, "sdsbii", $nuevo_producto, $nuevo_precio, $nueva_descripcion, $nueva_imagen, $id_producto, $_SESSION['usuario_id']);
+        $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
+        $file_type = $_FILES['imagen']['type'];
+        
+        if (!in_array($file_type, $allowed_types)) {
+            $mensaje = '<div class="alert alert-danger">Solo se permiten imágenes JPG, PNG y GIF.</div>';
+        } 
+        elseif ($_FILES['imagen']['size'] > 5242880) {
+            $mensaje = '<div class="alert alert-danger">La imagen no debe exceder 5MB.</div>';
+        } 
+        else {
+            $nueva_imagen = file_get_contents($_FILES['imagen']['tmp_name']);
+            $query = "UPDATE productos SET producto = ?, precio = ?, descripcion = ?, imagen = ? WHERE idProducto = ? AND usuario_id = ?";
+            $stmt = mysqli_prepare($enlace, $query);
+            mysqli_stmt_bind_param($stmt, "sdsbii", $nuevo_producto, $nuevo_precio, $nueva_descripcion, $nueva_imagen, $id_producto, $_SESSION['usuario_id']);
+        }
     } else {
-        // Si no se subió una nueva imagen
         $query = "UPDATE productos SET producto = ?, precio = ?, descripcion = ? WHERE idProducto = ? AND usuario_id = ?";
         $stmt = mysqli_prepare($enlace, $query);
         mysqli_stmt_bind_param($stmt, "ssdii", $nuevo_producto, $nuevo_precio, $nueva_descripcion, $id_producto, $_SESSION['usuario_id']);
     }
 
-    if (mysqli_stmt_execute($stmt)) {
+    if (!isset($mensaje) && mysqli_stmt_execute($stmt)) {
         $mensaje = '<div class="alert alert-success">Producto actualizado exitosamente.</div>';
-        // Actualizar la información del producto en la variable
         $producto['producto'] = $nuevo_producto;
         $producto['precio'] = $nuevo_precio;
         $producto['descripcion'] = $nueva_descripcion;
-    } else {
+        if (isset($nueva_imagen)) {
+            $producto['imagen'] = $nueva_imagen;
+        }
+    } else if (!isset($mensaje)) {
         $mensaje = '<div class="alert alert-danger">Error al actualizar el producto: ' . mysqli_error($enlace) . '</div>';
     }
 }
