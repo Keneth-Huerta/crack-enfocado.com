@@ -229,65 +229,77 @@ $foto_portada = $perfil['foto_portada'] ?? '../media/user_icon_001.jpg';
 
                 <!-- Pestaña de Productos -->
                 <div class="tab-pane fade" id="productos" role="tabpanel">
-                    <div class="productos-usuario">
-                        <h2>Productos en Venta</h2>
+                    <div class="productos-usuario container-fluid py-4">
+                        <h2 class="text-center mb-4">Productos en Venta</h2>
                         <?php if ($productos_result && mysqli_num_rows($productos_result) > 0): ?>
-                            <div class="lista-productos">
+                            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                                 <?php while ($producto = mysqli_fetch_assoc($productos_result)): ?>
-                                    <div class="producto-item">
-                                        <div class="producto-imagen">
-                                            <?php if (!empty($producto['imagen'])): ?>
-                                                <img class="img-fluid rounded" src="data:image/jpeg;base64,<?php echo base64_encode($producto['imagen']); ?>"
-                                                    alt="Imagen del producto">
-                                            <?php else: ?>
-                                                <img src="../media/producto_default.jpg" alt="Imagen no disponible">
-                                            <?php endif; ?>
-                                        </div>
-                                        <div class="producto-detalles">
-                                            <h3><?php echo htmlspecialchars($producto['producto']); ?></h3>
-                                            <p class="precio">$<?php echo number_format($producto['precio'], 2); ?></p>
-                                            <p class="descripcion"><?php echo htmlspecialchars($producto['descripcion']); ?></p>
-
-                                            <?php if (isset($_SESSION['usuario_id'])): ?>
-                                                <?php if ($_SESSION['usuario_id'] == $producto['usuario_id']): ?>
-                                                    <!-- Botones de editar y eliminar para el propietario -->
-                                                    <div class="acciones-producto">
-                                                        <a href="editar_producto.php?id=<?php echo $producto['idProducto']; ?>"
-                                                            class="btn btn-primary btn-sm">
-                                                            <i class="fas fa-edit"></i> Editar
-                                                        </a>
-                                                        <a href="eliminar_producto.php?id=<?php echo $producto['idProducto']; ?>"
-                                                            class="btn btn-danger btn-sm"
-                                                            onclick="return confirm('¿Estás seguro de eliminar este producto?')">
-                                                            <i class="fas fa-trash-alt"></i> Eliminar
-                                                        </a>
-                                                    </div>
+                                    <div class="col">
+                                        <div class="card h-100 shadow-sm border-0 rounded-3 overflow-hidden">
+                                            <div class="position-relative">
+                                                <?php if (!empty($producto['imagen'])): ?>
+                                                    <img class="card-img-top object-fit-cover"
+                                                        style="height: 250px;"
+                                                        src="data:image/jpeg;base64,<?php echo base64_encode($producto['imagen']); ?>"
+                                                        alt="Imagen del producto">
                                                 <?php else: ?>
-                                                    <!-- Botón de contacto para otros usuarios -->
-                                                    <?php
-                                                    $telefono = $perfil['telefono'];
-                                                    $mensaje = "Hola, me interesa tu producto: " . $producto['producto'] . " por $" . $producto['precio'];
-                                                    $mensaje_codificado = urlencode($mensaje);
-                                                    $whatsapp_link = "https://wa.me/{$telefono}?text={$mensaje_codificado}";
-                                                    ?>
-                                                    <div class="acciones-producto">
-                                                        <a href="<?php echo $whatsapp_link; ?>"
-                                                            target="_blank"
-                                                            class="btn btn-success btn-sm">
-                                                            <i class="fab fa-whatsapp"></i> Contactar por WhatsApp
-                                                        </a>
-                                                    </div>
+                                                    <img class="card-img-top object-fit-cover"
+                                                        style="height: 250px;"
+                                                        src="../media/producto_default.jpg"
+                                                        alt="Imagen no disponible">
                                                 <?php endif; ?>
-                                            <?php endif; ?>
+                                            </div>
+                                            <div class="card-body d-flex flex-column">
+                                                <h3 class="card-title h5 mb-3"><?php echo htmlspecialchars($producto['producto']); ?></h3>
+                                                <p class="card-text fw-bold text-primary fs-4 mb-2">
+                                                    $<?php echo number_format($producto['precio'], 2); ?>
+                                                </p>
+                                                <p class="card-text text-secondary mb-3">
+                                                    <?php echo htmlspecialchars($producto['descripcion']); ?>
+                                                </p>
+
+                                                <?php if (isset($_SESSION['usuario_id'])): ?>
+                                                    <?php if ($_SESSION['usuario_id'] == $producto['usuario_id']): ?>
+                                                        <div class="mt-auto d-flex gap-2">
+                                                            <a href="editar_producto.php?id=<?php echo $producto['idProducto']; ?>"
+                                                                class="btn btn-outline-primary btn-sm flex-grow-1">
+                                                                <i class="fas fa-edit me-1"></i> Editar
+                                                            </a>
+                                                            <a href="eliminar_producto.php?id=<?php echo $producto['idProducto']; ?>"
+                                                                class="btn btn-outline-danger btn-sm flex-grow-1"
+                                                                onclick="return confirm('¿Estás seguro de eliminar este producto?')">
+                                                                <i class="fas fa-trash-alt me-1"></i> Eliminar
+                                                            </a>
+                                                        </div>
+                                                    <?php else: ?>
+                                                        <?php
+                                                        $telefono = $perfil['telefono'];
+                                                        $mensaje = "Hola, me interesa tu producto: " . $producto['producto'] . " por $" . $producto['precio'];
+                                                        $mensaje_codificado = urlencode($mensaje);
+                                                        $whatsapp_link = "https://wa.me/{$telefono}?text={$mensaje_codificado}";
+                                                        ?>
+                                                        <div class="mt-auto">
+                                                            <a href="<?php echo $whatsapp_link; ?>"
+                                                                target="_blank"
+                                                                class="btn btn-success w-100">
+                                                                <i class="fab fa-whatsapp me-2"></i> Contactar por WhatsApp
+                                                            </a>
+                                                        </div>
+                                                    <?php endif; ?>
+                                                <?php endif; ?>
+                                            </div>
                                         </div>
                                     </div>
                                 <?php endwhile; ?>
                             </div>
                         <?php else: ?>
-                            <div class="sin-productos">
-                                <p><i class="fas fa-store"></i> Aún no tienes productos en venta.</p>
+                            <div class="text-center py-5">
+                                <div class="mb-4">
+                                    <i class="fas fa-store fs-1 text-secondary"></i>
+                                </div>
+                                <p class="text-secondary mb-4">Aún no tienes productos en venta.</p>
                                 <a href="ventas.php" class="btn btn-primary">
-                                    <i class="fas fa-plus"></i> Agregar primer producto
+                                    <i class="fas fa-plus me-2"></i> Agregar primer producto
                                 </a>
                             </div>
                         <?php endif; ?>
