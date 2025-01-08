@@ -203,30 +203,28 @@ require_once 'conexion.php';
                         $activeClass = $i === 0 ? "active" : "";
                 ?>
                         <div class="carousel-item <?php echo $activeClass; ?>">
-                            <div class="row">
-                                <?php for ($j = $i; $j < min($i + 2, count($productos)); $j++) { ?>
-                                    <div class="col-md-6">
-                                        <div class="product-card">
-                                            <?php if (!empty($productos[$j]['imagen'])): ?>
-                                                <img src="data:image/jpeg;base64,<?php echo base64_encode($productos[$j]['imagen']); ?>"
-                                                    class="w-100 product-image" alt="Producto">
-                                            <?php else: ?>
-                                                <img src="media/producto_default.jpg"
-                                                    class="w-100 product-image" alt="Imagen no disponible">
-                                            <?php endif; ?>
-                                            <div class="product-details">
-                                                <h5><?php echo htmlspecialchars($productos[$j]['producto']); ?></h5>
-                                                <p class="price">$<?php echo number_format($productos[$j]['precio'], 2); ?></p>
-                                                <p class="description"><?php echo htmlspecialchars($productos[$j]['descripcion']); ?></p>
-                                                <small class="text-muted">Vendedor: <?php echo htmlspecialchars($productos[$j]['username']); ?></small>
-                                                <div class="mt-2">
-                                                    <a href="detalle_producto.php?id=<?php echo $productos[$j]['idProducto']; ?>"
-                                                        class="btn btn-ver-todas btn-sm">Ver detalles</a>
-                                                </div>
+                            <div class="">
+                                <div class="">
+                                    <div class="product-card">
+                                        <?php if (!empty($productos[$j]['imagen'])): ?>
+                                            <img src="data:image/jpeg;base64,<?php echo base64_encode($productos[$j]['imagen']); ?>"
+                                                class="w-100 product-image" alt="Producto">
+                                        <?php else: ?>
+                                            <img src="media/producto_default.jpg"
+                                                class="w-100 product-image" alt="Imagen no disponible">
+                                        <?php endif; ?>
+                                        <div class="product-details">
+                                            <h5><?php echo htmlspecialchars($productos[$j]['producto']); ?></h5>
+                                            <p class="price">$<?php echo number_format($productos[$j]['precio'], 2); ?></p>
+                                            <p class="description"><?php echo htmlspecialchars($productos[$j]['descripcion']); ?></p>
+                                            <small class="text-muted">Vendedor: <?php echo htmlspecialchars($productos[$j]['username']); ?></small>
+                                            <div class="mt-2">
+                                                <a href="detalle_producto.php?id=<?php echo $productos[$j]['idProducto']; ?>"
+                                                    class="btn btn-ver-todas btn-sm">Ver detalles</a>
                                             </div>
                                         </div>
                                     </div>
-                                <?php } ?>
+                                </div>
                             </div>
                         </div>
                 <?php
