@@ -14,7 +14,7 @@ if (!$enlace) {
 }
 
 // Obtener lista de usuarios para el formulario
-$usuariosQuery = "SELECT id, nombre FROM usuarios";
+$usuariosQuery = "SELECT id, nombre, apellido FROM usuarios";
 $usuariosResult = mysqli_query($enlace, $usuariosQuery);
 
 // Procesar formulario de ventas
@@ -49,8 +49,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         body {
             font-family: Arial, sans-serif;
             background-color: #f9f9f9;
-            margin: 0;
-            padding: 0;
         }
 
         .form-container,
@@ -85,6 +83,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             border-radius: 8px;
         }
 
+        .user-profile img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
         .product-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
@@ -113,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <label for="usuario_id">Usuario:</label>
             <select id="usuario_id" name="usuario_id" required class="form-control">
                 <?php while ($usuario = mysqli_fetch_assoc($usuariosResult)) {
-                    echo '<option value="' . $usuario['idUsuario'] . '">' . htmlspecialchars($usuario['nombre']) . '</option>';
+                    echo '<option value="' . $usuario['id'] . '">' . htmlspecialchars($usuario['nombre'] . ' ' . $usuario['apellido']) . '</option>';
                 } ?>
             </select><br>
 
@@ -127,16 +132,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         <div class="sales-cards">
             <?php
-            $sql = "SELECT productos.*, usuarios.nombre AS usuario FROM productos JOIN usuarios ON productos.usuario_id = usuarios.idUsuario";
+            $sql = "SELECT p.*, u.nombre, u.apellido, u.foto_perfil FROM productos p JOIN usuarios u ON p.usuario_id = u.id";
             $result = mysqli_query($enlace, $sql);
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
                     echo '<div class="product-card">';
+                    echo '<div class="user-profile"><img src="' . htmlspecialchars($row['foto_perfil']) . '" alt="Foto de perfil">';
+                    echo "<p>Publicado por: " . htmlspecialchars($row['nombre'] . ' ' . $row['apellido']) . "</p></div>";
                     echo '<img src="' . htmlspecialchars($row['imagen']) . '" alt="Imagen del producto">';
                     echo "<h3>" . htmlspecialchars($row['producto']) . "</h3>";
                     echo "<p><strong>Precio:</strong> $" . htmlspecialchars($row['precio']) . "</p>";
                     echo "<p><strong>Descripción:</strong> " . htmlspecialchars($row['descripcion']) . "</p>";
-                    echo "<p><strong>Publicado por:</strong> " . htmlspecialchars($row['usuario']) . "</p>";
                     echo '</div>';
                 }
             } else {
