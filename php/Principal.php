@@ -161,46 +161,39 @@ require_once 'conexion.php';
             <div class="carousel-inner">
                 <?php
                 $stmt = $enlace->prepare("SELECT p.*, u.username 
-                                    FROM productos p 
-                                    JOIN usuarios u ON p.usuario_id = u.id 
-                                    ORDER BY p.idProducto DESC LIMIT 6");
+                            FROM productos p 
+                            JOIN usuarios u ON p.usuario_id = u.id 
+                            ORDER BY p.idProducto DESC LIMIT 6");
                 $stmt->execute();
                 $resultado = $stmt->get_result();
 
                 if ($resultado && $resultado->num_rows > 0) {
-                    $productos = array();
+                    $first = true;
                     while ($producto = $resultado->fetch_assoc()) {
-                        $productos[] = $producto;
-                    }
-
-                    for ($i = 0; $i < count($productos); $i += 3) {
-                        $activeClass = $i === 0 ? "active" : "";
+                        $activeClass = $first ? "active" : "";
+                        $first = false;
                 ?>
                         <div class="carousel-item <?php echo $activeClass; ?>">
-                            <div class="row g-4">
-                                <?php for ($j = $i; $j < min($i + 3, count($productos)); $j++) { ?>
-                                    <div class="col-12 col-md-4">
-                                        <div class="card product-card h-100">
-                                            <?php if (!empty($productos[$j]['imagen'])): ?>
-                                                <img src="data:image/jpeg;base64,<?php echo base64_encode($productos[$j]['imagen']); ?>"
-                                                    class="card-img-top" alt="Producto">
-                                            <?php else: ?>
-                                                <img src="media/producto_default.jpg"
-                                                    class="card-img-top" alt="Imagen no disponible">
-                                            <?php endif; ?>
-                                            <div class="card-body">
-                                                <h5 class="card-title"><?php echo htmlspecialchars($productos[$j]['producto']); ?></h5>
-                                                <p class="card-text price">$<?php echo number_format($productos[$j]['precio'], 2); ?></p>
-                                                <p class="card-text"><?php echo htmlspecialchars($productos[$j]['descripcion']); ?></p>
-                                                <small class="text-muted">Vendedor: <?php echo htmlspecialchars($productos[$j]['username']); ?></small>
-                                            </div>
-                                            <div class="card-footer">
-                                                <a href="detalle_producto.php?id=<?php echo $productos[$j]['idProducto']; ?>"
-                                                    class="btn btn-ver-todas btn-sm">Ver detalles</a>
-                                            </div>
-                                        </div>
+                            <div class="row g-0">
+                                <div class="col-12 col-md-5">
+                                    <?php if (!empty($producto['imagen'])): ?>
+                                        <img src="data:image/jpeg;base64,<?php echo base64_encode($producto['imagen']); ?>"
+                                            class="img-fluid w-100" style="height: 300px; object-fit: cover;" alt="Producto">
+                                    <?php else: ?>
+                                        <img src="media/producto_default.jpg"
+                                            class="img-fluid w-100" style="height: 300px; object-fit: cover;" alt="Imagen no disponible">
+                                    <?php endif; ?>
+                                </div>
+                                <div class="col-12 col-md-7">
+                                    <div class="card-body p-4">
+                                        <h5 class="card-title"><?php echo htmlspecialchars($producto['producto']); ?></h5>
+                                        <p class="card-text price">$<?php echo number_format($producto['precio'], 2); ?></p>
+                                        <p class="card-text"><?php echo htmlspecialchars($producto['descripcion']); ?></p>
+                                        <small class="text-muted d-block mb-3">Vendedor: <?php echo htmlspecialchars($producto['username']); ?></small>
+                                        <a href="detalle_producto.php?id=<?php echo $producto['idProducto']; ?>"
+                                            class="btn btn-ver-todas btn-sm">Ver detalles</a>
                                     </div>
-                                <?php } ?>
+                                </div>
                             </div>
                         </div>
                 <?php
