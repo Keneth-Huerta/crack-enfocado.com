@@ -41,7 +41,7 @@ $publicaciones_result = mysqli_stmt_get_result($stmt_publicaciones);
 $ventas_query = "SELECT id, producto, precio, descripcion, imagen 
                  FROM productos 
                  WHERE usuario_id = ? 
-                 ORDER BY id DESC";
+                 ORDER BY idProducto DESC";
 $stmt_ventas = mysqli_prepare($enlace, $ventas_query);
 mysqli_stmt_bind_param($stmt_ventas, "i", $usuario_ids);
 mysqli_stmt_execute($stmt_ventas);
