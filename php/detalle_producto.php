@@ -5,11 +5,11 @@ require_once 'conexion.php';
 if (isset($_GET['id'])) {
     $productoId = $_GET['id'];
 
-    $stmt = $enlace->prepare("SELECT p.*, u.username, pr.foto_perfil 
-                            FROM productos p 
-                            JOIN usuarios u ON p.usuario_id = u.id 
-                            JOIN perfiles pr ON p.usuario_id = pr.usuario_id 
-                            WHERE p.idProducto = ?");
+    $stmt = $enlace->prepare("SELECT p.*, u.username, pr.foto_perfil, pr.nombre, pr.apellido, pr.telefono 
+                             FROM productos p 
+                             JOIN usuarios u ON p.usuario_id = u.id 
+                             JOIN perfiles pr ON p.usuario_id = pr.usuario_id 
+                             WHERE p.idProducto = ?");
     $stmt->bind_param("i", $productoId);
     $stmt->execute();
     $resultado = $stmt->get_result();
@@ -32,31 +32,158 @@ if (isset($_GET['id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalles del producto</title>
+    <title><?php echo htmlspecialchars($producto['producto']); ?> - Detalles</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* Agrega tus estilos CSS aquí */
+        .product-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin: 2rem auto;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .price {
+            font-size: 2rem;
+            color: #2ecc71;
+            font-weight: bold;
+            margin: 1rem 0;
+        }
+
+        .description {
+            font-size: 1.1rem;
+            color: #666;
+            margin: 1rem 0;
+            line-height: 1.6;
+        }
+
+        .seller-info {
+            display: flex;
+            align-items: center;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .seller-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 1rem;
+        }
+
+        .seller-details h4 {
+            margin: 0;
+            color: #333;
+        }
+
+        .seller-details p {
+            margin: 0;
+            color: #666;
+        }
+
+        .btn-whatsapp {
+            background-color: #25D366;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .btn-whatsapp:hover {
+            background-color: #128C7E;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
+        }
+
+        .btn-whatsapp i {
+            font-size: 1.4rem;
+        }
+
+        .product-title {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .product-image {
+                height: 300px;
+            }
+
+            .product-title {
+                font-size: 2rem;
+            }
+        }
     </style>
 </head>
 
-<body>
+<body class="bg-light">
     <?php include('header.php'); ?>
 
-    <div class="container mt-4">
-        <h2>Detalles del producto</h2>
-        <div class="row">
-            <div class="col-md-6">
-                <?php if (!empty($producto['imagen'])): ?>
-                    <img src="data:image/jpeg;base64,<?php echo base64_encode($producto['imagen']); ?>" class="img-fluid" alt="Producto">
-                <?php else: ?>
-                    <img src="../media/producto_default.jpg" class="img-fluid" alt="Imagen no disponible">
-                <?php endif; ?>
-            </div>
-            <div class="col-md-6">
-                <h3><?php echo htmlspecialchars($producto['producto']); ?></h3>
-                <p class="price">$<?php echo number_format($producto['precio'], 2); ?></p>
-                <p class="description"><?php echo htmlspecialchars($producto['descripcion']); ?></p>
-                <small class="text-muted">Vendedor: <?php echo htmlspecialchars($producto['username']); ?></small>
+    <div class="container">
+        <div class="product-container">
+            <div class="row">
+                <div class="col-md-6">
+                    <?php if (!empty($producto['imagen'])): ?>
+                        <img src="data:image/jpeg;base64,<?php echo base64_encode($producto['imagen']); ?>"
+                            class="product-image" alt="<?php echo htmlspecialchars($producto['producto']); ?>">
+                    <?php else: ?>
+                        <img src="../media/producto_default.jpg" class="product-image" alt="Imagen no disponible">
+                    <?php endif; ?>
+                </div>
+                <div class="col-md-6">
+                    <h1 class="product-title"><?php echo htmlspecialchars($producto['producto']); ?></h1>
+                    <p class="price">$<?php echo number_format($producto['precio'], 2); ?></p>
+                    <p class="description"><?php echo htmlspecialchars($producto['descripcion']); ?></p>
+
+                    <div class="seller-info">
+                        <img src="<?php echo !empty($producto['foto_perfil']) ? htmlspecialchars($producto['foto_perfil']) : '../media/user.png'; ?>"
+                            class="seller-image" alt="Foto de perfil">
+                        <div class="seller-details">
+                            <h4><?php echo htmlspecialchars($producto['nombre'] . ' ' . $producto['apellido']); ?></h4>
+                            <p>Vendedor</p>
+                        </div>
+                    </div>
+
+                    <?php if (isset($_SESSION['usuario_id']) && $_SESSION['usuario_id'] != $producto['usuario_id']): ?>
+                        <?php if (!empty($producto['telefono'])): ?>
+                            <?php
+                            $mensaje = "Hola, me interesa tu producto: " . $producto['producto'] . " por $" . $producto['precio'];
+                            $mensaje_codificado = urlencode($mensaje);
+                            $whatsapp_link = "https://wa.me/{$producto['telefono']}?text={$mensaje_codificado}";
+                            ?>
+                            <a href="<?php echo $whatsapp_link; ?>" class="btn btn-whatsapp" target="_blank">
+                                <i class="fab fa-whatsapp"></i>
+                                Contactar por WhatsApp
+                            </a>
+                        <?php else: ?>
+                            <button class="btn btn-secondary w-100" disabled>
+                                <i class="fas fa-phone-slash"></i>
+                                Teléfono no disponible
+                            </button>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                </div>
             </div>
         </div>
     </div>
