@@ -14,7 +14,7 @@ class SearchSystem
         $this->results = [
             'usuarios' => null,
             'publicaciones' => null,
-            'ventas' => null
+            'productos' => null
         ];
     }
 
@@ -29,7 +29,7 @@ class SearchSystem
                 p.foto_perfil,
                 u.username,
                 u.correo,
-                (SELECT COUNT(*) FROM ventas v WHERE v.vendedor_id = p.usuario_id) as total_ventas
+                (SELECT COUNT(*) FROM productos prod WHERE prod.usuario_id = p.usuario_id) as total_productos
             FROM perfiles p
             JOIN usuarios u ON p.usuario_id = u.id
             WHERE 
@@ -37,7 +37,7 @@ class SearchSystem
                 OR p.carrera LIKE ? 
                 OR u.username LIKE ? 
                 OR u.correo LIKE ?
-            ORDER BY total_ventas DESC, p.nombre ASC
+            ORDER BY p.nombre ASC
         ";
 
         $stmt = mysqli_prepare($this->enlace, $query);
@@ -79,39 +79,33 @@ class SearchSystem
         mysqli_stmt_close($stmt);
     }
 
-    public function searchSales()
+    public function searchProducts()
     {
         $query = "
             SELECT 
-                v.*,
-                p.nombre as producto_nombre,
-                p.descripcion as producto_descripcion,
-                p.precio,
-                p.imagen as producto_imagen,
-                u.username as vendedor_username,
+                p.*,
+                u.username,
                 pf.nombre as vendedor_nombre,
-                pf.apellido as vendedor_apellido
-            FROM ventas v
-            JOIN productos p ON v.producto_id = p.id
-            JOIN usuarios u ON v.vendedor_id = u.id
+                pf.apellido as vendedor_apellido,
+                pf.foto_perfil
+            FROM productos p
+            JOIN usuarios u ON p.usuario_id = u.id
             JOIN perfiles pf ON u.id = pf.usuario_id
             WHERE 
-                p.nombre LIKE ? 
+                p.producto LIKE ? 
                 OR p.descripcion LIKE ?
-                OR CONCAT(pf.nombre, ' ', pf.apellido) LIKE ?
-            ORDER BY v.fecha_venta DESC
+            ORDER BY p.idProducto DESC
         ";
 
         $stmt = mysqli_prepare($this->enlace, $query);
         mysqli_stmt_bind_param(
             $stmt,
-            'sss',
-            $this->searchTerm,
+            'ss',
             $this->searchTerm,
             $this->searchTerm
         );
         mysqli_stmt_execute($stmt);
-        $this->results['ventas'] = mysqli_stmt_get_result($stmt);
+        $this->results['productos'] = mysqli_stmt_get_result($stmt);
         mysqli_stmt_close($stmt);
     }
 
@@ -128,7 +122,7 @@ $search = new SearchSystem($enlace, $searchTerm);
 if ($searchTerm != '') {
     $search->searchUsers();
     $search->searchPosts();
-    $search->searchSales();
+    $search->searchProducts();
 }
 
 $resultados = $search->getResults();
@@ -174,7 +168,7 @@ $resultados = $search->getResults();
                 <input type="text"
                     name="search"
                     class="form-control"
-                    placeholder="Buscar usuarios, publicaciones o ventas..."
+                    placeholder="Buscar usuarios, publicaciones o productos..."
                     value="<?php echo htmlspecialchars($searchTerm); ?>"
                     required
                     minlength="3">
@@ -203,10 +197,10 @@ $resultados = $search->getResults();
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#ventas">
-                    Ventas
-                    <?php if ($resultados['ventas']): ?>
-                        <span class="badge bg-primary"><?php echo mysqli_num_rows($resultados['ventas']); ?></span>
+                <a class="nav-link" data-bs-toggle="tab" href="#productos">
+                    Productos
+                    <?php if ($resultados['productos']): ?>
+                        <span class="badge bg-primary"><?php echo mysqli_num_rows($resultados['productos']); ?></span>
                     <?php endif; ?>
                 </a>
             </li>
@@ -233,7 +227,7 @@ $resultados = $search->getResults();
                                             <p class="card-text">
                                                 <small class="text-muted">@<?php echo htmlspecialchars($usuario['username']); ?></small><br>
                                                 <span class="badge bg-info"><?php echo htmlspecialchars($usuario['carrera']); ?></span>
-                                                <span class="badge bg-success"><?php echo $usuario['total_ventas']; ?> ventas</span>
+                                                <span class="badge bg-success"><?php echo $usuario['total_productos']; ?> productos</span>
                                             </p>
                                             <a href="perfil.php?usuario_id=<?php echo $usuario['usuario_id']; ?>"
                                                 class="btn btn-primary btn-sm">Ver Perfil</a>
@@ -280,32 +274,36 @@ $resultados = $search->getResults();
                 <?php endif; ?>
             </div>
 
-            <!-- Tab Ventas -->
-            <div class="tab-pane fade" id="ventas">
-                <?php if ($resultados['ventas'] && mysqli_num_rows($resultados['ventas']) > 0): ?>
+            <!-- Tab Productos -->
+            <div class="tab-pane fade" id="productos">
+                <?php if ($resultados['productos'] && mysqli_num_rows($resultados['productos']) > 0): ?>
                     <div class="row">
-                        <?php while ($venta = mysqli_fetch_assoc($resultados['ventas'])): ?>
+                        <?php while ($producto = mysqli_fetch_assoc($resultados['productos'])): ?>
                             <div class="col-md-6 mb-3">
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="d-flex">
-                                            <img src="<?php echo htmlspecialchars($venta['producto_imagen'] ?? '../media/no-image.png'); ?>"
+                                            <?php
+                                            $imagen_base64 = '';
+                                            if ($producto['imagen']) {
+                                                $imagen_base64 = base64_encode($producto['imagen']);
+                                            }
+                                            ?>
+                                            <img src="<?php echo $imagen_base64 ? 'data:image/jpeg;base64,' . $imagen_base64 : '../media/no-image.png'; ?>"
                                                 alt="Producto"
                                                 class="producto-imagen me-3">
                                             <div>
-                                                <h5 class="card-title"><?php echo htmlspecialchars($venta['producto_nombre']); ?></h5>
+                                                <h5 class="card-title"><?php echo htmlspecialchars($producto['producto']); ?></h5>
                                                 <p class="card-text">
                                                     <small class="text-muted">
-                                                        Vendedor: <?php echo htmlspecialchars($venta['vendedor_nombre'] . ' ' . $venta['vendedor_apellido']); ?>
+                                                        Vendedor: <?php echo htmlspecialchars($producto['vendedor_nombre'] . ' ' . $producto['vendedor_apellido']); ?>
                                                     </small><br>
-                                                    <strong class="text-success">$<?php echo number_format($venta['precio'], 2); ?></strong>
+                                                    <strong class="text-success">$<?php echo number_format($producto['precio'], 2); ?></strong>
                                                 </p>
                                                 <p class="card-text">
-                                                    <small class="text-muted">
-                                                        Vendido el <?php echo date("d/m/Y", strtotime($venta['fecha_venta'])); ?>
-                                                    </small>
+                                                    <?php echo htmlspecialchars($producto['descripcion']); ?>
                                                 </p>
-                                                <a href="detalle_venta.php?id=<?php echo $venta['id']; ?>"
+                                                <a href="detalle_producto.php?id=<?php echo $producto['idProducto']; ?>"
                                                     class="btn btn-primary btn-sm">Ver Detalles</a>
                                             </div>
                                         </div>
@@ -315,7 +313,7 @@ $resultados = $search->getResults();
                         <?php endwhile; ?>
                     </div>
                 <?php else: ?>
-                    <div class="alert alert-info">No se encontraron ventas.</div>
+                    <div class="alert alert-info">No se encontraron productos.</div>
                 <?php endif; ?>
             </div>
         </div>
