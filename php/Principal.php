@@ -104,6 +104,7 @@ require_once 'conexion.php';
     <?php include('header.php'); ?>
 
     <div class="container mt-4">
+        <!-- Sección de Publicaciones -->
         <h2 class="section-title mb-4">Publicaciones Recientes</h2>
         <div id="publicacionesCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
             <div class="carousel-inner">
@@ -122,9 +123,15 @@ require_once 'conexion.php';
                             <div class="row g-0">
                                 <div class="col-12 col-md-4">
                                     <?php if (!empty($publicacion['imagen'])): ?>
-                                        <img src="<?php echo htmlspecialchars($publicacion['imagen']); ?>" class="img-fluid rounded" alt="Publicación">
+                                        <img src="<?php echo htmlspecialchars($publicacion['imagen']); ?>"
+                                            class="img-fluid w-100"
+                                            style="height: 300px; object-fit: cover;"
+                                            alt="Publicación">
                                     <?php else: ?>
-                                        <img src="media/publicacion_default.jpg" class="img-fluid rounded" alt="Imagen no disponible">
+                                        <img src="media/publicacion_default.jpg"
+                                            class="img-fluid w-100"
+                                            style="height: 300px; object-fit: cover;"
+                                            alt="Imagen no disponible">
                                     <?php endif; ?>
                                 </div>
                                 <div class="col-12 col-md-8">
