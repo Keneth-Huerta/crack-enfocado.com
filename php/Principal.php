@@ -158,7 +158,7 @@
                         $first = false;
                 ?>
                         <div class="carousel-item <?php echo $activeClass; ?>">
-                            <a href="detalles_producto.php?id=<?php echo $productos[$j]['idProducto']; ?>">
+                            <a href="detalles_publicacion.php?id=<?php echo $publicacion['id']; ?>">
                                 <div class="row g-0">
                                     <div class="col-12 col-md-4">
                                         <img src="<?php echo htmlspecialchars($publicacion['imagen'] ?? 'https://via.placeholder.com/300'); ?>"
@@ -218,10 +218,11 @@
                         $activeClass = $i === 0 ? "active" : "";
                 ?>
                         <div class="carousel-item <?php echo $activeClass; ?>">
-                            <a href="detalles_publicacion.php?id=<?php echo $publicacion['id']; ?>">
-                                <div class="row">
-                                    <?php for ($j = $i; $j < min($i + 2, count($productos)); $j++) { ?>
-                                        <div class="col-md-6">
+
+                            <div class="row">
+                                <?php for ($j = $i; $j < min($i + 2, count($productos)); $j++) { ?>
+                                    <div class="col-md-6">
+                                        <a href="detalles_producto.php?id=<?php echo $productos[$j]['idProducto']; ?>">
                                             <div class="product-card">
                                                 <?php if (!empty($productos[$j]['imagen'])): ?>
                                                     <img src="data:image/jpeg;base64,<?php echo base64_encode($productos[$j]['imagen']); ?>"
@@ -237,10 +238,11 @@
                                                     <small class="text-muted">Vendedor: <?php echo htmlspecialchars($productos[$j]['username']); ?></small>
                                                 </div>
                                             </div>
-                                        </div>
-                                    <?php } ?>
-                                </div>
-                            </a>
+                                        </a>
+                                    </div>
+                                <?php } ?>
+                            </div>
+
                         </div>
                 <?php
                     }
