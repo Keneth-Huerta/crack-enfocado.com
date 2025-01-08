@@ -15,129 +15,111 @@ require_once 'conexion.php';
     <title>CECyT 3 - Página Principal</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        :root {
-            --ipn-guinda: #741931;
-            --ipn-dorado: #C4A657;
-            --ipn-blanco: #FFFFFF;
-            --ipn-gris: #58595B;
-        }
-
-        body,
-        html {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            margin: 0;
-            background-color: #f8f9fa;
-        }
-
-        .section-title {
-            color: var(--ipn-guinda);
-            text-align: center;
-            margin: 2rem 0;
-            font-weight: bold;
-            position: relative;
-            padding-bottom: 0.5rem;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 3px;
-            background-color: var(--ipn-dorado);
-        }
-
-        .carousel {
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border-radius: 15px;
-            overflow: hidden;
-            margin-bottom: 2rem;
-        }
-
-        .carousel-item {
-            background-color: var(--ipn-blanco);
-        }
-
-        .carousel-item img {
+        .navbar {
+            position: fixed;
+            top: 0;
             width: 100%;
-            height: 300px;
-            object-fit: cover;
+            z-index: 1050;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background-color: #952F57;
+            padding: 0.5rem 1rem;
         }
 
-        .carousel-content {
-            padding: 1.5rem;
+        body {
+            padding-top: 70px;
         }
 
-        .carousel-control-prev-icon,
-        .carousel-control-next-icon {
-            background-color: var(--ipn-guinda);
-            border-radius: 50%;
-            padding: 1rem;
-        }
-
-        .btn-ver-todas {
-            background-color: var(--ipn-guinda);
-            color: var(--ipn-blanco);
-            padding: 0.75rem 2rem;
-            border-radius: 25px;
-            transition: all 0.3s ease;
-            border: none;
-        }
-
-        .btn-ver-todas:hover {
-            background-color: var(--ipn-dorado);
-            transform: translateY(-2px);
-        }
-
-        .container {
-            flex: 1;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        footer {
-            background-color: var(--ipn-guinda);
-            color: var(--ipn-blanco);
-            padding: 2rem 0;
-            margin-top: 3rem;
-        }
-
-        footer a {
-            color: var(--ipn-dorado);
-            text-decoration: none;
+        .nav-link {
+            position: relative;
+            color: white !important;
             transition: color 0.3s ease;
         }
 
-        footer a:hover {
-            color: var(--ipn-blanco);
+        .nav-link:hover {
+            color: rgba(255, 255, 255, 0.8) !important;
         }
 
-        .product-card {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            height: 100%;
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: white;
         }
 
-        .product-image {
-            height: 200px;
-            object-fit: cover;
-        }
-
-        .product-details {
+        .profile-dropdown {
+            min-width: 250px;
             padding: 1rem;
         }
 
-        .price {
-            color: var(--ipn-guinda);
-            font-weight: bold;
-            font-size: 1.2rem;
+        .profile-header {
+            display: flex;
+            align-items: center;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            padding: 0.25rem 0.5rem;
+            border-radius: 50%;
+            background-color: #dc3545;
+            color: white;
+            font-size: 0.75rem;
+        }
+
+        .notification-item {
+            padding: 0.5rem;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.3s ease;
+        }
+
+        .notification-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .search-form {
+            position: relative;
+        }
+
+        .search-form .form-control {
+            border-radius: 20px;
+            padding-left: 2.5rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .search-form .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .search-form .bi-search {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .search-form .form-control:focus {
+            background-color: white;
+            color: #212529;
+        }
+
+        .search-form .form-control:focus::placeholder {
+            color: #6c757d;
+        }
+
+        .search-form .form-control:focus+.bi-search {
+            color: #6c757d;
         }
     </style>
+
 </head>
 
 <body>
@@ -149,7 +131,7 @@ require_once 'conexion.php';
         <div id="publicacionesCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <?php
-                $stmt = $enlace->prepare("SELECT id_publicacion, imagen, contenido, fecha_publicada FROM publicaciones ORDER BY fecha_publicada DESC LIMIT 5");
+                $stmt = $enlace->prepare("SELECT id, imagen, contenido, fecha_publicada FROM publicaciones ORDER BY fecha_publicada DESC LIMIT 5");
                 $stmt->execute();
                 $resultado = $stmt->get_result();
 
@@ -175,7 +157,7 @@ require_once 'conexion.php';
                                             <small class="text-muted d-block mb-2">
                                                 Publicado el <?php echo date("d/m/Y H:i", strtotime($publicacion['fecha_publicada'])); ?>
                                             </small>
-                                            <a href="detalle_publicacion.php?id=<?php echo $publicacion['id_publicacion']; ?>"
+                                            <a href="detalles_publicacion.php?id=<?php echo $publicacion['id']; ?>"
                                                 class="btn btn-ver-todas btn-sm">Ver más</a>
                                         </div>
                                     </div>
@@ -238,7 +220,7 @@ require_once 'conexion.php';
                                                 <p class="description"><?php echo htmlspecialchars($productos[$j]['descripcion']); ?></p>
                                                 <small class="text-muted">Vendedor: <?php echo htmlspecialchars($productos[$j]['username']); ?></small>
                                                 <div class="mt-2">
-                                                    <a href="detalle_producto.php?id=<?php echo $productos[$j]['idProducto']; ?>"
+                                                    <a href="detalles_producto.php?id=<?php echo $productos[$j]['idProducto']; ?>"
                                                         class="btn btn-ver-todas btn-sm">Ver detalles</a>
                                                 </div>
                                             </div>

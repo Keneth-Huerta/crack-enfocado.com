@@ -222,7 +222,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <div class="container">
         <!-- Logo -->
         <a class="navbar-brand" href="/index.php">
-            <img src="/media/logoweb.svg" alt="Logo" class="img-fluid" style="max-height: 50px;">
+            <img src="/media/Crack-Enfocado.png" alt="Logo" class="img-fluid" style="max-height: 50px;">
         </a>
 
         <!-- Botón hamburguesa -->
