@@ -103,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                            informacion_extra = ?,
                            telefono = ? 
                            WHERE usuario_id = ?";
-            
+
             $stmt = mysqli_prepare($enlace, $update_query);
             mysqli_stmt_bind_param(
                 $stmt,
@@ -124,7 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                            (usuario_id, nombre, apellido, carrera, semestre, 
                             foto_perfil, foto_portada, informacion_extra, telefono) 
                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            
+
             $stmt = mysqli_prepare($enlace, $insert_query);
             mysqli_stmt_bind_param(
                 $stmt,
@@ -223,6 +223,58 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <button type="submit">Guardar cambios</button>
         </form>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Función para mostrar vista previa de imagen
+            function previewImage(input, previewId) {
+                const preview = document.getElementById(previewId);
+                const file = input.files[0];
+
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        if (!preview.querySelector('img')) {
+                            const img = document.createElement('img');
+                            preview.innerHTML = '';
+                            preview.appendChild(img);
+                        }
+                        preview.querySelector('img').src = e.target.result;
+                        preview.classList.remove('empty');
+                    }
+                    reader.readAsDataURL(file);
+                } else {
+                    preview.innerHTML = '<span>Vista previa no disponible</span>';
+                    preview.classList.add('empty');
+                }
+            }
+
+            // Agregar previsualizaciones después de los inputs de archivo
+            const fotoPerfil = document.getElementById('foto_perfil');
+            const fotoPortada = document.getElementById('foto_portada');
+
+            // Crear contenedores de vista previa
+            const previewPerfil = document.createElement('div');
+            previewPerfil.id = 'preview_perfil';
+            previewPerfil.className = 'image-preview empty';
+            previewPerfil.innerHTML = '<span>Vista previa no disponible</span>';
+            fotoPerfil.parentNode.appendChild(previewPerfil);
+
+            const previewPortada = document.createElement('div');
+            previewPortada.id = 'preview_portada';
+            previewPortada.className = 'image-preview empty';
+            previewPortada.innerHTML = '<span>Vista previa no disponible</span>';
+            fotoPortada.parentNode.appendChild(previewPortada);
+
+            // Agregar eventos para actualizar las vistas previas
+            fotoPerfil.addEventListener('change', function() {
+                previewImage(this, 'preview_perfil');
+            });
+
+            fotoPortada.addEventListener('change', function() {
+                previewImage(this, 'preview_portada');
+            });
+        });
+    </script>
 </body>
 
 </html>
