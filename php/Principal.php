@@ -149,7 +149,7 @@ require_once 'conexion.php';
         <div id="publicacionesCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <?php
-                $stmt = $enlace->prepare("SELECT id_publicacion, imagen, contenido, fecha_publicada FROM publicaciones ORDER BY fecha_publicada DESC LIMIT 5");
+                $stmt = $enlace->prepare("SELECT id, imagen, contenido, fecha_publicada FROM publicaciones ORDER BY fecha_publicada DESC LIMIT 5");
                 $stmt->execute();
                 $resultado = $stmt->get_result();
 
@@ -170,13 +170,13 @@ require_once 'conexion.php';
                                 </div>
                                 <div class="col-12 col-md-8">
                                     <div class="carousel-content">
-                                        <p class="mb-3"><?php echo nl2br(htmlspecialchars($publicacion['contenido'])); ?></p>
-                                        <small class="text-muted">
-                                            Publicado el <?php echo date("d/m/Y H:i", strtotime($publicacion['fecha_publicada'])); ?>
-                                        </small>
-                                        <div class="mt-2">
-                                            <a href="detalle_publicacion.php?id=<?php echo $publicacion['id_publicacion']; ?>" class="btn btn-ver-todas btn-sm">Ver más</a>
-                                          
+                                        <div class="pe-4">
+                                            <p class="mb-3"><?php echo nl2br(htmlspecialchars($publicacion['contenido'])); ?></p>
+                                            <small class="text-muted d-block mb-2">
+                                                Publicado el <?php echo date("d/m/Y H:i", strtotime($publicacion['fecha_publicada'])); ?>
+                                            </small>
+                                            <a href="detalle_publicacion.php?id=<?php echo $publicacion['id_publicacion']; ?>"
+                                                class="btn btn-ver-todas btn-sm">Ver más</a>
                                         </div>
                                     </div>
                                 </div>
