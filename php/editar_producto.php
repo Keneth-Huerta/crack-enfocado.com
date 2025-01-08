@@ -86,26 +86,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
-    // Validar tipo de archivo
-    $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
-    $file_type = $_FILES['imagen']['type'];
-    
-    if (!in_array($file_type, $allowed_types)) {
-        $mensaje = '<div class="alert alert-danger">Solo se permiten imágenes JPG, PNG y GIF.</div>';
-    } 
-    // Validar tamaño (5MB máximo)
-    elseif ($_FILES['imagen']['size'] > 5242880) {
-        $mensaje = '<div class="alert alert-danger">La imagen no debe exceder 5MB.</div>';
-    } 
-    else {
-        // Procesar imagen
-        $nueva_imagen = file_get_contents($_FILES['imagen']['tmp_name']);
-        $query = "UPDATE productos SET producto = ?, precio = ?, descripcion = ?, imagen = ? WHERE idProducto = ? AND usuario_id = ?";
-        $stmt = mysqli_prepare($enlace, $query);
-        mysqli_stmt_bind_param($stmt, "sdsbii", $nuevo_producto, $nuevo_precio, $nueva_descripcion, $nueva_imagen, $id_producto, $_SESSION['usuario_id']);
-    }
-} 
 ?>
 
 <!DOCTYPE html>
