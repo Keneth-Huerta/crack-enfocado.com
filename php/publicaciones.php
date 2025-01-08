@@ -142,10 +142,14 @@
             const commentsSection = document.getElementById(`comments-section-${publicationId}`);
             const commentForm = document.getElementById(`comment-form-${publicationId}`);
 
-            if (commentsSection) {
-                commentsSection.classList.toggle('show');
-                if (commentForm) {
-                    commentForm.style.display = commentsSection.classList.contains('show') ? 'block' : 'none';
+            if (commentsSection && commentForm) {
+                // Toggle visibility
+                if (commentsSection.style.display === 'block') {
+                    commentsSection.style.display = 'none';
+                    commentForm.style.display = 'none';
+                } else {
+                    commentsSection.style.display = 'block';
+                    commentForm.style.display = 'block';
                 }
             }
         }
