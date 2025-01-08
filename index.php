@@ -112,6 +112,49 @@ session_start();
             gap: 1rem;
             justify-content: center;
         }
+
+        .navbar-logo {
+            height: 40px;
+            width: auto;
+        }
+
+        .custom-toggler {
+            border-color: var(--ipn-dorado) !important;
+        }
+
+        .custom-toggler .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(196, 166, 87, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+        }
+
+        @media (max-width: 991.98px) {
+            .navbar-nav {
+                margin-top: 1rem;
+            }
+
+            .nav-item {
+                margin: 0.5rem 0;
+            }
+
+            .btn-ipn,
+            .btn-outline-ipn {
+                display: block;
+                width: 100%;
+                margin-left: 0 !important;
+            }
+        }
+
+        .navbar .container {
+            padding: 0.5rem 1rem;
+        }
+
+        .navbar-brand {
+            margin-right: 2rem;
+        }
+
+        .btn-ipn,
+        .btn-outline-ipn {
+            min-width: 120px;
+        }
     </style>
 </head>
 
@@ -119,17 +162,23 @@ session_start();
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg">
         <div class="container">
+            <!-- Logo -->
+            <img src="media/logo_cecyt.png" alt="Logo CECyT 3" class="navbar-logo me-2">
             <a class="navbar-brand" href="#">CECyT 3</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+
+            <!-- Botón hamburguesa -->
+            <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
+            <!-- Menú colapsable -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="btn btn-ipn" href="/secion.php">Iniciar Sesión</a>
+                    <li class="nav-item mb-2 mb-lg-0 me-lg-2">
+                        <a class="btn btn-ipn w-100" href="/secion.php">Iniciar Sesión</a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-outline-ipn" href="/crearCuenta.html">Crear Cuenta</a>
+                        <a class="btn btn-outline-ipn w-100" href="/crearCuenta.html">Crear Cuenta</a>
                     </li>
                 </ul>
             </div>
