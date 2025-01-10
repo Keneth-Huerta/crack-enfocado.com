@@ -1,21 +1,3 @@
-/**
-*
-* This script handles the sales form submission and displays the sales section.
-*
-* - Configures file upload limits and execution time.
-* - Connects to the MySQL database.
-* - Processes the sales form submission, including handling image uploads.
-* - Displays a form for adding new sales.
-* - Displays a list of products with user profiles and contact options.
-*
-* PHP version 7.4+
-*
-* @category Sales
-* @package SalesPlatform
-* @author Your Name
-* @license MIT License
-* @link https://yourwebsite.com
-*/
 <?php
 // Configurar límites de subida de archivos
 ini_set('upload_max_filesize', '10M');
@@ -668,7 +650,144 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ?>
         </div>
     </section>
+    <script>
+        // Función para calificar producto
+        function calificarProducto(productoId, estrellas) {
+            $.ajax({
+                url: 'calificar_ajax.php',
+                type: 'POST',
+                data: {
+                    producto_id: productoId,
+                    estrellas: estrellas
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        // Actualizar la visualización de estrellas
+                        const starsContainer = $(`#stars-container-${productoId}`);
+                        starsContainer.find('.fa-star').removeClass('text-warning text-muted');
 
+                        for (let i = 1; i <= 5; i++) {
+                            const star = starsContainer.find(`.star-${i}`);
+                            if (i <= response.promedio) {
+                                star.addClass('text-warning');
+                            } else {
+                                star.addClass('text-muted');
+                            }
+                        }
+
+                        $(`#rating-count-${productoId}`).text(`(${response.total} calificaciones)`);
+
+                        // Mostrar mensaje de éxito
+                        const alert = `<div class="alert alert-success alert-dismissible fade show" role="alert">
+                    ${response.mensaje}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>`;
+                        $('#alerts-container').html(alert);
+                    }
+                }
+            });
+        }
+
+        // Función para publicar comentario
+        function publicarComentario(productoId) {
+            const contenido = $(`#comentario-input-${productoId}`).val();
+            if (!contenido.trim()) return;
+
+            $.ajax({
+                url: 'comentar_ajax.php',
+                type: 'POST',
+                data: {
+                    producto_id: productoId,
+                    contenido: contenido
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        // Agregar el nuevo comentario al inicio de la lista
+                        const comentarioHTML = `
+                    <div class="comentario mb-3" id="comentario-${response.comentario.id}">
+                        <div class="d-flex align-items-start">
+                            <img src="${response.comentario.foto_perfil}" 
+                                 alt="Foto de perfil" 
+                                 class="rounded-circle me-2" 
+                                 style="width: 32px; height: 32px;">
+                            <div class="flex-grow-1">
+                                <div class="comentario-header">
+                                    <strong>${response.comentario.usuario}</strong>
+                                    <small class="text-muted ms-2">Ahora</small>
+                                </div>
+                                <div class="comentario-contenido">
+                                    ${response.comentario.contenido}
+                                </div>
+                            </div>
+                            ${response.comentario.es_propietario ? `
+                                <button class="btn btn-sm btn-danger" 
+                                        onclick="eliminarComentario(${response.comentario.id})">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+
+                        $(`#comentarios-container-${productoId}`).prepend(comentarioHTML);
+                        $(`#comentario-input-${productoId}`).val('');
+
+                        // Actualizar contador de comentarios
+                        const contador = $(`#comentarios-count-${productoId}`);
+                        contador.text(parseInt(contador.text()) + 1);
+                    }
+                }
+            });
+        }
+
+        // Función para cargar comentarios
+        function cargarComentarios(productoId) {
+            $.ajax({
+                url: 'cargar_comentarios.php',
+                type: 'GET',
+                data: {
+                    producto_id: productoId
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        const container = $(`#comentarios-container-${productoId}`);
+                        container.empty();
+
+                        response.comentarios.forEach(comentario => {
+                            container.append(`
+                        <div class="comentario mb-3" id="comentario-${comentario.id}">
+                            <div class="d-flex align-items-start">
+                                <img src="${comentario.foto_perfil}" 
+                                     alt="Foto de perfil" 
+                                     class="rounded-circle me-2" 
+                                     style="width: 32px; height: 32px;">
+                                <div class="flex-grow-1">
+                                    <div class="comentario-header">
+                                        <strong>${comentario.usuario}</strong>
+                                        <small class="text-muted ms-2">${comentario.fecha_formato}</small>
+                                    </div>
+                                    <div class="comentario-contenido">
+                                        ${comentario.contenido}
+                                    </div>
+                                </div>
+                                ${comentario.es_propietario ? `
+                                    <button class="btn btn-sm btn-danger" 
+                                            onclick="eliminarComentario(${comentario.id})">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `);
+                        });
+                    }
+                }
+            });
+        }
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
