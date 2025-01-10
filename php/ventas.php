@@ -1,4 +1,3 @@
-
 <?php
 // Configurar límites de subida de archivos
 ini_set('upload_max_filesize', '10M');
@@ -417,6 +416,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         .acciones-producto .btn-success i {
             font-size: 1.2em;
         }
+
+        .rating-section {
+            margin: 15px 0;
+        }
+
+        .stars-display {
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .rating-input {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: center;
+        }
+
+        .rating-input input {
+            display: none;
+        }
+
+        .rating-input label {
+            cursor: pointer;
+            font-size: 30px;
+            color: #ddd;
+            margin: 0 2px;
+        }
+
+        .rating-input label:hover,
+        .rating-input label:hover~label,
+        .rating-input input:checked~label {
+            color: #ffb400;
+        }
+
+        .rating-input label:hover:before,
+        .rating-input label:hover~label:before,
+        .rating-input input:checked~label:before {
+            content: "★";
+            position: absolute;
+        }
     </style>
 </head>
 
@@ -491,46 +529,99 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <div class="producto-detalles">
                             <h3><?php echo htmlspecialchars($row['producto']); ?></h3>
                             <p class="precio">$<?php echo number_format($row['precio'], 2); ?></p>
-                            <p class="descripcion"><?php echo htmlspecialchars($row['descripcion']); ?></p>
 
-                            <?php if (isset($_SESSION['usuario_id'])): ?>
-                                <?php if ($_SESSION['usuario_id'] == $row['usuario_id']): ?>
-                                    <!-- Botones de editar y eliminar para el propietario -->
-                                    <div class="acciones-producto">
-                                        <a href="editar_producto.php?id=<?php echo $row['idProducto']; ?>"
-                                            class="btn btn-primary btn-sm">
-                                            <i class="fas fa-edit"></i> Editar
-                                        </a>
-                                        <a href="eliminar_producto.php?id=<?php echo $row['idProducto']; ?>"
-                                            class="btn btn-danger btn-sm"
-                                            onclick="return confirm('¿Estás seguro de eliminar este producto?')">
-                                            <i class="fas fa-trash-alt"></i> Eliminar
-                                        </a>
-                                    </div>
-                                <?php else: ?>
-                                    <!-- Botón de contacto para otros usuarios -->
-                                    <?php
-                                    if (!empty($row['telefono'])) {
-                                        $mensaje = "Hola, me interesa tu producto: " . $row['producto'] . " por $" . $row['precio'];
-                                        $mensaje_codificado = urlencode($mensaje);
-                                        $whatsapp_link = "https://wa.me/{$row['telefono']}?text={$mensaje_codificado}";
-                                    ?>
-                                        <div class="acciones-producto">
-                                            <a href="<?php echo $whatsapp_link; ?>"
-                                                target="_blank"
-                                                class="btn btn-success w-100">
-                                                <i class="fab fa-whatsapp me-2"></i> Contactar por WhatsApp
-                                            </a>
-                                        </div>
-                                    <?php } else { ?>
-                                        <div class="acciones-producto">
-                                            <button class="btn btn-secondary w-100" disabled>
-                                                <i class="fas fa-phone-slash me-2"></i> Teléfono no disponible
-                                            </button>
-                                        </div>
-                                    <?php } ?>
+                            <!-- Sistema de calificación -->
+                            <div class="rating-section">
+                                <?php
+                                // Obtener calificación promedio
+                                $query_rating = "SELECT AVG(estrellas) as promedio, COUNT(*) as total 
+                        FROM calificaciones 
+                        WHERE producto_id = " . $row['idProducto'];
+                                $result_rating = mysqli_query($enlace, $query_rating);
+                                $rating_data = mysqli_fetch_assoc($result_rating);
+                                $promedio = round($rating_data['promedio'], 1);
+                                ?>
+                                <div class="stars-display">
+                                    <?php for ($i = 1; $i <= 5; $i++): ?>
+                                        <i class="fas fa-star <?php echo $i <= $promedio ? 'text-warning' : 'text-muted'; ?>"></i>
+                                    <?php endfor; ?>
+                                    <span>(<?php echo $rating_data['total']; ?> calificaciones)</span>
+                                </div>
+
+                                <?php if (isset($_SESSION['usuario_id']) && $_SESSION['usuario_id'] != $row['usuario_id']): ?>
+                                    <button type="button"
+                                        class="btn btn-sm btn-outline-primary"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#ratingModal<?php echo $row['idProducto']; ?>">
+                                        Calificar
+                                    </button>
+
+                                    <button type="button"
+                                        class="btn btn-sm btn-outline-danger"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#reportModal<?php echo $row['idProducto']; ?>">
+                                        Reportar
+                                    </button>
                                 <?php endif; ?>
-                            <?php endif; ?>
+                            </div>
+
+                            <!-- Resto del código existente... -->
+                        </div>
+
+                        <!-- Modal de Calificación -->
+                        <div class="modal fade" id="ratingModal<?php echo $row['idProducto']; ?>" tabindex="-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Calificar Producto</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <form action="calificar_producto.php" method="POST">
+                                        <div class="modal-body">
+                                            <input type="hidden" name="producto_id" value="<?php echo $row['idProducto']; ?>">
+                                            <div class="rating-input">
+                                                <?php for ($i = 5; $i >= 1; $i--): ?>
+                                                    <input type="radio" name="estrellas" value="<?php echo $i; ?>" id="star<?php echo $i; ?>_<?php echo $row['idProducto']; ?>">
+                                                    <label for="star<?php echo $i; ?>_<?php echo $row['idProducto']; ?>">☆</label>
+                                                <?php endfor; ?>
+                                            </div>
+                                            <textarea name="comentario" class="form-control mt-3" placeholder="Escribe tu comentario (opcional)"></textarea>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Enviar Calificación</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal de Reporte -->
+                        <div class="modal fade" id="reportModal<?php echo $row['idProducto']; ?>" tabindex="-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Reportar Producto</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <form action="reportar_producto.php" method="POST">
+                                        <div class="modal-body">
+                                            <input type="hidden" name="producto_id" value="<?php echo $row['idProducto']; ?>">
+                                            <select name="motivo" class="form-select mb-3" required>
+                                                <option value="">Selecciona un motivo</option>
+                                                <option value="contenido_inapropiado">Contenido inapropiado</option>
+                                                <option value="spam">Spam</option>
+                                                <option value="producto_prohibido">Producto prohibido</option>
+                                                <option value="informacion_falsa">Información falsa</option>
+                                                <option value="otro">Otro</option>
+                                            </select>
+                                            <textarea name="descripcion" class="form-control" placeholder="Describe el problema" required></textarea>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-danger">Enviar Reporte</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
             <?php
