@@ -1,3 +1,21 @@
+/**
+*
+* This script handles the sales form submission and displays the sales section.
+*
+* - Configures file upload limits and execution time.
+* - Connects to the MySQL database.
+* - Processes the sales form submission, including handling image uploads.
+* - Displays a form for adding new sales.
+* - Displays a list of products with user profiles and contact options.
+*
+* PHP version 7.4+
+*
+* @category Sales
+* @package SalesPlatform
+* @author Your Name
+* @license MIT License
+* @link https://yourwebsite.com
+*/
 <?php
 // Configurar límites de subida de archivos
 ini_set('upload_max_filesize', '10M');
@@ -417,6 +435,55 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             font-size: 1.2em;
         }
 
+        .comentarios-section {
+            margin-top: 20px;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+
+        .comentario {
+            padding: 10px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            margin-bottom: 10px;
+        }
+
+        .comentario:hover {
+            background-color: #f0f0f0;
+        }
+
+        .comentario-header {
+            margin-bottom: 5px;
+        }
+
+        .comentario-contenido {
+            word-break: break-word;
+        }
+
+        .rating-section .fa-star {
+            transition: color 0.2s;
+        }
+
+        .rating-section .fa-star:hover {
+            transform: scale(1.1);
+        }
+
+        .comentario-form .input-group {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .comentario-form .form-control {
+            border: none;
+            padding: 10px 15px;
+        }
+
+        .comentario-form .btn {
+            border: none;
+            padding: 10px 20px;
+        }
+
         .rating-section {
             margin: 15px 0;
         }
@@ -527,100 +594,67 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                         <!-- Detalles del producto -->
                         <div class="producto-detalles">
-                            <h3><?php echo htmlspecialchars($row['producto']); ?></h3>
-                            <p class="precio">$<?php echo number_format($row['precio'], 2); ?></p>
-
                             <!-- Sistema de calificación -->
                             <div class="rating-section">
-                                <?php
-                                // Obtener calificación promedio
-                                $query_rating = "SELECT AVG(estrellas) as promedio, COUNT(*) as total 
-                        FROM calificaciones 
-                        WHERE producto_id = " . $row['idProducto'];
-                                $result_rating = mysqli_query($enlace, $query_rating);
-                                $rating_data = mysqli_fetch_assoc($result_rating);
-                                $promedio = round($rating_data['promedio'], 1);
-                                ?>
-                                <div class="stars-display">
-                                    <?php for ($i = 1; $i <= 5; $i++): ?>
-                                        <i class="fas fa-star <?php echo $i <= $promedio ? 'text-warning' : 'text-muted'; ?>"></i>
+                                <div class="stars-display" id="stars-container-<?php echo $row['idProducto']; ?>">
+                                    <?php
+                                    $query_rating = "SELECT AVG(estrellas) as promedio, COUNT(*) as total 
+                            FROM calificaciones 
+                            WHERE producto_id = " . $row['idProducto'];
+                                    $result_rating = mysqli_query($enlace, $query_rating);
+                                    $rating_data = mysqli_fetch_assoc($result_rating);
+                                    $promedio = round($rating_data['promedio'], 1);
+
+                                    for ($i = 1; $i <= 5; $i++):
+                                    ?>
+                                        <i class="fas fa-star star-<?php echo $i; ?> 
+                          <?php echo $i <= $promedio ? 'text-warning' : 'text-muted'; ?>"
+                                            onclick="calificarProducto(<?php echo $row['idProducto']; ?>, <?php echo $i; ?>)"
+                                            style="cursor: pointer;"></i>
                                     <?php endfor; ?>
-                                    <span>(<?php echo $rating_data['total']; ?> calificaciones)</span>
+                                    <span id="rating-count-<?php echo $row['idProducto']; ?>">
+                                        (<?php echo $rating_data['total']; ?> calificaciones)
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Sistema de comentarios -->
+                            <div class="comentarios-section mt-3">
+                                <h5>Comentarios <span id="comentarios-count-<?php echo $row['idProducto']; ?>">
+                                        <?php
+                                        $query_comments = "SELECT COUNT(*) as total FROM comentarios 
+                             WHERE publicacion_id = " . $row['idProducto'];
+                                        $result_comments = mysqli_query($enlace, $query_comments);
+                                        $comments_count = mysqli_fetch_assoc($result_comments)['total'];
+                                        echo $comments_count;
+                                        ?>
+                                    </span></h5>
+
+                                <?php if (isset($_SESSION['usuario_id'])): ?>
+                                    <div class="comentario-form mb-3">
+                                        <div class="input-group">
+                                            <input type="text"
+                                                class="form-control"
+                                                id="comentario-input-<?php echo $row['idProducto']; ?>"
+                                                placeholder="Escribe un comentario...">
+                                            <button class="btn btn-primary"
+                                                onclick="publicarComentario(<?php echo $row['idProducto']; ?>)">
+                                                <i class="fas fa-paper-plane"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
+
+                                <div id="comentarios-container-<?php echo $row['idProducto']; ?>" class="comentarios-container">
+                                    <!-- Los comentarios se cargarán aquí via AJAX -->
                                 </div>
 
-                                <?php if (isset($_SESSION['usuario_id']) && $_SESSION['usuario_id'] != $row['usuario_id']): ?>
-                                    <button type="button"
-                                        class="btn btn-sm btn-outline-primary"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#ratingModal<?php echo $row['idProducto']; ?>">
-                                        Calificar
-                                    </button>
-
-                                    <button type="button"
-                                        class="btn btn-sm btn-outline-danger"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#reportModal<?php echo $row['idProducto']; ?>">
-                                        Reportar
+                                <?php if ($comments_count > 0): ?>
+                                    <button class="btn btn-link btn-sm"
+                                        onclick="cargarComentarios(<?php echo $row['idProducto']; ?>)">
+                                        Ver todos los comentarios
                                     </button>
                                 <?php endif; ?>
-                            </div>
-
-                            <!-- Resto del código existente... -->
-                        </div>
-
-                        <!-- Modal de Calificación -->
-                        <div class="modal fade" id="ratingModal<?php echo $row['idProducto']; ?>" tabindex="-1">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Calificar Producto</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                    </div>
-                                    <form action="calificar_producto.php" method="POST">
-                                        <div class="modal-body">
-                                            <input type="hidden" name="producto_id" value="<?php echo $row['idProducto']; ?>">
-                                            <div class="rating-input">
-                                                <?php for ($i = 5; $i >= 1; $i--): ?>
-                                                    <input type="radio" name="estrellas" value="<?php echo $i; ?>" id="star<?php echo $i; ?>_<?php echo $row['idProducto']; ?>">
-                                                    <label for="star<?php echo $i; ?>_<?php echo $row['idProducto']; ?>">☆</label>
-                                                <?php endfor; ?>
-                                            </div>
-                                            <textarea name="comentario" class="form-control mt-3" placeholder="Escribe tu comentario (opcional)"></textarea>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="submit" class="btn btn-primary">Enviar Calificación</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Modal de Reporte -->
-                        <div class="modal fade" id="reportModal<?php echo $row['idProducto']; ?>" tabindex="-1">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Reportar Producto</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                    </div>
-                                    <form action="reportar_producto.php" method="POST">
-                                        <div class="modal-body">
-                                            <input type="hidden" name="producto_id" value="<?php echo $row['idProducto']; ?>">
-                                            <select name="motivo" class="form-select mb-3" required>
-                                                <option value="">Selecciona un motivo</option>
-                                                <option value="contenido_inapropiado">Contenido inapropiado</option>
-                                                <option value="spam">Spam</option>
-                                                <option value="producto_prohibido">Producto prohibido</option>
-                                                <option value="informacion_falsa">Información falsa</option>
-                                                <option value="otro">Otro</option>
-                                            </select>
-                                            <textarea name="descripcion" class="form-control" placeholder="Describe el problema" required></textarea>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="submit" class="btn btn-danger">Enviar Reporte</button>
-                                        </div>
-                                    </form>
-                                </div>
                             </div>
                         </div>
                     </div>
