@@ -34,6 +34,7 @@ CECyT3-RedSocial Crack Enfocado
 │   .htaccess
 │   crearCuenta.html
 │   index.php
+│   LICENSE
 │   README.md
 │   secion.php
 │
@@ -48,6 +49,7 @@ CECyT3-RedSocial Crack Enfocado
 │       styles.css
 │
 ├───media
+│   │   Crack-Enfocado.png
 │   │   logoweb.jpg
 │   │   logoweb.svg
 │   │   user.png
@@ -60,9 +62,12 @@ CECyT3-RedSocial Crack Enfocado
         agregar_comentario.php
         basePublicacion.php
         busqueda.php
+        calificar_ajax.php
+        calificar_producto.php
+        comentar_ajax.php
         conexion.php
-        dar_like.php
         descprod.php
+        detalle_producto.php
         detalle_publicacion.php
         editar_perfil.php
         editar_producto.php
@@ -74,11 +79,14 @@ CECyT3-RedSocial Crack Enfocado
         insven.php
         login.php
         logout.php
+        notificaciones.php
         perfil.php
         Principal.php
         publicaciones.php
         registro.php
+        reportar_producto.php
         subir_public.php
+        toggle_like.php
         ventas.php
 
 ## Guía de Uso
@@ -96,7 +104,7 @@ Para contribuir al proyecto:
 5. Crear Pull Request
 
 ## Soporte
-Para soporte contactar a [correo de soporte]
+Para soporte contactar a kenethissac@gmail.com
 
 ## Licencia
 Este proyecto está bajo la Licencia MIT
