@@ -1,61 +1,51 @@
 <?php
-// Configurar límites de subida de archivos
-ini_set('upload_max_filesize', '10M');
-ini_set('post_max_size', '10M');
-ini_set('max_execution_time', 300);
-// Conexión a la base de datos
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-$servidor = "localhost";
-$usuarioBD = "u288355303_Keneth";
-$claveBD = "1420Genio.";
-$baseDeDatos = "u288355303_Usuarios";
+require_once 'ImageHandler.php';
+require_once 'conexion.php';
 
-$enlace = mysqli_connect($servidor, $usuarioBD, $claveBD, $baseDeDatos);
-if (!$enlace) {
-    die("Conexión fallida: " . mysqli_connect_error());
-}
-
-// Procesar formulario de ventas
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SESSION['usuario_id'])) {
     $producto = htmlspecialchars($_POST['producto']);
     $precio = floatval($_POST['precio']);
     $descripcion = htmlspecialchars($_POST['descripcion']);
     $usuario_id = $_SESSION['usuario_id'];
 
+    $imageHandler = new ImageHandler();
+    $imagen_path = null;
+
     try {
         // Manejo de la imagen
         if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
-            // Verificar el tipo de archivo
-            $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
-            $file_type = $_FILES['imagen']['type'];
+            $imagen_path = $imageHandler->uploadImage($_FILES['imagen']);
 
-            if (!in_array($file_type, $allowed_types)) {
-                throw new Exception("Tipo de archivo no permitido. Por favor, sube una imagen JPG, PNG o GIF.");
+            if (!$imagen_path) {
+                throw new Exception("Error al subir la imagen. Verifica el formato y tamaño.");
             }
-
-            // Leer la imagen
-            $imagen = addslashes(file_get_contents($_FILES['imagen']['tmp_name']));
-
-            // Query con imagen
-            $query = "INSERT INTO productos (producto, precio, descripcion, imagen, usuario_id) 
-                     VALUES ('$producto', $precio, '$descripcion', '$imagen', $usuario_id)";
-        } else {
-            // Query sin imagen
-            $query = "INSERT INTO productos (producto, precio, descripcion, usuario_id) 
-                     VALUES ('$producto', $precio, '$descripcion', $usuario_id)";
         }
 
-        // Ejecutar la consulta
-        if (mysqli_query($enlace, $query)) {
-            echo "<div class='alert alert-success'>Venta agregada con éxito.</div>";
+        // Preparar la consulta
+        $query = "INSERT INTO productos (producto, precio, descripcion, imagen, usuario_id) 
+                 VALUES (?, ?, ?, ?, ?)";
+
+        $stmt = mysqli_prepare($enlace, $query);
+        mysqli_stmt_bind_param($stmt, "sdssi", $producto, $precio, $descripcion, $imagen_path, $usuario_id);
+
+        if (mysqli_stmt_execute($stmt)) {
+            $_SESSION['mensaje'] = "Producto agregado exitosamente";
+            $_SESSION['mensaje_tipo'] = "success";
         } else {
+            // Si falla la inserción, eliminar la imagen si se subió
+            if ($imagen_path) {
+                $imageHandler->deleteImage($imagen_path);
+            }
             throw new Exception("Error en la inserción: " . mysqli_error($enlace));
         }
     } catch (Exception $e) {
-        echo "<div class='alert alert-danger'>Error: " . $e->getMessage() . "</div>";
+        $_SESSION['mensaje'] = "Error: " . $e->getMessage();
+        $_SESSION['mensaje_tipo'] = "danger";
     }
+
+    // Redirigir para evitar reenvío del formulario
+    header("Location: " . $_SERVER['PHP_SELF']);
+    exit();
 }
 ?>
 

@@ -1,63 +1,26 @@
+<?php
+require_once 'ImageHandler.php';
+require_once 'conexion.php';
 
- <?php
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-require_once '../php/conexion.php'; // Conexión a la base de datos
-
-// Asegúrate de que el usuario esté logueado
 if (!isset($_SESSION['usuario_id'])) {
-    echo "Por favor, inicie sesión para continuar.";
+    header("Location: login.php");
     exit();
 }
 
-// Obtener el usuario_id de la sesión
+$imageHandler = new ImageHandler();
 $usuario_id = $_SESSION['usuario_id'];
 
-// Obtener la información del usuario
+// Obtener perfil existente
 $query = "SELECT * FROM perfiles WHERE usuario_id = ?";
 $stmt = mysqli_prepare($enlace, $query);
 mysqli_stmt_bind_param($stmt, "i", $usuario_id);
 mysqli_stmt_execute($stmt);
-$resultado = mysqli_stmt_get_result($stmt);
-$perfil = mysqli_fetch_assoc($resultado);
-mysqli_stmt_close($stmt);
+$perfil = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
 
-// Verificar si el perfil existe
-if ($perfil === null) {
-    // Si no existe el perfil, inicializamos los valores en blanco
-    $perfil = [
-        'usuario_id' => $usuario_id, // Agregamos el usuario_id
-        'nombre' => '',
-        'apellido' => '',
-        'carrera' => '',
-        'semestre' => '',
-        'foto_perfil' => '',
-        'foto_portada' => '',
-        'informacion_extra' => '',
-        'telefono' => ''
-    ];
-}
-
-// Procesar los cambios del formulario
-// Corrección en la verificación del perfil existente
-if ($perfil === null) {
-    // Si no existe el perfil, inicializamos los valores en blanco
-    $perfil = [
-        'usuario_id' => $usuario_id, // Agregamos el usuario_id
-        'nombre' => '',
-        'apellido' => '',
-        'carrera' => '',
-        'semestre' => '',
-        'foto_perfil' => '',
-        'foto_portada' => '',
-        'informacion_extra' => '',
-        'telefono' => ''
-    ];
-}
-
-// En la parte del procesamiento del formulario POST
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nombre = $_POST['nombre'];
     $apellido = $_POST['apellido'];
@@ -66,93 +29,93 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $informacion_extra = $_POST['informacion_extra'];
     $telefono = $_POST['telefono'];
 
-    // Manejo de las fotos
-    $foto_perfil = $perfil['foto_perfil']; // Valor por defecto
-    $foto_portada = $perfil['foto_portada']; // Valor por defecto
+    // Mantener rutas existentes por defecto
+    $foto_perfil = $perfil['foto_perfil'] ?? null;
+    $foto_portada = $perfil['foto_portada'] ?? null;
 
-    // Procesar foto de perfil si se subió una nueva
+    // Procesar foto de perfil
     if (!empty($_FILES['foto_perfil']['name'])) {
-        $foto_perfil = '../media/uploads/' . basename($_FILES['foto_perfil']['name']);
-        move_uploaded_file($_FILES['foto_perfil']['tmp_name'], $foto_perfil);
+        // Eliminar foto anterior si existe
+        if ($foto_perfil) {
+            $imageHandler->deleteImage($foto_perfil);
+        }
+        $foto_perfil = $imageHandler->uploadImage($_FILES['foto_perfil']);
     }
 
-    // Procesar foto de portada si se subió una nueva
+    // Procesar foto de portada
     if (!empty($_FILES['foto_portada']['name'])) {
-        $foto_portada = '../media/uploads/' . basename($_FILES['foto_portada']['name']);
-        move_uploaded_file($_FILES['foto_portada']['tmp_name'], $foto_portada);
+        // Eliminar foto anterior si existe
+        if ($foto_portada) {
+            $imageHandler->deleteImage($foto_portada);
+        }
+        $foto_portada = $imageHandler->uploadImage($_FILES['foto_portada']);
     }
 
-    try {
-        // Verificar si el perfil existe
-        $check_query = "SELECT usuario_id FROM perfiles WHERE usuario_id = ?";
-        $check_stmt = mysqli_prepare($enlace, $check_query);
-        mysqli_stmt_bind_param($check_stmt, "i", $usuario_id);
-        mysqli_stmt_execute($check_stmt);
-        $check_result = mysqli_stmt_get_result($check_stmt);
-        $exists = mysqli_fetch_assoc($check_result);
-        mysqli_stmt_close($check_stmt);
+    // Verificar si el perfil existe
+    $check_query = "SELECT usuario_id FROM perfiles WHERE usuario_id = ?";
+    $check_stmt = mysqli_prepare($enlace, $check_query);
+    mysqli_stmt_bind_param($check_stmt, "i", $usuario_id);
+    mysqli_stmt_execute($check_stmt);
+    $exists = mysqli_fetch_assoc(mysqli_stmt_get_result($check_stmt));
 
-        if ($exists) {
-            // Actualizar perfil existente
-            $update_query = "UPDATE perfiles SET 
-                           nombre = ?, 
-                           apellido = ?, 
-                           carrera = ?, 
-                           semestre = ?, 
-                           foto_perfil = ?, 
-                           foto_portada = ?, 
-                           informacion_extra = ?,
-                           telefono = ? 
-                           WHERE usuario_id = ?";
+    if ($exists) {
+        // Actualizar perfil existente
+        $update_query = "UPDATE perfiles SET 
+                        nombre = ?, 
+                        apellido = ?, 
+                        carrera = ?, 
+                        semestre = ?, 
+                        foto_perfil = ?, 
+                        foto_portada = ?, 
+                        informacion_extra = ?,
+                        telefono = ? 
+                        WHERE usuario_id = ?";
 
-            $stmt = mysqli_prepare($enlace, $update_query);
-            mysqli_stmt_bind_param(
-                $stmt,
-                "sssissssi",
-                $nombre,
-                $apellido,
-                $carrera,
-                $semestre,
-                $foto_perfil,
-                $foto_portada,
-                $informacion_extra,
-                $telefono,
-                $usuario_id
-            );
-        } else {
-            // Insertar nuevo perfil
-            $insert_query = "INSERT INTO perfiles 
-                           (usuario_id, nombre, apellido, carrera, semestre, 
-                            foto_perfil, foto_portada, informacion_extra, telefono) 
-                           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $stmt = mysqli_prepare($enlace, $update_query);
+        mysqli_stmt_bind_param(
+            $stmt,
+            "sssissssi",
+            $nombre,
+            $apellido,
+            $carrera,
+            $semestre,
+            $foto_perfil,
+            $foto_portada,
+            $informacion_extra,
+            $telefono,
+            $usuario_id
+        );
+    } else {
+        // Insertar nuevo perfil
+        $insert_query = "INSERT INTO perfiles 
+                        (usuario_id, nombre, apellido, carrera, semestre, 
+                         foto_perfil, foto_portada, informacion_extra, telefono) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-            $stmt = mysqli_prepare($enlace, $insert_query);
-            mysqli_stmt_bind_param(
-                $stmt,
-                "ississsss",
-                $usuario_id,
-                $nombre,
-                $apellido,
-                $carrera,
-                $semestre,
-                $foto_perfil,
-                $foto_portada,
-                $informacion_extra,
-                $telefono
-            );
-        }
+        $stmt = mysqli_prepare($enlace, $insert_query);
+        mysqli_stmt_bind_param(
+            $stmt,
+            "ississsss",
+            $usuario_id,
+            $nombre,
+            $apellido,
+            $carrera,
+            $semestre,
+            $foto_perfil,
+            $foto_portada,
+            $informacion_extra,
+            $telefono
+        );
+    }
 
-        if (!mysqli_stmt_execute($stmt)) {
-            throw new Exception("Error al guardar los cambios: " . mysqli_error($enlace));
-        }
-        mysqli_stmt_close($stmt);
-
-        // Redirigir al perfil después de guardar cambios
+    if (mysqli_stmt_execute($stmt)) {
+        $_SESSION['mensaje'] = "Perfil actualizado exitosamente";
+        $_SESSION['mensaje_tipo'] = "success";
         header("Location: perfil.php");
         exit();
-    } catch (Exception $e) {
-        echo "Error: " . $e->getMessage();
-        exit();
+    } else {
+        $_SESSION['mensaje'] = "Error al actualizar el perfil: " . mysqli_error($enlace);
+        $_SESSION['mensaje_tipo'] = "danger";
     }
 }
 ?>
@@ -261,7 +224,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <button type="submit">Guardar cambios</button>
         </form>
     </div>
-   
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
