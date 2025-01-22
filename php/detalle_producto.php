@@ -1,4 +1,3 @@
-
 <?php
 session_start();
 require_once 'conexion.php';
@@ -181,12 +180,14 @@ if (isset($_GET['id'])) {
     <div class="container">
         <div class="product-container">
             <div class="row">
+                <!-- En la sección donde muestras la imagen del producto -->
                 <div class="col-md-6">
                     <?php if (!empty($producto['imagen'])): ?>
-                        <img src="data:image/jpeg;base64,<?php echo base64_encode($producto['imagen']); ?>"
+                        <img src="<?php echo htmlspecialchars($producto['imagen']); ?>"
                             class="product-image" alt="<?php echo htmlspecialchars($producto['producto']); ?>">
                     <?php else: ?>
-                        <img src="../media/producto_default.jpg" class="product-image" alt="Imagen no disponible">
+                        <img src="../media/producto_default.jpg"
+                            class="product-image" alt="Imagen no disponible">
                     <?php endif; ?>
                 </div>
                 <div class="col-md-6">

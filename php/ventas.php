@@ -557,7 +557,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SESSION['usuario_id'])) {
                         <!-- Imagen del producto -->
                         <div class="producto-imagen">
                             <?php if (!empty($row['imagen'])): ?>
-                                <img src="data:image/jpeg;base64,<?php echo base64_encode($row['imagen']); ?>"
+                                <img src="<?php echo !empty($row['imagen']) ? htmlspecialchars($row['imagen']) : '../media/producto_default.jpg'; ?>"
                                     alt="Imagen del producto">
                             <?php else: ?>
                                 <img src="../media/producto_default.jpg" alt="Imagen no disponible">

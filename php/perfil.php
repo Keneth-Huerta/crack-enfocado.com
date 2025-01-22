@@ -1,4 +1,3 @@
-
 <?php
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
@@ -163,7 +162,8 @@ $foto_portada = $perfil['foto_portada'] ?? '../media/user_icon_001.jpg';
     <div class="perfil-container">
         <!-- Foto de portada -->
         <div class="foto-portada">
-            <img src="<?php echo htmlspecialchars($foto_portada); ?>" alt="Foto de portada">
+            <img src="<?php echo !empty($foto_portada) ? htmlspecialchars($foto_portada) : '../media/portada_default.jpg'; ?>"
+                alt="Foto de portada">
         </div>
 
         <h1 class="titulo-perfil"><?php echo htmlspecialchars($username); ?></h1>
@@ -171,8 +171,10 @@ $foto_portada = $perfil['foto_portada'] ?? '../media/user_icon_001.jpg';
         <div class="perfil-info">
             <!-- Foto de perfil -->
             <div class="foto-perfil">
-                <img src="<?php echo htmlspecialchars($foto_perfils); ?>" alt="Foto de perfil">
+                <img src="<?php echo !empty($foto_perfils) ? htmlspecialchars($foto_perfils) : '../media/user.png'; ?>"
+                    alt="Foto de perfil">
             </div>
+
 
             <div class="informacion">
                 <p><strong>Nombre Completo:</strong> <?php echo htmlspecialchars($nombre . ' ' . $apellido); ?></p>
